@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b5e8e">
+<title>Gestão Operacional Equipes</title>
+<link rel="icon" type="image/svg+xml" href="/assets/brand.svg">
+<style>
+:root{
+  --primary:#0b5e8e;
+  --primary-dark:#16466e;
+  --primary-light:#3a9ed0;
+  --bg:#eef4f8;
+  --surface:#fff;
+  --text:#213746;
+  --muted:#728591;
+  --border:#d4e1e9;
+  --green:#258154;
+  --green-soft:#e8f7ef;
+  --amber:#a87610;
+  --amber-soft:#fff4d7;
+  --red:#ad3d3d;
+  --red-soft:#fdeaea;
+  --shadow:0 10px 30px rgba(22,70,110,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.app-shell{min-height:100vh;max-width:620px;margin:0 auto;background:var(--bg);position:relative;padding-bottom:88px}
+.login-page{min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(160deg,#0a2f49,#0b5e8e 55%,#67b9df)}
+.login-card{width:min(440px,100%);background:white;border-radius:26px;padding:24px;box-shadow:0 28px 80px rgba(4,30,47,.32)}
+.logo-box{display:grid;place-items:center;min-height:96px;margin-bottom:18px;padding:13px;border:1px solid var(--border);border-radius:18px;background:white}
+.logo-box img{max-width:100%;max-height:78px;object-fit:contain}
+.login-card h1{margin:0 0 6px;color:var(--primary-dark);font-size:1.55rem}
+.login-card p{margin:0 0 20px;color:var(--muted);font-size:.88rem;line-height:1.5}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+.field label{font-size:.76rem;font-weight:800;color:#526c7e}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--border);border-radius:13px;padding:12px 13px;background:white}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--primary-light);box-shadow:0 0 0 4px rgba(58,158,208,.14)}
+.btn{border:0;border-radius:13px;padding:12px 15px;font-weight:800}
+.btn-primary{background:var(--primary);color:white;box-shadow:0 7px 18px rgba(11,94,142,.22)}
+.btn-light{background:#edf4f8;color:var(--primary-dark)}
+.btn-green{background:var(--green);color:white}
+.btn-red{background:var(--red);color:white}
+.btn-block{width:100%}
+.demo-access{margin-top:15px;padding:12px;border-radius:13px;background:#eef6fb;color:#315970;font-size:.8rem;line-height:1.5}
+.error{display:none;margin-bottom:12px;padding:10px 12px;border-radius:12px;background:var(--red-soft);color:var(--red);font-size:.8rem}
+.error.show{display:block}
+.app-header{position:sticky;top:0;z-index:30;padding:calc(14px + env(safe-area-inset-top)) 16px 14px;background:linear-gradient(135deg,var(--primary-dark),var(--primary));color:white;box-shadow:0 8px 24px rgba(10,50,76,.18)}
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.header-user{display:flex;align-items:center;gap:10px;min-width:0}
+.avatar{width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:rgba(255,255,255,.18);font-size:.78rem;font-weight:900}
+.header-copy{min-width:0}
+.header-copy small{display:block;color:rgba(255,255,255,.72);font-size:.68rem}
+.header-copy strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.icon-button{width:42px;height:42px;border:1px solid rgba(255,255,255,.2);border-radius:13px;background:rgba(255,255,255,.12);color:white;font-size:1.1rem}
+.header-summary{display:flex;gap:8px;margin-top:13px;overflow:auto}
+.summary-chip{flex:0 0 auto;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.13);font-size:.72rem}
+.page{padding:16px}
+.section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 0 11px}
+.section-title h2{margin:0;color:var(--primary-dark);font-size:1.05rem}
+.section-title small{color:var(--muted)}
+.card{margin-bottom:12px;padding:15px;border:1px solid var(--border);border-radius:18px;background:var(--surface);box-shadow:0 4px 16px rgba(22,70,110,.06)}
+.hero-card{background:linear-gradient(145deg,#fff,#edf7fc);border-left:5px solid var(--primary-light)}
+.hero-card h2{margin:0 0 5px;color:var(--primary-dark)}
+.job-card{position:relative;overflow:hidden}
+.job-card.today{border-left:5px solid var(--green)}
+.job-card.tomorrow{border-left:5px solid var(--amber)}
+.job-date{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.date-label{font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--primary)}
+.status{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:.67rem;font-weight:900}
+.status.green{background:var(--green-soft);color:var(--green)}
+.status.amber{background:var(--amber-soft);color:var(--amber)}
+.status.red{background:var(--red-soft);color:var(--red)}
+.status.blue{background:#e7f3fa;color:var(--primary)}
+.job-card h3{margin:0 0 6px;color:var(--primary-dark);font-size:1rem}
+.meta{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0;color:var(--muted);font-size:.75rem}
+.meta span{padding:5px 8px;border-radius:8px;background:#f1f6f9}
+.job-observation{margin-top:10px;padding:10px 11px;border-radius:12px;background:var(--amber-soft);color:#715511;font-size:.78rem;line-height:1.45}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.actions .btn{flex:1;min-width:120px;padding:10px 12px;font-size:.75rem}
+.week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px}
+.day-pill{padding:8px 3px;border:1px solid var(--border);border-radius:13px;background:white;text-align:center}
+.day-pill strong{display:block;color:var(--primary-dark);font-size:.72rem}
+.day-pill span{display:block;margin-top:4px;color:var(--muted);font-size:.67rem}
+.day-pill.has-job{border-color:var(--primary-light);background:#eaf6fc}
+.day-pill.today{background:var(--primary);border-color:var(--primary);color:white}
+.day-pill.today strong,.day-pill.today span{color:white}
+.notification-card{border-left:5px solid var(--amber)}
+.notification-card.urgent{border-left-color:var(--red)}
+.exam-card{border-left:5px solid var(--primary-light)}
+.exam-datetime{display:flex;align-items:center;gap:12px;margin-top:10px;padding:10px;border-radius:13px;background:#eef6fb}
+.exam-date-box{width:52px;text-align:center}
+.exam-date-box strong{display:block;color:var(--primary);font-size:1.2rem}
+.exam-date-box small{color:var(--muted)}
+.chat-list{display:flex;flex-direction:column;gap:9px;max-height:48vh;overflow:auto;padding:3px}
+.chat-message{max-width:86%;padding:10px 12px;border-radius:15px;background:#eaf1f5;line-height:1.45;font-size:.8rem}
+.chat-message.projectist{align-self:flex-start;background:#e6f2fa;color:#174b6e}
+.chat-message.me{align-self:flex-end;background:var(--green-soft);color:#245b40}
+.chat-message small{display:block;margin-top:5px;opacity:.6;font-size:.65rem}
+.chat-compose{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
+.chat-compose textarea{min-height:48px;max-height:110px;resize:vertical;border:1px solid var(--border);border-radius:13px;padding:11px}
+.file-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid #e7eef2}
+.file-row:last-child{border-bottom:0}
+.file-name{min-width:0}
+.file-name strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.78rem}
+.file-name small{color:var(--muted);font-size:.67rem}
+.upload-zone{padding:14px;border:2px dashed #b7cfdd;border-radius:15px;background:#f7fbfd;text-align:center}
+.upload-zone input{width:100%;margin-top:10px}
+.history-item{display:grid;grid-template-columns:48px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid #e6edf1}
+.history-item:last-child{border-bottom:0}
+.history-date{padding:7px 4px;border-radius:11px;background:#eef5f9;text-align:center;color:var(--primary-dark);font-size:.68rem}
+.profile-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.profile-item{padding:12px;border-radius:14px;background:#f4f8fa}
+.profile-item small{display:block;color:var(--muted);font-size:.67rem}
+.profile-item strong{display:block;margin-top:3px;color:var(--primary-dark);font-size:.78rem}
+.bottom-nav{position:fixed;left:50%;bottom:0;z-index:40;width:min(620px,100%);transform:translateX(-50%);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 8px calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--border);background:rgba(255,255,255,.96);backdrop-filter:blur(14px);box-shadow:0 -8px 25px rgba(18,53,75,.09)}
+.bottom-nav button{border:0;border-radius:11px;padding:7px 2px;background:transparent;color:#788a95;font-size:.62rem;font-weight:800}
+.bottom-nav button span{display:block;margin-bottom:3px;font-size:1rem}
+.bottom-nav button.active{background:#e7f3fa;color:var(--primary)}
+.modal{position:fixed;inset:0;z-index:100;display:grid;place-items:end center;padding:0;background:rgba(8,32,48,.58);backdrop-filter:blur(4px)}
+.portal-file-drop{margin-top:10px;padding:16px;border:2px dashed #a9c6d7;border-radius:14px;background:#f7fbfd;text-align:center}.portal-file-drop.dragging{border-color:var(--primary);background:#eaf6fb}.portal-file-drop input{position:absolute;width:1px;height:1px;opacity:0}.portal-file-drop small{display:block;margin-top:7px;color:var(--muted);word-break:break-word}
+.modal.hidden{display:none}
+.modal-sheet{width:min(620px,100%);max-height:92vh;overflow:auto;padding:20px 17px calc(25px + env(safe-area-inset-bottom));border-radius:24px 24px 0 0;background:white;box-shadow:0 -20px 60px rgba(5,28,43,.28)}
+.modal-handle{width:44px;height:5px;margin:0 auto 15px;border-radius:999px;background:#d3dde3}
+.modal-title-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.modal-title-row h2{margin:0;color:var(--primary-dark);font-size:1.15rem}
+.close-modal{width:38px;height:38px;border:0;border-radius:50%;background:#edf3f6;color:var(--primary-dark);font-size:1.25rem}
+.map-placeholder{padding:18px;border-radius:16px;background:linear-gradient(135deg,#d8ecf6,#f4f9fc);text-align:center}
+.map-placeholder .map-icon{font-size:2rem}
+.map-placeholder p{margin:7px 0;color:#496779;font-size:.78rem}
+.toast{position:fixed;left:50%;bottom:94px;z-index:150;max-width:90%;transform:translate(-50%,20px);padding:11px 15px;border-radius:13px;background:#123d59;color:white;opacity:0;pointer-events:none;transition:.2s;font-size:.78rem;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.sync-note{margin-top:10px;color:var(--muted);font-size:.69rem;text-align:center}
+@media(min-width:621px){
+  body{padding:18px}
+  .app-shell{min-height:calc(100vh - 36px);border-radius:26px;overflow:hidden;box-shadow:0 22px 70px rgba(19,55,78,.18)}
+  .bottom-nav{bottom:18px;border-radius:0 0 26px 26px}
+  .modal{place-items:center}
+  .modal-sheet{border-radius:24px;max-height:88vh}
+}
+</style>
+</head>
+<body>
+
+<section id="loginPage" class="login-page">
+  <div class="login-card">
+    <div class="logo-box">
+      <img src="/assets/brand.svg" alt="Sistema de Gestão Operacional — Demo">
+    </div>
+    <h1>Gestão Operacional Equipes</h1>
+    <p>
+      Acesso individual para visualizar agenda, exames, mensagens da Projetista,
+      localização das obras e arquivos da equipe.
+    </p>
+
+    <div id="loginError" class="error"></div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label>Usuário</label>
+        <input name="username" autocomplete="username" placeholder="nome.sobrenome" required>
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <input name="password" type="password" autocomplete="current-password" placeholder="••••" required>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Entrar no aplicativo</button>
+    </form>
+
+    <div class="demo-access">
+      <strong>Acesso de demonstração</strong><br>
+      Usuário: <b>luiz.gustavo</b><br>
+      Senha: <b>1234</b>
+    </div>
+    <div class="sync-note">
+      Autenticação vinculada ao servidor central da Gestão Operacional nesta rede.
+    </div>
+  </div>
+</section>
+
+<section id="employeeApp" class="app-shell hidden">
+  <header class="app-header">
+    <div class="header-row">
+      <div class="header-user">
+        <div class="avatar" id="headerAvatar">LG</div>
+        <div class="header-copy">
+          <small id="headerGreeting">Bom dia</small>
+          <strong id="headerName">Funcionário</strong>
+        </div>
+      </div>
+      <button class="icon-button" onclick="openNotifications()" aria-label="Notificações">
+        🔔
+      </button>
+    </div>
+    <div class="header-summary">
+      <div class="summary-chip" id="headerToday">0 obras hoje</div>
+      <div class="summary-chip" id="headerWeek">0 na semana</div>
+      <div class="summary-chip" id="headerUnread">0 mensagens</div>
+    </div>
+  </header>
+
+  <main id="appContent" class="page"></main>
+
+  <nav class="bottom-nav">
+    <button data-page="home" class="active"><span>⌂</span>Hoje</button>
+    <button data-page="week"><span>▦</span>Agenda</button>
+    <button data-page="messages"><span>💬</span>Mensagens</button>
+    <button data-page="files"><span>⇧</span>Arquivos</button>
+    <button data-page="profile"><span>👤</span>Perfil</button>
+  </nav>
+</section>
+
+<div id="modal" class="modal hidden" onclick="handleModalBackdrop(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title-row">
+      <h2 id="modalTitle">Detalhes</h2>
+      <button class="close-modal" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const STORAGE_KEY="operational_employee_server_cache";
+const SESSION_KEY="operational_employee_server_token";
+const MAX_FILE_SIZE={{ employee_file_max_bytes|default(5242880) }};
+let sessionToken=localStorage.getItem(SESSION_KEY)||"";
+
+async function portalApi(path,options={}){
+  const headers={"Content-Type":"application/json",...(options.headers||{})};
+  if(sessionToken) headers.Authorization=`Bearer ${sessionToken}`;
+  const response=await fetch(path,{...options,headers});
+  let payload={};
+  try{payload=await response.json()}catch(error){}
+  if(!response.ok){
+    if(response.status===401 && path!=="/api/employee-portal/login"){
+      sessionToken="";
+      localStorage.removeItem(SESSION_KEY);
+    }
+    throw new Error(payload.detail||"Não foi possível conectar ao servidor.");
+  }
+  return payload;
+}
+function applyServerView(payload){
+  if(payload?.data) data=payload.data;
+  if(!Array.isArray(data.employeeAppFiles)) data.employeeAppFiles=[];
+  if(!Array.isArray(data.projectClients)) data.projectClients=[];
+  if(!Array.isArray(data.exams)) data.exams=[];
+  if(!Array.isArray(data.workScheduleEntries)) data.workScheduleEntries=[];
+  if(!Array.isArray(data.workTeams)) data.workTeams=[];
+  if(payload?.employee) currentEmployee=payload.employee;
+  saveData();
+}
+
+function plusDays(days){
+  const date=new Date();
+  date.setHours(12,0,0,0);
+  date.setDate(date.getDate()+days);
+  return date.toISOString().slice(0,10);
+}
+function mondayOf(dateString){
+  const date=new Date(`${dateString}T12:00:00`);
+  const day=(date.getDay()+6)%7;
+  date.setDate(date.getDate()-day);
+  return date.toISOString().slice(0,10);
+}
+function addDays(dateString,days){
+  const date=new Date(`${dateString}T12:00:00`);
+  date.setDate(date.getDate()+days);
+  return date.toISOString().slice(0,10);
+}
+function formatDate(value){
+  if(!value) return "—";
+  const [year,month,day]=value.split("-");
+  return `${day}/${month}/${year}`;
+}
+function formatShortDate(value){
+  const date=new Date(`${value}T12:00:00`);
+  return date.toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"2-digit"});
+}
+function escapeHtml(value){
+  return String(value??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+function normalize(value){
+  return String(value||"")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g," ")
+    .trim();
+}
+function nextId(list){
+  return list.length?Math.max(...list.map(item=>Number(item.id)||0))+1:1;
+}
+function greeting(){
+  const hour=new Date().getHours();
+  if(hour<12) return "Bom dia";
+  if(hour<18) return "Boa tarde";
+  return "Boa noite";
+}
+function initials(name){
+  return String(name||"")
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(part=>part[0])
+    .join("")
+    .toUpperCase()||"EQ";
+}
+function usernameForEmployee(employee){
+  if(employee.appLogin) return employee.appLogin;
+  const parts=String(employee.name||"").trim().split(/\s+/);
+  return normalize(parts.slice(0,2).join("."))
+    .toLowerCase()
+    .replace(/\s+/g,".");
+}
+function passwordForEmployee(employee){
+  return String(employee.appPassword||"1234");
+}
+function fallbackData(){return {"employees": [], "clinics": [], "exams": [], "vacations": [], "leaves": [], "vehicles": [], "maintenances": [], "maintenanceHistory": [], "maintenanceDrafts": [], "fines": [], "companies": [], "works": [], "workTeams": [], "workScheduleEntries": [], "billingEntities": [], "invoices": [], "projectClients": [], "projectScheduleRequests": [], "projectsWorks": [], "projectsProcesses": [], "employeeAppFiles": [], "events": [], "settings": {"title": "Dashboard", "subtitle": "Gestão operacional integrada", "primary": "#0b5e8e", "primaryLight": "#3a9ed0", "primaryDark": "#244f7d", "background": "#f5f8fb"}, "employeeImportVersion": "portfolio-v1"};}
+function loadData(){
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY);
+    if(saved){
+      const parsed=JSON.parse(saved);
+      if(parsed && Array.isArray(parsed.employees)) return parsed;
+    }
+  }catch(error){}
+  return fallbackData();
+}
+let data=loadData();
+if(!Array.isArray(data.employeeAppFiles)) data.employeeAppFiles=[];
+if(!Array.isArray(data.projectClients)) data.projectClients=[];
+if(!Array.isArray(data.exams)) data.exams=[];
+if(!Array.isArray(data.workScheduleEntries)) data.workScheduleEntries=[];
+if(!Array.isArray(data.workTeams)) data.workTeams=[];
+let currentEmployee=null;
+let currentPage="home";
+let selectedEntryId=null;
+
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+  }catch(error){
+    showToast("Não foi possível atualizar a cópia temporária neste aparelho.");
+  }
+}
+function teamById(id){
+  return data.workTeams.find(team=>Number(team.id)===Number(id));
+}
+function companyName(id){
+  const company=(data.companies||[]).find(item=>Number(item.id)===Number(id));
+  return company?.name||company?.tradeName||company?.legalName||"";
+}
+function workById(id){
+  return (data.works||[]).find(work=>Number(work.id)===Number(id));
+}
+function clinicName(id){
+  return (data.clinics||[]).find(clinic=>Number(clinic.id)===Number(id))?.name||"Clínica não informada";
+}
+function inferredEmployeeTeams(employee){
+  const employeeKey=normalize(employee.name);
+  const nameParts=employeeKey.split(" ");
+  return data.workTeams.filter(team=>{
+    if(Array.isArray(team.employeeIds) && team.employeeIds.map(Number).includes(Number(employee.id))){
+      return true;
+    }
+    const teamKey=normalize(team.name);
+    if(!teamKey) return false;
+    if(employeeKey.startsWith(teamKey) || teamKey.startsWith(nameParts.slice(0,2).join(" "))){
+      return true;
+    }
+    if(teamKey==="GU" && employeeKey.startsWith("GUSTAVO")) return true;
+    return false;
+  });
+}
+function employeeTeamIds(){
+  return inferredEmployeeTeams(currentEmployee).map(team=>Number(team.id));
+}
+function employeeEntries(){
+  const teamIds=new Set(employeeTeamIds());
+  return data.workScheduleEntries
+    .filter(entry=>
+      teamIds.has(Number(entry.teamId)) &&
+      entry.status!=="Cancelado"
+    )
+    .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+}
+function entryTitle(entry){
+  if(entry.type==="Levantamento"){
+    return entry.location||entry.client||"Levantamento";
+  }
+  return workById(entry.workId)?.name||"Obra";
+}
+function entryLocation(entry){
+  if(entry.type==="Levantamento") return entry.location||"Local não informado";
+  const client=projectClientForEntry(entry);
+  return client?.landLocation||
+    workById(entry.workId)?.location||
+    entry.location||
+    "Localização ainda não informada";
+}
+function projectClientForEntry(entry){
+  if(entry.projectClientId){
+    return data.projectClients.find(client=>Number(client.id)===Number(entry.projectClientId));
+  }
+  return data.projectClients.find(client=>
+    Number(client.officialScheduleEntryId)===Number(entry.id)
+  );
+}
+function entryTime(entry){
+  return projectClientForEntry(entry)?.scheduledTime||entry.time||"Horário não informado";
+}
+function entryMapUrl(entry){
+  const client=projectClientForEntry(entry);
+  if(client?.locationMapUrl) return client.locationMapUrl;
+  if(entry.locationMapUrl) return entry.locationMapUrl;
+  const location=entryLocation(entry);
+  if(location && location!=="Localização ainda não informada"){
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+  }
+  return "";
+}
+function entryObservations(entry){
+  const client=projectClientForEntry(entry);
+  return[
+    entry.observation,
+    client?.notes,
+    client?.serviceIntent,
+    client?.directorNote
+  ].filter(Boolean);
+}
+function chatMessages(entry){
+  const client=projectClientForEntry(entry);
+  return Array.isArray(client?.teamMessages)?client.teamMessages:[];
+}
+function employeeExams(){
+  return data.exams
+    .filter(exam=>Number(exam.employeeId)===Number(currentEmployee.id))
+    .sort((a,b)=>String(a.scheduled||a.due||"9999").localeCompare(String(b.scheduled||b.due||"9999")));
+}
+function appointmentStatus(exam){
+  if(exam.completed) return "Realizado";
+  if(exam.scheduled) return "Agendado";
+  return "Não agendado";
+}
+function unreadMessages(){
+  let total=0;
+  employeeEntries().forEach(entry=>{
+    chatMessages(entry).forEach(message=>{
+      if(
+        message.senderRole==="Projetista" &&
+        !Array.isArray(message.readBy)
+      ){
+        message.readBy=[];
+      }
+      if(
+        message.senderRole==="Projetista" &&
+        !message.readBy.map(Number).includes(Number(currentEmployee.id))
+      ){
+        total++;
+      }
+    });
+  });
+  return total;
+}
+function updateHeader(){
+  const entries=employeeEntries();
+  const today=plusDays(0);
+  const weekStart=mondayOf(today);
+  const weekEnd=addDays(weekStart,6);
+  const todayEntries=entries.filter(entry=>entry.date===today);
+  const weekEntries=entries.filter(entry=>entry.date>=weekStart&&entry.date<=weekEnd);
+
+  document.getElementById("headerAvatar").textContent=initials(currentEmployee.name);
+  document.getElementById("headerGreeting").textContent=greeting();
+  document.getElementById("headerName").textContent=currentEmployee.name;
+  document.getElementById("headerToday").textContent=`${todayEntries.length} serviço(s) hoje`;
+  document.getElementById("headerWeek").textContent=`${weekEntries.length} na semana`;
+  document.getElementById("headerUnread").textContent=`${unreadMessages()} mensagem(ns)`;
+}
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
+}
+function openModal(title,content){
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalContent").innerHTML=content;
+  document.getElementById("modal").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  document.getElementById("modal").classList.add("hidden");
+  document.body.style.overflow="";
+}
+function handleModalBackdrop(event){
+  if(event.target.id==="modal") closeModal();
+}
+function statusClass(value){
+  if(["Confirmado","Agendado","Realizado","Concluído"].includes(value)) return"green";
+  if(["Planejado","Atenção","Não agendado"].includes(value)) return"amber";
+  if(["Vencido","Cancelado"].includes(value)) return"red";
+  return"blue";
+}
+function renderStatus(value){
+  return`<span class="status ${statusClass(value)}">${escapeHtml(value)}</span>`;
+}
+function serviceCard(entry,relative=""){
+  const observations=entryObservations(entry);
+  return`
+    <article class="card job-card ${relative}">
+      <div class="job-date">
+        <span class="date-label">${formatShortDate(entry.date)}</span>
+        ${renderStatus(entry.status||"Planejado")}
+      </div>
+      <h3>${escapeHtml(entryTitle(entry))}</h3>
+      <div class="meta">
+        <span>${escapeHtml(entry.type||"Serviço")}</span>
+        <span>🕒 ${escapeHtml(entryTime(entry))}</span>
+        <span>👥 ${escapeHtml(teamById(entry.teamId)?.name||"Equipe")}</span>
+      </div>
+      <div class="meta">
+        <span>📍 ${escapeHtml(entryLocation(entry))}</span>
+      </div>
+      ${observations.length?`
+        <div class="job-observation">
+          <strong>Observações importantes</strong><br>
+          ${escapeHtml(observations[0])}
+        </div>
+      `:""}
+      <div class="actions">
+        <button class="btn btn-primary" onclick="openJob(${entry.id})">Abrir serviço</button>
+        ${entryMapUrl(entry)?`
+          <button class="btn btn-light" onclick="openMap(${entry.id})">Ver mapa</button>
+        `:""}
+      </div>
+    </article>
+  `;
+}
+function renderHome(){
+  const today=plusDays(0);
+  const tomorrow=plusDays(1);
+  const entries=employeeEntries();
+  const todayEntries=entries.filter(entry=>entry.date===today);
+  const tomorrowEntries=entries.filter(entry=>entry.date===tomorrow);
+  const upcomingExam=employeeExams().find(exam=>
+    exam.scheduled && exam.scheduled>=today
+  );
+  const unread=unreadMessages();
+
+  document.getElementById("appContent").innerHTML=`
+    <section class="card hero-card">
+      <h2>${greeting()}, ${escapeHtml(currentEmployee.name.split(" ")[0])}!</h2>
+      <p style="margin:0;color:var(--muted);font-size:.82rem;line-height:1.45">
+        Aqui estão os serviços, exames e avisos que precisam da sua atenção.
+      </p>
+    </section>
+
+    ${unread?`
+      <section class="card notification-card">
+        <strong>💬 ${unread} mensagem(ns) nova(s) da Projetista</strong>
+        <p style="margin:5px 0 0;color:var(--muted);font-size:.78rem">
+          Abra o serviço para ler as observações e responder.
+        </p>
+        <div class="actions">
+          <button class="btn btn-light" onclick="navigate('messages')">Ver mensagens</button>
+        </div>
+      </section>
+    `:""}
+
+    ${upcomingExam?`
+      <section class="card exam-card">
+        <div class="section-title">
+          <h2>Próximo exame</h2>
+          ${renderStatus(appointmentStatus(upcomingExam))}
+        </div>
+        <strong>${escapeHtml(upcomingExam.type)}</strong>
+        <div class="exam-datetime">
+          <div class="exam-date-box">
+            <strong>${formatDate(upcomingExam.scheduled).slice(0,2)}</strong>
+            <small>${formatDate(upcomingExam.scheduled).slice(3,5)}</small>
+          </div>
+          <div>
+            <strong>${formatDate(upcomingExam.scheduled)} às ${escapeHtml(upcomingExam.scheduledTime||"horário não informado")}</strong><br>
+            <small style="color:var(--muted)">${escapeHtml(clinicName(upcomingExam.clinicId))}</small>
+          </div>
+        </div>
+      </section>
+    `:""}
+
+    <div class="section-title">
+      <h2>Serviços de hoje</h2>
+      <small>${todayEntries.length} serviço(s)</small>
+    </div>
+    ${todayEntries.length
+      ?todayEntries.map(entry=>serviceCard(entry,"today")).join("")
+      :`<div class="card"><strong>Nenhum serviço para hoje.</strong><p style="color:var(--muted);font-size:.78rem">A agenda será atualizada quando o diretor confirmar novas demandas.</p></div>`
+    }
+
+    <div class="section-title">
+      <h2>Amanhã</h2>
+      <small>${tomorrowEntries.length} serviço(s)</small>
+    </div>
+    ${tomorrowEntries.length
+      ?tomorrowEntries.map(entry=>serviceCard(entry,"tomorrow")).join("")
+      :`<div class="card"><span style="color:var(--muted)">Nenhum serviço agendado para amanhã.</span></div>`
+    }
+  `;
+}
+function renderWeek(){
+  const today=plusDays(0);
+  const start=mondayOf(today);
+  const end=addDays(start,6);
+  const entries=employeeEntries().filter(entry=>entry.date>=start&&entry.date<=end);
+
+  document.getElementById("appContent").innerHTML=`
+    <div class="section-title">
+      <h2>Minha agenda semanal</h2>
+      <small>${formatDate(start)} a ${formatDate(end)}</small>
+    </div>
+    <div class="week-strip">
+      ${Array.from({length:7},(_,index)=>{
+        const date=addDays(start,index);
+        const dayEntries=entries.filter(entry=>entry.date===date);
+        return`
+          <div class="day-pill ${dayEntries.length?"has-job":""} ${date===today?"today":""}">
+            <strong>${new Date(`${date}T12:00:00`).toLocaleDateString("pt-BR",{weekday:"short"}).replace(".","")}</strong>
+            <span>${date.slice(8,10)}</span>
+            ${dayEntries.length?`<span>${dayEntries.length} item</span>`:""}
+          </div>
+        `;
+      }).join("")}
+    </div>
+    ${entries.length
+      ?entries.map(entry=>serviceCard(entry,entry.date===today?"today":"")).join("")
+      :`<div class="card">Nenhuma demanda nesta semana.</div>`
+    }
+
+    <div class="section-title">
+      <h2>Histórico recente</h2>
+    </div>
+    <div class="card">
+      ${employeeEntries().filter(entry=>entry.date<today).slice(-8).reverse().map(entry=>`
+        <div class="history-item" onclick="openJob(${entry.id})">
+          <div class="history-date">${formatDate(entry.date).slice(0,5)}</div>
+          <div>
+            <strong>${escapeHtml(entryTitle(entry))}</strong>
+            <div style="color:var(--muted);font-size:.72rem;margin-top:3px">
+              ${escapeHtml(entryLocation(entry))}
+            </div>
+          </div>
+        </div>
+      `).join("")||`<span style="color:var(--muted)">Nenhum histórico disponível.</span>`}
+    </div>
+  `;
+}
+function renderMessages(){
+  const entries=employeeEntries()
+    .filter(entry=>chatMessages(entry).length)
+    .sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+
+  document.getElementById("appContent").innerHTML=`
+    <div class="section-title">
+      <h2>Mensagens e observações</h2>
+      <small>${unreadMessages()} não lida(s)</small>
+    </div>
+    ${entries.length?entries.map(entry=>{
+      const messages=chatMessages(entry);
+      const latest=messages[messages.length-1];
+      const unread=messages.filter(message=>
+        message.senderRole==="Projetista" &&
+        !(message.readBy||[]).map(Number).includes(Number(currentEmployee.id))
+      ).length;
+      return`
+        <div class="card" onclick="openJob(${entry.id},'chat')">
+          <div style="display:flex;justify-content:space-between;gap:10px">
+            <div>
+              <strong>${escapeHtml(entryTitle(entry))}</strong>
+              <div style="color:var(--muted);font-size:.72rem;margin-top:4px">
+                ${latest?escapeHtml(latest.text).slice(0,110):"Sem mensagem"}
+              </div>
+            </div>
+            ${unread?`<span class="status amber">${unread} nova(s)</span>`:""}
+          </div>
+        </div>
+      `;
+    }).join(""):`<div class="card">Nenhuma conversa vinculada às suas obras.</div>`}
+  `;
+}
+function bindPortalFileDrop(inputId){
+  const input=document.getElementById(inputId),zone=input?.closest("[data-portal-file-drop]"),label=zone?.querySelector("[data-file-list]");if(!input||!zone)return;
+  const update=()=>{const files=Array.from(input.files||[]);if(label)label.textContent=files.length?`${files.length} arquivo(s): ${files.map(file=>file.name).join(", ")}`:"Nenhum arquivo selecionado. Você também pode arrastar e soltar aqui."};
+  ["dragenter","dragover"].forEach(type=>zone.addEventListener(type,event=>{event.preventDefault();zone.classList.add("dragging")}));
+  ["dragleave","drop"].forEach(type=>zone.addEventListener(type,event=>{event.preventDefault();zone.classList.remove("dragging")}));
+  zone.addEventListener("drop",event=>{const transfer=new DataTransfer(),seen=new Set();Array.from(event.dataTransfer?.files||[]).forEach(file=>{const key=`${file.name}:${file.size}:${file.lastModified}`;if(!seen.has(key)){seen.add(key);transfer.items.add(file)}});input.files=transfer.files;update()});
+  input.addEventListener("change",update);update();
+}
+function renderFiles(){
+  const entries=employeeEntries();
+  const entryIds=new Set(entries.map(entry=>Number(entry.id)));
+  const files=data.employeeAppFiles
+    .filter(file=>entryIds.has(Number(file.scheduleEntryId)))
+    .sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+
+  document.getElementById("appContent").innerHTML=`
+    <div class="section-title">
+      <h2>Arquivos das obras</h2>
+      <small>${files.length} arquivo(s)</small>
+    </div>
+
+    <div class="card upload-zone">
+      <strong>Enviar arquivo</strong>
+      <p style="margin:5px 0;color:var(--muted);font-size:.75rem">
+        Selecione a obra e envie foto, croqui, documento ou relatório.
+      </p>
+      <div class="field" style="text-align:left;margin-top:12px">
+        <label>Obra / serviço</label>
+        <select id="globalFileEntry">
+          ${entries.filter(entry=>entry.date>=plusDays(-30)).map(entry=>`
+            <option value="${entry.id}">
+              ${formatDate(entry.date)} — ${escapeHtml(entryTitle(entry))}
+            </option>
+          `).join("")}
+        </select>
+      </div>
+      <div class="portal-file-drop" data-portal-file-drop><input id="globalFileInput" type="file" multiple><button type="button" class="btn btn-light" onclick="document.getElementById('globalFileInput').click()">Selecionar vários arquivos</button><small data-file-list>Nenhum arquivo selecionado. Você também pode arrastar e soltar aqui.</small></div>
+      <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="uploadGlobalFiles()">
+        Enviar arquivos
+      </button>
+    </div>
+
+    <div class="card">
+      ${files.length?files.map(file=>renderFileRow(file)).join(""):`<span style="color:var(--muted)">Nenhum arquivo enviado.</span>`}
+    </div>
+  `;
+  bindPortalFileDrop("globalFileInput");
+}
+function renderFileRow(file){
+  const size=file.size?`${Math.round(file.size/1024)} KB`:"";
+  return`
+    <div class="file-row">
+      <div class="file-name">
+        <strong>${escapeHtml(file.name)}</strong>
+        <small>${escapeHtml(file.employeeName||"Equipe")} • ${new Date(file.createdAt).toLocaleString("pt-BR")} ${size?`• ${size}`:""}</small>
+      </div>
+      ${file.dataUrl?`
+        <button class="btn btn-light" onclick="openStoredFile(${file.id})">Abrir</button>
+      `:""}
+    </div>
+  `;
+}
+function renderProfile(){
+  const teams=inferredEmployeeTeams(currentEmployee);
+  const exams=employeeExams();
+
+  document.getElementById("appContent").innerHTML=`
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar" style="background:#dcecf6;color:var(--primary-dark)">
+          ${initials(currentEmployee.name)}
+        </div>
+        <div>
+          <h2 style="margin:0;color:var(--primary-dark);font-size:1.05rem">${escapeHtml(currentEmployee.name)}</h2>
+          <div style="color:var(--muted);font-size:.75rem;margin-top:3px">
+            ${escapeHtml(currentEmployee.role||"Funcionário")}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <div class="profile-item"><small>Matrícula</small><strong>${escapeHtml(currentEmployee.registration||"—")}</strong></div>
+      <div class="profile-item"><small>Setor</small><strong>${escapeHtml(currentEmployee.sector||"—")}</strong></div>
+      <div class="profile-item"><small>Equipe</small><strong>${escapeHtml(teams.map(team=>team.name).join(", ")||"Não vinculada")}</strong></div>
+      <div class="profile-item"><small>Exames</small><strong>${exams.length}</strong></div>
+    </div>
+
+    <div class="section-title"><h2>Exames ocupacionais</h2></div>
+    ${exams.length?exams.map(exam=>`
+      <div class="card exam-card">
+        <div style="display:flex;justify-content:space-between;gap:8px">
+          <strong>${escapeHtml(exam.type)}</strong>
+          ${renderStatus(appointmentStatus(exam))}
+        </div>
+        <p style="font-size:.77rem;color:var(--muted)">
+          Previsto: ${formatDate(exam.due)}
+        </p>
+        ${exam.scheduled?`
+          <div class="exam-datetime">
+            <div>
+              <strong>${formatDate(exam.scheduled)} às ${escapeHtml(exam.scheduledTime||"horário não informado")}</strong><br>
+              <small style="color:var(--muted)">${escapeHtml(clinicName(exam.clinicId))}</small>
+            </div>
+          </div>
+        `:""}
+      </div>
+    `).join(""):`<div class="card">Nenhum exame cadastrado.</div>`}
+
+    <div class="section-title"><h2>Notificações</h2></div>
+    <div class="card">
+      <p style="margin-top:0;color:var(--muted);font-size:.78rem">
+        Ative as notificações para receber avisos enquanto o aplicativo estiver aberto
+        ou instalado no aparelho.
+      </p>
+      <button class="btn btn-primary btn-block" onclick="requestNotifications()">
+        Ativar notificações
+      </button>
+    </div>
+
+    <button class="btn btn-red btn-block" onclick="logout()">Sair do aplicativo</button>
+    <p class="sync-note">
+      Protótipo local. O aplicativo final utilizará servidor, push notification,
+      armazenamento em nuvem e autenticação individual segura.
+    </p>
+  `;
+}
+function navigate(page){
+  currentPage=page;
+  document.querySelectorAll(".bottom-nav button").forEach(button=>{
+    button.classList.toggle("active",button.dataset.page===page);
+  });
+  render();
+}
+function render(){
+  if(!currentEmployee) return;
+  updateHeader();
+  if(currentPage==="home") renderHome();
+  if(currentPage==="week") renderWeek();
+  if(currentPage==="messages") renderMessages();
+  if(currentPage==="files") renderFiles();
+  if(currentPage==="profile") renderProfile();
+}
+function openJob(id,tab="details"){
+  selectedEntryId=Number(id);
+  const entry=data.workScheduleEntries.find(item=>Number(item.id)===Number(id));
+  if(!entry) return;
+  markMessagesRead(entry);
+  const client=projectClientForEntry(entry);
+  const observations=entryObservations(entry);
+  const messages=chatMessages(entry);
+  const files=data.employeeAppFiles.filter(file=>Number(file.scheduleEntryId)===Number(entry.id));
+  const mapUrl=entryMapUrl(entry);
+
+  openModal(entryTitle(entry),`
+    <div class="card" style="box-shadow:none">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <span class="date-label">${formatShortDate(entry.date)}</span>
+        ${renderStatus(entry.status||"Planejado")}
+      </div>
+      <div class="meta">
+        <span>🕒 ${escapeHtml(entryTime(entry))}</span>
+        <span>👥 ${escapeHtml(teamById(entry.teamId)?.name||"Equipe")}</span>
+      </div>
+      <p><b>Local:</b> ${escapeHtml(entryLocation(entry))}</p>
+      ${entry.type==="Obra"?`<p><b>Empresa:</b> ${escapeHtml(companyName(entry.companyId)||"Não informada")}</p>`:""}
+      ${observations.length?`
+        <div class="job-observation">
+          <strong>Observações e peculiaridades</strong><br>
+          ${observations.map(item=>escapeHtml(item)).join("<br><br>")}
+        </div>
+      `:""}
+    </div>
+
+    <div class="map-placeholder">
+      <div class="map-icon">📍</div>
+      <strong>Localização da obra</strong>
+      <p>${escapeHtml(entryLocation(entry))}</p>
+      ${mapUrl?`
+        <button class="btn btn-primary" onclick="openMap(${entry.id})">Abrir no mapa</button>
+      `:`<span class="status amber">Localização exata pendente</span>`}
+    </div>
+
+    <div class="section-title"><h2>Conversa com a Projetista</h2></div>
+    <div class="card" style="box-shadow:none">
+      <div class="chat-list" id="jobChatList">
+        ${messages.length?messages.map(message=>`
+          <div class="chat-message ${message.senderEmployeeId&&Number(message.senderEmployeeId)===Number(currentEmployee.id)?"me":"projectist"}">
+            <strong>${escapeHtml(message.senderName||message.senderRole||"Equipe")}</strong><br>
+            ${escapeHtml(message.text)}
+            <small>${new Date(message.createdAt).toLocaleString("pt-BR")}</small>
+          </div>
+        `).join(""):`<span style="color:var(--muted)">Nenhuma mensagem nesta obra.</span>`}
+      </div>
+      <div class="chat-compose">
+        <textarea id="employeeReply" placeholder="Responder à Projetista..."></textarea>
+        <button class="btn btn-green" onclick="sendEmployeeReply(${entry.id})">Enviar</button>
+      </div>
+    </div>
+
+    <div class="section-title"><h2>Arquivos da obra</h2></div>
+    <div class="card upload-zone" style="box-shadow:none">
+      <strong>Enviar foto ou documento</strong>
+      <div class="portal-file-drop" data-portal-file-drop><input id="jobFileInput" type="file" multiple><button type="button" class="btn btn-light" onclick="document.getElementById('jobFileInput').click()">Selecionar vários arquivos</button><small data-file-list>Nenhum arquivo selecionado. Você também pode arrastar e soltar aqui.</small></div>
+      <button class="btn btn-primary btn-block" style="margin-top:9px" onclick="uploadJobFiles(${entry.id})">
+        Enviar arquivos
+      </button>
+    </div>
+    <div class="card" style="box-shadow:none">
+      ${files.length?files.map(file=>renderFileRow(file)).join(""):`<span style="color:var(--muted)">Nenhum arquivo enviado para esta obra.</span>`}
+    </div>
+  `);
+  bindPortalFileDrop("jobFileInput");
+
+  if(tab==="chat"){
+    setTimeout(()=>{
+      document.getElementById("jobChatList")?.scrollIntoView({behavior:"smooth"});
+    },80);
+  }
+  updateHeader();
+}
+async function markMessagesRead(entry){
+  chatMessages(entry).forEach(message=>{
+    if(!Array.isArray(message.readBy)) message.readBy=[];
+    if(!message.readBy.map(Number).includes(Number(currentEmployee.id))){
+      message.readBy.push(currentEmployee.id);
+    }
+  });
+  saveData();
+  try{
+    await portalApi("/api/employee-portal/messages/read",{
+      method:"POST",
+      body:JSON.stringify({schedule_entry_id:Number(entry.id)})
+    });
+  }catch(error){}
+}
+async function sendEmployeeReply(entryId){
+  const entry=data.workScheduleEntries.find(item=>Number(item.id)===Number(entryId));
+  const client=projectClientForEntry(entry);
+  const field=document.getElementById("employeeReply");
+  const text=String(field?.value||"").trim();
+
+  if(!client){
+    showToast("Esta obra ainda não possui conversa vinculada à Projetista.");
+    return;
+  }
+  if(!text){
+    showToast("Digite a mensagem.");
+    return;
+  }
+  try{
+    const result=await portalApi("/api/employee-portal/messages",{
+      method:"POST",
+      body:JSON.stringify({schedule_entry_id:Number(entryId),text})
+    });
+    applyServerView(result);
+    openJob(entryId,"chat");
+    showToast("Resposta enviada à Projetista.");
+  }catch(error){
+    showToast(error.message);
+  }
+}
+function openMap(entryId){
+  const entry=data.workScheduleEntries.find(item=>Number(item.id)===Number(entryId));
+  const url=entryMapUrl(entry);
+  if(!url){
+    showToast("A localização exata ainda não foi informada.");
+    return;
+  }
+  window.open(url,"_blank","noopener");
+}
+async function filesToRecords(fileList,entryId){
+  const records=[];
+  for(const file of [...fileList]){
+    if(file.size>MAX_FILE_SIZE){
+      showToast(`${file.name} excede o limite permitido pelo servidor.`);
+      continue;
+    }
+    const dataUrl=await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>resolve(reader.result);
+      reader.onerror=reject;
+      reader.readAsDataURL(file);
+    });
+    const entry=data.workScheduleEntries.find(item=>Number(item.id)===Number(entryId));
+    records.push({
+      id:nextId([...data.employeeAppFiles,...records]),
+      scheduleEntryId:Number(entryId),
+      projectClientId:projectClientForEntry(entry)?.id||"",
+      employeeId:currentEmployee.id,
+      employeeName:currentEmployee.name,
+      name:file.name,
+      type:file.type||"application/octet-stream",
+      size:file.size,
+      dataUrl,
+      createdAt:new Date().toISOString()
+    });
+  }
+  return records;
+}
+async function sendFileRecords(records){
+  let lastResult=null;
+  for(const record of records){
+    lastResult=await portalApi("/api/employee-portal/files",{
+      method:"POST",
+      body:JSON.stringify({
+        schedule_entry_id:Number(record.scheduleEntryId),
+        name:record.name,
+        mime_type:record.type,
+        size:Number(record.size||0),
+        data_url:record.dataUrl
+      })
+    });
+  }
+  if(lastResult) applyServerView(lastResult);
+}
+async function uploadJobFiles(entryId){
+  const input=document.getElementById("jobFileInput");
+  if(!input?.files?.length){
+    showToast("Selecione ao menos um arquivo.");
+    return;
+  }
+  const records=await filesToRecords(input.files,entryId);
+  if(!records.length) return;
+  try{
+    await sendFileRecords(records);
+    openJob(entryId);
+    showToast(`${records.length} arquivo(s) enviado(s).`);
+  }catch(error){showToast(error.message)}
+}
+async function uploadGlobalFiles(){
+  const entryId=Number(document.getElementById("globalFileEntry")?.value);
+  const input=document.getElementById("globalFileInput");
+  if(!entryId||!input?.files?.length){
+    showToast("Selecione uma obra e ao menos um arquivo.");
+    return;
+  }
+  const records=await filesToRecords(input.files,entryId);
+  if(!records.length) return;
+  try{
+    await sendFileRecords(records);
+    renderFiles();
+    showToast(`${records.length} arquivo(s) enviado(s).`);
+  }catch(error){showToast(error.message)}
+}
+function openStoredFile(fileId){
+  const file=data.employeeAppFiles.find(item=>Number(item.id)===Number(fileId));
+  if(!file?.dataUrl) return;
+  const link=document.createElement("a");
+  link.href=file.dataUrl;
+  link.download=file.name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+function openNotifications(){
+  const today=plusDays(0);
+  const tomorrow=plusDays(1);
+  const jobs=employeeEntries().filter(entry=>[today,tomorrow].includes(entry.date));
+  const exams=employeeExams().filter(exam=>exam.scheduled&&[today,tomorrow].includes(exam.scheduled));
+
+  openModal("Notificações",`
+    ${jobs.map(entry=>`
+      <div class="card notification-card ${entry.date===today?"urgent":""}" onclick="openJob(${entry.id})">
+        <strong>${entry.date===today?"Serviço de hoje":"Serviço de amanhã"}</strong>
+        <p style="margin:5px 0;color:var(--muted);font-size:.78rem">
+          ${escapeHtml(entryTitle(entry))} — ${escapeHtml(entryTime(entry))}
+        </p>
+      </div>
+    `).join("")}
+    ${exams.map(exam=>`
+      <div class="card exam-card">
+        <strong>Exame ${exam.scheduled===today?"hoje":"amanhã"}</strong>
+        <p style="margin:5px 0;color:var(--muted);font-size:.78rem">
+          ${escapeHtml(exam.type)} às ${escapeHtml(exam.scheduledTime||"horário não informado")}
+        </p>
+      </div>
+    `).join("")}
+    ${!jobs.length&&!exams.length?`<div class="card">Nenhum aviso para hoje ou amanhã.</div>`:""}
+    <button class="btn btn-primary btn-block" onclick="requestNotifications()">
+      Ativar notificações do aparelho
+    </button>
+  `);
+}
+async function requestNotifications(){
+  if(!("Notification" in window)){
+    showToast("Este navegador não oferece notificações.");
+    return;
+  }
+  const permission=await Notification.requestPermission();
+  if(permission==="granted"){
+    showToast("Notificações ativadas.");
+    sendBrowserSummaryNotification();
+  }else{
+    showToast("Permissão de notificação não concedida.");
+  }
+}
+function sendBrowserSummaryNotification(){
+  if(!("Notification" in window)||Notification.permission!=="granted") return;
+  const today=plusDays(0);
+  const todayJobs=employeeEntries().filter(entry=>entry.date===today);
+  const todayExams=employeeExams().filter(exam=>exam.scheduled===today);
+  if(todayJobs.length||todayExams.length){
+    new Notification("Gestão Operacional Equipes",{
+      body:`Hoje: ${todayJobs.length} serviço(s) e ${todayExams.length} exame(s).`,
+      icon:"/assets/brand.svg"
+    });
+  }
+}
+function maybeShowExamPopup(){
+  const today=plusDays(0);
+  const tomorrow=plusDays(1);
+  const exam=employeeExams().find(item=>
+    item.scheduled&&[today,tomorrow].includes(item.scheduled)
+  );
+  if(!exam) return;
+  const popupKey=`operational_exam_popup_${currentEmployee.id}_${exam.id}_${exam.scheduled}`;
+  if(sessionStorage.getItem(popupKey)) return;
+  sessionStorage.setItem(popupKey,"1");
+
+  setTimeout(()=>{
+    openModal("Exame ocupacional agendado",`
+      <div class="card exam-card">
+        <div style="display:flex;justify-content:space-between;gap:8px">
+          <strong>${escapeHtml(exam.type)}</strong>
+          ${renderStatus("Agendado")}
+        </div>
+        <div class="exam-datetime">
+          <div>
+            <strong>${formatDate(exam.scheduled)} às ${escapeHtml(exam.scheduledTime||"horário não informado")}</strong><br>
+            <small style="color:var(--muted)">${escapeHtml(clinicName(exam.clinicId))}</small>
+          </div>
+        </div>
+        <p style="color:var(--muted);font-size:.78rem">
+          Este aviso também poderá ser enviado como notificação push no aplicativo final.
+        </p>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="closeModal()">Entendi</button>
+    `);
+  },350);
+}
+function login(employee,token=""){
+  currentEmployee=employee;
+  if(token){
+    sessionToken=token;
+    localStorage.setItem(SESSION_KEY,token);
+  }
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("employeeApp").classList.remove("hidden");
+  currentPage="home";
+  render();
+  maybeShowExamPopup();
+}
+async function logout(){
+  try{if(sessionToken) await portalApi("/api/employee-portal/logout",{method:"POST",body:"{}"})}catch(error){}
+  currentEmployee=null;
+  sessionToken="";
+  localStorage.removeItem(SESSION_KEY);
+  document.getElementById("employeeApp").classList.add("hidden");
+  document.getElementById("loginPage").classList.remove("hidden");
+  closeModal();
+}
+document.getElementById("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const values=Object.fromEntries(new FormData(event.target).entries());
+  const username=String(values.username||"").trim().toLowerCase();
+  const password=String(values.password||"");
+  const error=document.getElementById("loginError");
+  const button=event.target.querySelector("button[type=submit]");
+  if(button){button.disabled=true;button.textContent="Entrando..."}
+  try{
+    const result=await portalApi("/api/employee-portal/login",{
+      method:"POST",
+      body:JSON.stringify({username,password})
+    });
+    sessionToken=result.token;
+    applyServerView(result);
+    error.classList.remove("show");
+    login(result.employee,result.token);
+  }catch(apiError){
+    error.textContent=apiError.message;
+    error.classList.add("show");
+  }finally{
+    if(button){button.disabled=false;button.textContent="Entrar"}
+  }
+});
+document.querySelectorAll(".bottom-nav button").forEach(button=>{
+  button.addEventListener("click",()=>navigate(button.dataset.page));
+});
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape") closeModal();
+});
+
+async function restoreServerSession(){
+  if(!sessionToken) return;
+  try{
+    const result=await portalApi("/api/employee-portal/me");
+    applyServerView(result);
+    login(result.employee);
+  }catch(error){
+    sessionToken="";
+    localStorage.removeItem(SESSION_KEY);
+  }
+}
+restoreServerSession();
+</script>
+</body>
+</html>

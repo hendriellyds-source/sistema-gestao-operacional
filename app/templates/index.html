@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script src="/assets/portfolio.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema Portfólio RH — Sistema 2.5.0</title>
-<link rel="icon" type="image/svg+xml" href="/assets/portfolio.svg">
+<title>Sistema de Gestão Operacional — Demo</title>
+<link rel="icon" type="image/svg+xml" href="/assets/brand.svg">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="/assets/aline_projetista_v2_5.css?v=2.7.0">
-<link rel="stylesheet" href="/assets/Exemplo_conferences_v2_6.css">
+<link rel="stylesheet" href="/assets/projects_projetista_v2_5.css?v=2.7.0">
+<link rel="stylesheet" href="/assets/client_demo_conferences_v2_6.css">
 <link rel="stylesheet" href="/assets/auth_roles_v2_8.css">
 <link rel="stylesheet" href="/assets/rh_financial_v3.css?v=3.1.0">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
@@ -2624,7 +2623,7 @@ textarea:focus{
   color:#9f3535;
   font-size:.76rem;
 }
-.aline-tabs{
+.projects-tabs{
   display:flex;
   gap:8px;
   margin-bottom:16px;
@@ -2633,7 +2632,7 @@ textarea:focus{
   border-radius:14px;
   background:#edf4f8;
 }
-.aline-tabs button{
+.projects-tabs button{
   flex:1;
   border:0;
   border-radius:10px;
@@ -2643,11 +2642,11 @@ textarea:focus{
   cursor:pointer;
   font-weight:800;
 }
-.aline-tabs button.active{
+.projects-tabs button.active{
   background:white;
   box-shadow:0 3px 10px rgba(20,55,78,.09);
 }
-.aline-status-card{
+.projects-status-card{
   border-left:5px solid var(--azul-claro);
 }
 .settings-section{
@@ -2738,7 +2737,7 @@ textarea:focus{
   color:#29475a;
   line-height:1.4;
 }
-.team-chat-message.helena{
+.team-chat-message.projectist{
   align-self:flex-end;
   background:#dcecf6;
   color:#16466e;
@@ -2900,14 +2899,13 @@ textarea:focus{
 </style>
 </head>
 <body>
-<div style="position:sticky;top:0;z-index:99999;background:#123449;color:white;text-align:center;padding:10px;font:14px sans-serif">PORTFÓLIO · Dados fictícios · Sem login ou integrações reais · <button onclick="sessionStorage.clear();localStorage.removeItem('portfolio_demo_v1');location.reload()">Restaurar demonstração</button></div>
 <div class="app" id="app">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
       <div class="brand-logo-shell">
-        <img id="logoImage" src="/assets/portfolio.svg" alt="Sistema Portfólio"
+        <img id="logoImage" src="/assets/brand.svg" alt="Sistema de Gestão Operacional — Demo"
              onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'">
-        <div id="logoFallback" class="logo-fallback" style="display:none">Sistema Portfólio</div>
+        <div id="logoFallback" class="logo-fallback" style="display:none">OPERACIONAL TOPOGRAFIA</div>
       </div>
 
       <button
@@ -2954,9 +2952,9 @@ textarea:focus{
           data-area-switch="projectist"
           class="user-card"
         >
-          <span class="user-avatar projectist">HE</span>
+          <span class="user-avatar projectist">PR</span>
           <span class="user-card-copy">
-            <strong>Projetos — Projetista</strong>
+            <strong>Projetista — Atendimento</strong>
             <small>Clientes, orçamentos e retornos</small>
           </span>
           <span class="user-active-dot" aria-hidden="true"></span>
@@ -2964,12 +2962,12 @@ textarea:focus{
 
         <button
           type="button"
-          data-area-switch="aline"
+          data-area-switch="projects"
           class="user-card"
         >
-          <span class="user-avatar projectist">AL</span>
+          <span class="user-avatar projectist">PJ</span>
           <span class="user-card-copy">
-            <strong>Processos — Projetista</strong>
+            <strong>Projetos — Projetista</strong>
             <small>Obras e acompanhamento de processos</small>
           </span>
           <span class="user-active-dot" aria-hidden="true"></span>
@@ -3033,7 +3031,7 @@ textarea:focus{
         </button>
         <button id="directorRequestsButton" data-area="admin" data-page="directorRequests">
           <span class="nav-icon">↔</span>
-          <span class="nav-label" id="directorRequestsLabel">Solicitações da Projetos</span>
+          <span class="nav-label" id="directorRequestsLabel">Solicitações da Projetista</span>
           <span class="nav-badge hidden" id="directorRequestsBadge"></span>
         </button>
       </div>
@@ -3050,7 +3048,7 @@ textarea:focus{
         </button>
         <button data-area="admin" data-page="veiculos">
           <span class="nav-icon">◇</span>
-          <span class="nav-label">Frota Selsyn</span>
+          <span class="nav-label">Gestão de Frota</span>
         </button>
       </div>
 
@@ -3136,20 +3134,20 @@ textarea:focus{
         </button>
       </div>
       <div class="menu-section">
-        <div class="menu-section-title">Atendimento da Projetos</div>
+        <div class="menu-section-title">Atendimento da Projetista</div>
         <button id="projectDashboardButton" data-area="projectist" data-page="projectistDashboard">
           <span class="nav-icon">⌂</span>
-          <span class="nav-label" id="projectDashboardLabel">Visão da Projetos</span>
+          <span class="nav-label" id="projectDashboardLabel">Visão da Projetista</span>
           <span class="nav-badge hidden" id="projectDashboardBadge"></span>
         </button>
         <button data-area="projectist" data-page="projectistClients">
           <span class="nav-icon">👤</span>
           <span class="nav-label">Clientes e terrenos</span>
         </button>
-        <button data-area="projectist" data-page="projectistExemplo">
+        <button data-area="projectist" data-page="projectistClientDemo">
           <span class="nav-icon">✓</span>
-          <span class="nav-label">Conferências Exemplo</span>
-          <span class="nav-badge hidden" id="ExemploHelenaBadge"></span>
+          <span class="nav-label">Conferências Construtora Demo</span>
+          <span class="nav-badge hidden" id="client_demoProjetistaBadge"></span>
         </button>
       </div>
 
@@ -3157,43 +3155,43 @@ textarea:focus{
         <div class="menu-section-title">Organização</div>
         <button data-area="projectist" data-page="projectistCalendar">
           <span class="nav-icon">◷</span>
-          <span class="nav-label">Agenda da Projetos</span>
+          <span class="nav-label">Agenda da Projetista</span>
         </button>
         <button data-area="projectist" data-page="projectistTrello">
           <span class="nav-icon">▥</span>
-          <span class="nav-label">Trello da Projetos</span>
+          <span class="nav-label">Trello da Projetista</span>
         </button>
       </div>
     </nav>
 
-    <nav class="menu menu-sections hidden" id="alineMenu" aria-label="Menu da projetista Processos">
+    <nav class="menu menu-sections hidden" id="projectsMenu" aria-label="Menu da projetista Projetos">
       <div class="menu-section">
         <div class="menu-section-title">Demandas internas</div>
-        <button data-area="aline" data-page="internalDemands">
+        <button data-area="projects" data-page="internalDemands">
           <span class="nav-icon">✉</span>
           <span class="nav-label">Demandas do Diretor</span>
           <span class="nav-badge hidden internal-demand-badge"></span>
         </button>
       </div>
       <div class="menu-section">
-        <div class="menu-section-title">Projetista — Processos</div>
-        <button data-area="aline" data-page="alineWorks">
+        <div class="menu-section-title">Projetista — Projetos</div>
+        <button data-area="projects" data-page="projectsWorks">
           <span class="nav-icon">▣</span>
           <span class="nav-label">Obras</span>
         </button>
-        <button data-area="aline" data-page="alineProcesses">
+        <button data-area="projects" data-page="projectsProcesses">
           <span class="nav-icon">▤</span>
           <span class="nav-label">Processos</span>
         </button>
-        <button data-area="aline" data-page="alineNotifications">
+        <button data-area="projects" data-page="projectsNotifications">
           <span class="nav-icon">!</span>
           <span class="nav-label">Notificações</span>
         </button>
-        <button data-area="aline" data-page="alineEmails">
+        <button data-area="projects" data-page="projectsEmails">
           <span class="nav-icon">@</span>
           <span class="nav-label">E-mails de processos</span>
         </button>
-        <button data-area="aline" data-page="alineCalendar">
+        <button data-area="projects" data-page="projectsCalendar">
           <span class="nav-icon">▦</span>
           <span class="nav-label">Calendário de prazos</span>
         </button>
@@ -3226,7 +3224,7 @@ textarea:focus{
 
         <div class="page-heading">
           <div class="breadcrumb">
-            <span>Sistema Portfólio</span>
+            <span>Gestão Operacional</span>
             <span class="breadcrumb-separator">/</span>
             <strong id="topbarAreaName">Administrador / Diretor</strong>
           </div>
@@ -3283,9 +3281,9 @@ textarea:focus{
   </div>
 </div>
 
-<script src="/assets/aline_projetista_v2_5.js?v=2.7.0"></script>
-<script src="/assets/aline_projetista_v2_5_ui.js?v=2.7.0"></script>
-<script src="/assets/Exemplo_conferences_v2_6.js"></script>
+<script src="/assets/projects_projetista_v2_5.js?v=2.7.0"></script>
+<script src="/assets/projects_projetista_v2_5_ui.js?v=2.7.0"></script>
+<script src="/assets/client_demo_conferences_v2_6.js"></script>
 <script src="/assets/auth_roles_v2_8.js"></script>
 <script src="/assets/rh_financial_v3.js?v=3.1.0"></script>
 <link rel="stylesheet" href="/assets/historical_schedule.css?v=1.1.0">
@@ -3302,7 +3300,7 @@ var systemStateSyncInFlight=false;
 var systemStateDirty=false;
 var systemStateChangeCounter=0;
 var systemStateRevision=Number(SERVER_SYSTEM_STATE?.revision||0);
-const STORAGE_KEY = "portfolio_demo_v1";
+const STORAGE_KEY = "operational_canvas_preview";
 
 function plusDays(days){
   const d=new Date();
@@ -3311,8 +3309,8 @@ function plusDays(days){
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
 const OFFICIAL_EMPLOYEE_IMPORT_VERSION="portfolio-v1";
-const LEGACY_DEMO_CPFS=[];
-const demoData={"employeeImportVersion": "portfolio-v1", "settings": {"title": "Dashboard — Portfólio", "subtitle": "Demonstração com dados inteiramente fictícios.", "primary": "#0b5e8e", "primaryLight": "#3a9ed0", "primaryDark": "#244f7d", "background": "#f5f8fb"}, "employees": [{"id": 1, "name": "Pessoa Exemplo 01", "registration": "DEMO-001", "code": "DEMO-001", "role": "Técnico de campo", "sector": "Operações", "unit": "Unidade demonstrativa", "status": "Ativo", "admission": "2026-01-01", "birth": "", "cpf": "", "email": "", "phone": "", "currentSalary": 2500, "salaryAtRecord": 2500, "contract": "CLT", "risk": "Exemplo", "salaryHistory": [], "roleHistory": [], "scheduleHistory": [], "functionalOccurrences": [], "notes": "Cadastro sintético para portfólio."}, {"id": 2, "name": "Pessoa Exemplo 02", "registration": "DEMO-002", "code": "DEMO-002", "role": "Técnico de campo", "sector": "Operações", "unit": "Unidade demonstrativa", "status": "Ativo", "admission": "2026-01-01", "birth": "", "cpf": "", "email": "", "phone": "", "currentSalary": 2500, "salaryAtRecord": 2500, "contract": "CLT", "risk": "Exemplo", "salaryHistory": [], "roleHistory": [], "scheduleHistory": [], "functionalOccurrences": [], "notes": "Cadastro sintético para portfólio."}, {"id": 3, "name": "Pessoa Exemplo 03", "registration": "DEMO-003", "code": "DEMO-003", "role": "Técnico de campo", "sector": "Operações", "unit": "Unidade demonstrativa", "status": "Ativo", "admission": "2026-01-01", "birth": "", "cpf": "", "email": "", "phone": "", "currentSalary": 2500, "salaryAtRecord": 2500, "contract": "CLT", "risk": "Exemplo", "salaryHistory": [], "roleHistory": [], "scheduleHistory": [], "functionalOccurrences": [], "notes": "Cadastro sintético para portfólio."}], "clinics": [], "exams": [], "vacations": [], "leaves": [], "vehicles": [], "maintenances": [], "maintenanceHistory": [], "maintenanceDrafts": [], "fines": [], "companies": [{"id": 1, "name": "Empresa Exemplo", "legalName": "Empresa Exemplo", "tradeName": "Empresa Exemplo", "notes": "Empresa fictícia"}], "works": [{"id": 1, "companyId": 1, "name": "Projeto Demonstrativo", "city": "Cidade Exemplo", "status": "Ativa", "dailyValue": 1000, "halfDailyValue": 500}], "workTeams": [{"id": 1, "name": "Equipe Exemplo", "employeeIds": [1, 2], "active": true}], "workScheduleEntries": [], "billingEntities": [], "invoices": [], "projectClients": [], "projectScheduleRequests": [], "alineWorks": [], "alineProcesses": [], "employeeAppFiles": [], "events": [{"id": 1, "title": "Reunião demonstrativa", "date": "2026-11-13", "category": "Reunião"}]};
+const LEGACY_DEMO_CPFS=["000.000.000-00","000.000.000-00","000.000.000-00","000.000.000-00"];
+const demoData={"employees": [], "clinics": [], "exams": [], "vacations": [], "leaves": [], "vehicles": [], "maintenances": [], "maintenanceHistory": [], "maintenanceDrafts": [], "fines": [], "companies": [], "works": [], "workTeams": [], "workScheduleEntries": [], "billingEntities": [], "invoices": [], "projectClients": [], "projectScheduleRequests": [], "projectsWorks": [], "projectsProcesses": [], "employeeAppFiles": [], "events": [], "settings": {"title": "Dashboard", "subtitle": "Gestão operacional integrada", "primary": "#0b5e8e", "primaryLight": "#3a9ed0", "primaryDark": "#244f7d", "background": "#f5f8fb"}, "employeeImportVersion": "portfolio-v1"};
 
 // Nunca mantenha ou recrie registros fictícios de frota no estado inicial.
 [
@@ -3325,7 +3323,7 @@ const demoData={"employeeImportVersion": "portfolio-v1", "settings": {"title": "
 
 const PROJECTIST_WORKFLOW_VERSION=1;
 const PROJECT_SERVICE_TYPES=["Usucapião","Retificação de Área","Aprovação de Projeto","Amembramento","Desmembramento","Locação de Obras"];
-const PROJECT_PRICE_TABLE={};
+const PROJECT_PRICE_TABLE={"Usucapião":[{"max":500,"base":1250,"min":1300,"maxPrice":1350,"label":"Até 500 m²"},{"max":2000,"base":1600,"min":1700,"maxPrice":1750,"label":"De 500 a 2.000 m²"},{"max":5000,"base":2100,"min":2200,"maxPrice":2250,"label":"De 2.000 a 5.000 m²"}],"Retificação de Área":[{"max":500,"base":1250,"min":1300,"maxPrice":1350,"label":"Até 500 m²"},{"max":2000,"base":1600,"min":1700,"maxPrice":1750,"label":"De 500 a 2.000 m²"},{"max":5000,"base":2100,"min":2200,"maxPrice":2250,"label":"De 2.000 a 5.000 m²"}],"Aprovação de Projeto":[{"max":500,"base":1200,"min":1250,"maxPrice":1300,"label":"Até 500 m²"},{"max":2000,"base":1400,"min":1500,"maxPrice":1550,"label":"De 500 a 2.000 m²"},{"max":5000,"base":1900,"min":2000,"maxPrice":2050,"label":"De 2.000 a 5.000 m²"}],"Amembramento":[{"max":800,"base":1350,"min":1350,"maxPrice":1350,"label":"Terrenos somando até 800 m²"},{"max":2000,"base":1800,"min":1800,"maxPrice":1800,"label":"Terrenos somando de 800 a 2.000 m²"},{"max":5000,"base":2500,"min":2500,"maxPrice":2500,"label":"Terrenos somando de 2.000 a 5.000 m²"}],"Desmembramento":[{"max":800,"base":1350,"min":1350,"maxPrice":1350,"label":"Terrenos somando até 800 m²"},{"max":2000,"base":1800,"min":1800,"maxPrice":1800,"label":"Terrenos somando de 800 a 2.000 m²"},{"max":5000,"base":2500,"min":2500,"maxPrice":2500,"label":"Terrenos somando de 2.000 a 5.000 m²"}],"Locação de Obras":[]};
 const PROJECT_QUOTE_SECTIONS={"Usucapião":{"field":"Iremos ao local fazer o levantamento topográfico completo, com GPS para georreferenciar a área e levantar divisas, muros, cercas, edificações, níveis do terreno e os elementos existentes em frente ao imóvel.","office":"No escritório, analisaremos os documentos existentes e elaboraremos a planta georreferenciada, o memorial descritivo e a TRT do levantamento.","documents":"Para concluir os documentos, precisaremos dos dados dos confrontantes: nome completo, CPF e número da matrícula. Quando não houver matrícula, será indicado que o imóvel é de posse.","deliverables":"Planta topográfica assinada pelo responsável técnico, memorial descritivo detalhado e TRT registrada com a taxa paga."},"Retificação de Área":{"field":"Executaremos o levantamento topográfico para conferir as divisas e dimensões reais do imóvel, com GPS para georreferenciar a área e levantar muros, cercas, edificações, níveis e os elementos existentes em frente ao terreno.","office":"Confrontaremos o levantamento com o registro do imóvel, elaborando a planta atualizada, o memorial descritivo e a documentação necessária para a retificação.","documents":"Para concluir os documentos, precisaremos dos dados dos confrontantes: nome completo, CPF e número da matrícula. Quando não houver matrícula, será indicado que o imóvel é de posse.","deliverables":"Planta atualizada assinada, memorial descritivo com as correções de área e perímetro, planta comparativa entre a área real e a matrícula e TRT registrada."},"Aprovação de Projeto":{"field":"Realizaremos o levantamento planialtimétrico e georreferenciado, conferindo dimensões, cotas de nível e os pontos relevantes para o projeto.","office":"Prepararemos uma planta com a área real do terreno e outra com as medidas da matrícula, permitindo identificar eventuais diferenças antes da entrada na prefeitura.","documents":"Os vizinhos não precisam assinar. Será necessário confirmar se o projeto utilizará a área real ou a área ajustada à matrícula.","deliverables":"Plantas planialtimétrica e georreferenciada, incluindo a comparação com a matrícula, e TRT registrada com a taxa paga."},"Amembramento":{"field":"Realizaremos o levantamento conjunto dos terrenos que serão unificados, utilizando GPS para o georreferenciamento da área.","office":"Compararemos a área real com as matrículas e elaboraremos a planta e o memorial descritivo do lote unificado. Quando necessário, serão preparadas versões com a área real e com as medidas ajustadas à matrícula.","documents":"Os vizinhos não precisam assinar; podem ser utilizados os dados das matrículas, ou dados atualizados fornecidos pelo cliente.","deliverables":"Planta topográfica do amembramento, memorial descritivo do lote unificado e TRT registrada."},"Desmembramento":{"field":"Realizaremos o levantamento do terreno que será dividido, utilizando GPS para o georreferenciamento da área.","office":"Compararemos a área real com a matrícula e elaboraremos as plantas e os memoriais descritivos dos novos lotes. Quando necessário, serão preparadas versões com a área real e com as medidas ajustadas.","documents":"Os vizinhos não precisam assinar; podem ser utilizados os dados da matrícula, ou dados atualizados fornecidos pelo cliente.","deliverables":"Plantas dos lotes, memoriais descritivos correspondentes e TRT registrada."},"Locação de Obras":{"field":"Realizaremos a locação em campo conforme a necessidade da obra, como estaqueamento, gabarito, pré-moldado, lajes ou serviço equivalente.","office":"A definição do escopo e do valor depende das características da obra e das informações técnicas recebidas.","documents":"Pode ser necessário receber projeto, pontos de referência, autorização de acesso e orientações do responsável pela obra.","deliverables":"A entrega será definida conforme o serviço de locação solicitado."}};
 const DEFAULT_AUTO_MESSAGES={
   dataRequest:`Olá, {nome}!
@@ -3333,7 +3331,7 @@ const DEFAULT_AUTO_MESSAGES={
 Podes me mandar a localização do terreno? Para eu te passar um orçamento certinho, preciso saber mais ou menos o tamanho do terreno, o estado dele e o intuito do levantamento.
 
 Ele é aberto? Está cercado ou murado? Tem fácil acesso? Caso não tenha, precisa que alguém esteja junto para acompanhar e orientar a equipe no dia?`,
-  projectQuote:`Opa, bom dia {nome}! Tudo bem? Sou a Projetos da Sistema Portfólio. Obrigada pelo seu contato. Vou te explicar como funciona o nosso trabalho:
+  projectQuote:`Opa, bom dia {nome}! Tudo bem? Sou a Projetista da Sistema de Gestão Operacional — Demo. Obrigada pelo seu contato. Vou te explicar como funciona o nosso trabalho:
 
 1. Serviço em campo:
 {campo}
@@ -3363,7 +3361,7 @@ Está tudo certo para nossa equipe ir até o terreno?`,
   followUp2:`Olá, {nome}! Assim que você confirmar o orçamento, podemos organizar o atendimento e tentar encaixar você o quanto antes.`,
   clinicExam:`Olá, Bom dia!
 
-Sou aqui da Sistema Portfólio e gostaria de agendar um exame de {tipo_exame} para um de nossos funcionários, segue abaixo os dados:
+Sou aqui da Sistema de Gestão Operacional — Demo e gostaria de agendar um exame de {tipo_exame} para um de nossos funcionários, segue abaixo os dados:
 
 Nome: {nome}
 CPF: {cpf}.
@@ -3387,13 +3385,13 @@ const DEFAULT_BUDGET_CONFIG={
 const HISTORICAL_SERVICE_IMPORT_VERSION=2;
 const HISTORICAL_SERVICE_ROWS=[];
 const BULK_SCHEDULE_IMPORT_VERSION=1;
-const INITIAL_Exemplo_SCHEDULE_ROWS=[];
+const INITIAL_CLIENT_DEMO_SCHEDULE_ROWS=[];
 const WORK_SCHEDULE_VERSION=1;
 const INITIAL_WORK_TEAMS=[];
 const SURVEY_SERVICE_TYPES=["Não relatado", "Usucapião", "Amembramento", "Retificação", "Georreferenciamento", "Aprovação de projeto", "Pré levantamento", "Cadastral", "As built", "Desmembramento", "Locação de obras"];
 const COMPANY_WORKS_BULK_VERSION=2;
 const INITIAL_COMPANY_NAMES=[];
-const INITIAL_Exemplo_WORKS=[];
+const INITIAL_CLIENT_DEMO_WORKS=[];
 
 function normalizedText(value){
   return String(value||"")
@@ -3408,9 +3406,9 @@ function canonicalTeamLabel(value){
   const raw=String(value||"").trim().replace(/\s+/g," ");
   const letters=normalizedText(raw).replace(/[^A-Z]/g,"");
 
-  // Exemplo, Exemplo e variações causadas por letras repetidas ficam em Exemplo.
-  if(/^E+M+A+N+U+E+L+$/.test(letters)) return "Exemplo";
-  if(["GU","GUS","Exemplo"].includes(letters)) return "GU";
+  // Emanuel, Emmanuel e variações causadas por letras repetidas ficam em EMMANUEL.
+  if(/^E+M+A+N+U+E+L+$/.test(letters)) return "EMMANUEL";
+  if(["GU","GUS","GUSTAVO"].includes(letters)) return "GU";
 
   return raw;
 }
@@ -3419,7 +3417,7 @@ function mergeCanonicalTeamAliases(){
   if(!Array.isArray(data.workTeams)) return false;
   let changed=false;
 
-  ["Exemplo","GU"].forEach(canonical=>{
+  ["EMMANUEL","GU"].forEach(canonical=>{
     const matches=data.workTeams
       .filter(team=>canonicalTeamLabel(team.name)===canonical)
       .sort((a,b)=>Number(a.id)-Number(b.id));
@@ -3533,32 +3531,6 @@ function normalizeData(){
     changed=true;
   }
 
- if(
-  ["admin","director"].includes(CURRENT_USER.role_code) &&
-  data.employeeImportVersion!==OFFICIAL_EMPLOYEE_IMPORT_VERSION
-){
-    const officialCpfs=new Set(demoData.employees.map(e=>e.cpf));
-    const preserved=(data.employees||[]).filter(e=>
-      e && e.cpf && !LEGACY_DEMO_CPFS.includes(e.cpf) && !officialCpfs.has(e.cpf)
-    );
-
-    const imported=clone(demoData.employees);
-    let id=imported.length+1;
-    preserved.forEach(e=>{
-      imported.push({...e,id:id++});
-    });
-
-    data.employees=imported;
-    data.exams=[];
-    data.vacations=[];
-    data.leaves=[];
-    data.employeeImportVersion=OFFICIAL_EMPLOYEE_IMPORT_VERSION;
-
-    if(Array.isArray(data.vehicles)) data.vehicles.forEach(v=>v.holderEmployeeId="");
-    if(Array.isArray(data.fines)) data.fines.forEach(f=>f.employeeId="");
-    changed=true;
-  }
-
   data.employees=data.employees.filter(employee=>employee && typeof employee==="object");
   const employeeIdsInUse=new Set();
   data.employees.forEach((employee,index)=>{
@@ -3665,12 +3637,12 @@ function normalizeData(){
     data.projectScheduleRequests=[];
     changed=true;
   }
-  if(!Array.isArray(data.alineWorks)){
-    data.alineWorks=[];
+  if(!Array.isArray(data.projectsWorks)){
+    data.projectsWorks=[];
     changed=true;
   }
-  if(!Array.isArray(data.alineProcesses)){
-    data.alineProcesses=[];
+  if(!Array.isArray(data.projectsProcesses)){
+    data.projectsProcesses=[];
     changed=true;
   }
   if(!Array.isArray(data.employeeAppFiles)){
@@ -3678,7 +3650,7 @@ function normalizeData(){
     changed=true;
   }
 
-  data.alineWorks.forEach(item=>{
+  data.projectsWorks.forEach(item=>{
     const defaults={
       name:"",company:"",client:"",status:"A iniciar",priority:"Normal",
       deadline:"",notes:"",createdAt:plusDays(0),updatedAt:plusDays(0)
@@ -3688,7 +3660,7 @@ function normalizeData(){
     });
   });
 
-  data.alineProcesses.forEach(item=>{
+  data.projectsProcesses.forEach(item=>{
     const defaults={
       title:"",client:"",processType:"",protocol:"",status:"A iniciar",
       deadline:"",notes:"",createdAt:plusDays(0),updatedAt:plusDays(0)
@@ -3799,132 +3771,6 @@ function normalizeData(){
       if(work[key]===undefined || work[key]===null) work[key]=value;
     });
   });
-
-  if(data.bulkScheduleImportVersion!==BULK_SCHEDULE_IMPORT_VERSION){
-    let Exemplo=data.companies.find(company=>
-      normalizedText(company.name||company.tradeName||company.legalName)==="Exemplo"
-    );
-
-    if(!Exemplo){
-      Exemplo={
-        id:nextId(data.companies),
-        name:"Exemplo",
-        tradeName:"Exemplo",
-        legalName:"Exemplo",
-        notes:""
-      };
-      data.companies.push(Exemplo);
-    }
-
-    const workResult=resolveOrCreateWork(Exemplo.id,"Exemplo SANTINHO");
-    const ExemploWork=workResult.work;
-
-    INITIAL_Exemplo_SCHEDULE_ROWS.forEach(row=>{
-      const teamResult=resolveOrCreateTeam(row.teamLabel);
-      const team=teamResult.team;
-
-      if(!bulkScheduleDuplicate(
-        Exemplo.id,
-        ExemploWork.id,
-        row.date,
-        team.id,
-        row.value
-      )){
-        data.workScheduleEntries.push({
-          id:nextId(data.workScheduleEntries),
-          date:row.date,
-          teamId:team.id,
-          type:"Obra",
-          companyId:Exemplo.id,
-          workId:ExemploWork.id,
-          dailyType:"Inteira",
-          value:Number(row.value||0),
-          status:row.date<=plusDays(0)?"Confirmado":"Planejado",
-          billingEntityId:ExemploWork.billingEntityId||"",
-          client:"",
-          location:"",
-          serviceType:"",
-          observation:row.observation||""
-        });
-      }
-
-      if(isNextHalfDayFullChargeNote(row.observation)){
-        ExemploWork.nextHalfDayFullCharge=true;
-        ExemploWork.billingAlertNote=row.observation;
-        ExemploWork.billingRuleCreatedAt=row.date;
-      }
-    });
-
-    data.bulkScheduleImportVersion=BULK_SCHEDULE_IMPORT_VERSION;
-    changed=true;
-  }
-
-  if(data.companyWorksBulkVersion!==COMPANY_WORKS_BULK_VERSION){
-    // Remove apenas a antiga empresa demonstrativa da Sistema Portfólio, se ainda existir.
-    const obsoleteIds=new Set(
-      data.companies
-        .filter(company=>
-          ["Sistema Portfólio","Sistema Portfólio LTDA"]
-            .includes(normalizedText(company.name||company.tradeName||company.legalName))
-        )
-        .map(company=>company.id)
-    );
-    if(obsoleteIds.size){
-      data.companies=data.companies.filter(company=>!obsoleteIds.has(company.id));
-      data.works=data.works.filter(work=>!obsoleteIds.has(work.companyId));
-    }
-
-    const companyMap=new Map(
-      data.companies.map(company=>[
-        normalizedText(company.name||company.tradeName||company.legalName),
-        company
-      ])
-    );
-
-    INITIAL_COMPANY_NAMES.forEach(name=>{
-      const key=normalizedText(name);
-      if(!companyMap.has(key)){
-        const company={
-          id:nextId(data.companies),
-          name,
-          tradeName:name,
-          legalName:name,
-          notes:""
-        };
-        data.companies.push(company);
-        companyMap.set(key,company);
-      }
-    });
-
-    const Exemplo=companyMap.get(normalizedText("Exemplo"));
-    if(Exemplo){
-      const existingWorks=new Set(
-        data.works
-          .filter(work=>work.companyId===Exemplo.id)
-          .map(work=>normalizedText(work.name))
-      );
-
-      INITIAL_Exemplo_WORKS.forEach(name=>{
-        const key=normalizedText(name);
-        if(!existingWorks.has(key)){
-          data.works.push({
-            id:nextId(data.works),
-            companyId:Exemplo.id,
-            name,
-            dailyRate:0,
-            halfDailyRate:0,
-            location:"",
-            notes:""
-          });
-          existingWorks.add(key);
-        }
-      });
-    }
-
-    data.companyWorksBulkVersion=COMPANY_WORKS_BULK_VERSION;
-    changed=true;
-  }
-
 
   data.billingEntities.forEach(entity=>{
     const defaults={
@@ -4153,8 +3999,8 @@ const ROLE_START={
   admin:["admin","dashboard"],
   director:["admin","dashboard"],
   financial:["finance","financeDashboard"],
-  helena:["projectist","projectistDashboard"],
-  aline:["aline","alineProcesses"]
+  projectist:["projectist","projectistDashboard"],
+  projects:["projects","projectsProcesses"]
 };
 const FINANCIAL_ADMIN_PAGES=new Set(["funcionarios","exames","ferias","clinicas","veiculos"]);
 let [currentArea,page]=ROLE_START[CURRENT_USER.role_code]||["admin","dashboard"];
@@ -4162,9 +4008,9 @@ let editMode=false;
 let selectedEmployee=data.employees[0]?.id||null;
 let selectedVehicle=data.vehicles[0]?.id||null;
 let selectedWorksTab="companies";
-let selectedWorksCompanyId=data.companies.find(c=>normalizedText(c.name)==="Exemplo")?.id||data.companies[0]?.id||null;
+let selectedWorksCompanyId=data.companies.find(c=>normalizedText(c.name)==="CONSTRUTORA DEMO")?.id||data.companies[0]?.id||null;
 let scheduleWeekStart=mondayOf(plusDays(0));
-const SCHEDULE_ZOOM_KEY="portfolio_schedule_zoom";
+const SCHEDULE_ZOOM_KEY="operational_schedule_zoom";
 let scheduleZoom=Math.max(55,Math.min(140,Number(localStorage.getItem(SCHEDULE_ZOOM_KEY))||70));
 let scheduleFocusMode=false;
 let financeMonth=plusDays(0).slice(0,7);
@@ -4246,7 +4092,7 @@ async function syncSystemState(){
     systemStateRevision=Number(result.revision||systemStateRevision);
     systemStateDirty=systemStateChangeCounter!==syncCounter;
     if(systemStateDirty) scheduleSystemStateSync(150);
-    window.siemannCentralStateLastSync=result.updated_at||new Date().toISOString();
+    window.operationalCentralStateLastSync=result.updated_at||new Date().toISOString();
   }catch(error){
     console.warn("Persistência central:",error);
     scheduleSystemStateSync(5000);
@@ -4598,17 +4444,17 @@ function findCompanyByNormalizedName(name){
 function inferredCompanyForImportedWork(name){
   const normalized=normalizedText(name);
   const mappings=[
-    ["Exemplo ","Exemplo"],
-    ["GIA ","Exemplo"],
+    ["CLIENTE DEMO ","CLIENTE DEMO"],
+    ["GIA ","CONSTRUTORA DEMO"],
     ["MD ","MD"],
     ["RD ","RD"],
-    ["Exemplo ","Exemplo"],
-    ["MS ","Exemplo"],
-    ["BPM ","Exemplo"],
-    ["Exemplo ","Exemplo"],
-    ["EPC FABIANA","Exemplo"],
+    ["SCIRE ","SCIRE EMPREENDIMENTOS"],
+    ["MS ","MS EMPREENDIMENTOS"],
+    ["BPM ","BPM PRE MOLDADOS"],
+    ["CASSOL ","CASSOL"],
+    ["EPC FABIANA","ENG FABIANA"],
     ["DRONE MD","MD"],
-    ["AMBROSI","Exemplo"]
+    ["AMBROSI","MARCIO AMBROSI PORTO BELO"]
   ];
 
   const mapping=mappings.find(([prefix])=>
@@ -5220,12 +5066,12 @@ function updateAreaNavigation(){
   const adminMenu=document.getElementById("adminMenu");
   const financeMenu=document.getElementById("financeMenu");
   const projectistMenu=document.getElementById("projectistMenu");
-  const alineMenu=document.getElementById("alineMenu");
+  const projectsMenu=document.getElementById("projectsMenu");
 
   adminMenu.classList.toggle("hidden",currentArea!=="admin");
   financeMenu.classList.toggle("hidden",currentArea!=="finance");
   projectistMenu.classList.toggle("hidden",currentArea!=="projectist");
-  alineMenu.classList.toggle("hidden",currentArea!=="aline");
+  projectsMenu.classList.toggle("hidden",currentArea!=="projects");
 
   document.querySelectorAll("[data-area-switch]").forEach(button=>{
     const isAllowed=(CURRENT_USER.areas||[]).includes(button.dataset.areaSwitch);
@@ -5256,15 +5102,15 @@ function updateAreaNavigation(){
       avatarClass:"finance"
     },
     projectist:{
-      name:"Projetos — Projetista",
-      shortName:"Projetista — Projetos",
+      name:"Projetista — Atendimento",
+      shortName:"Projetista — Atendimento",
       caption:"Clientes, orçamentos e acompanhamento",
       avatar:"HE",
       avatarClass:"projectist"
     },
-    aline:{
-      name:"Processos — Projetista",
-      shortName:"Projetista — Processos",
+    projects:{
+      name:"Projetos — Projetista",
+      shortName:"Projetista — Projetos",
       caption:"Obras e acompanhamento de processos",
       avatar:"AL",
       avatarClass:"projectist"
@@ -5314,21 +5160,21 @@ function updateAreaNavigation(){
   const avatar=document.getElementById("topbarUserAvatar");
   const userAvatar=String(CURRENT_USER.display_name||CURRENT_USER.username||"US")
     .split(/\s+/).filter(Boolean).slice(0,2).map(part=>part[0]).join("").toUpperCase();
-  avatar.className=`topbar-avatar ${CURRENT_USER.role==="financeiro"?"finance":CURRENT_USER.role==="helena"||CURRENT_USER.role==="aline"?"projectist":"admin"}`;
+  avatar.className=`topbar-avatar ${CURRENT_USER.role==="financeiro"?"finance":CURRENT_USER.role==="projectist"||CURRENT_USER.role==="projects"?"projectist":"admin"}`;
   setUserAvatar(avatar,CURRENT_USER.avatar_url,userAvatar);
 
   const pendingDirector=data.projectScheduleRequests.filter(request=>
     request.status==="Pendente"
   ).length;
-  const helenaNotifications=projectNotifications().length;
+  const projectistNotifications=projectNotifications().length;
 
   const directorLabel=document.getElementById("directorRequestsLabel");
   const directorBadge=document.getElementById("directorRequestsBadge");
   const projectLabel=document.getElementById("projectDashboardLabel");
   const projectBadge=document.getElementById("projectDashboardBadge");
 
-  if(directorLabel) directorLabel.textContent="Solicitações da Projetos";
-  if(projectLabel) projectLabel.textContent="Visão da Projetos";
+  if(directorLabel) directorLabel.textContent="Solicitações da Projetista";
+  if(projectLabel) projectLabel.textContent="Visão da Projetista";
 
   if(directorBadge){
     directorBadge.textContent=String(pendingDirector);
@@ -5336,8 +5182,8 @@ function updateAreaNavigation(){
   }
 
   if(projectBadge){
-    projectBadge.textContent=String(helenaNotifications);
-    projectBadge.classList.toggle("hidden",!helenaNotifications);
+    projectBadge.textContent=String(projectistNotifications);
+    projectBadge.classList.toggle("hidden",!projectistNotifications);
   }
 }
 
@@ -5405,19 +5251,19 @@ function render(){
     configuracoes,
     projectistDashboard,
     projectistClients,
-    projectistExemplo,
+    projectistClientDemo,
     projectistCalendar,
     projectistTrello,
     internalDemands,
-    alineDashboard:alineProcessesV25,
-    alineClients:alineProcessesV25,
-    alineWorks:alineWorksV25,
-    alineProcesses:alineProcessesV25,
-    alineRegistries:alineRegistriesV24,
-    alineNotifications:alineNotificationsV25,
-    alineEmails:alineEmailsV26,
-    alineCalendar:alineCalendarV25,
-    alineFinalized:alineProcessesV25,
+    projectsDashboard:projectsProcessesV25,
+    projectsClients:projectsProcessesV25,
+    projectsWorks:projectsWorksV25,
+    projectsProcesses:projectsProcessesV25,
+    projectsRegistries:projectsRegistriesV24,
+    projectsNotifications:projectsNotificationsV25,
+    projectsEmails:projectsEmailsV26,
+    projectsCalendar:projectsCalendarV25,
+    projectsFinalized:projectsProcessesV25,
     financeDashboard,
     financeClients,
     financeMovements,
@@ -5802,7 +5648,7 @@ function employeeTab(tab,button){
         ${employeeInfoCard("Nacionalidade",esc(emp.nationality))}
         ${employeeInfoCard("Naturalidade",esc(emp.naturality))}
         ${employeeInfoCard("Pai",esc(emp.father))}
-        ${employeeInfoCard("Exemplo",esc(emp.mother))}
+        ${employeeInfoCard("Mãe",esc(emp.mother))}
         ${employeeInfoCard("Endereço",esc(fullAddress))}
         ${employeeInfoCard("Telefone",esc(emp.phone))}
         ${employeeInfoCard("E-mail",esc(emp.email))}
@@ -6035,7 +5881,7 @@ function mergeImportedEmployee(target,source){
   });
   target.id=preserved.id;
   target.appLogin=preserved.appLogin||target.appLogin||employeeAppLoginFor(target.name);
-  target.appPassword=preserved.appPassword||target.appPassword||"";
+  target.appPassword=preserved.appPassword||target.appPassword||"1234";
   target.phone=target.phone||preserved.phone;
   target.email=target.email||preserved.email;
   target.imported=true;
@@ -6164,7 +6010,7 @@ function confirmEmployeePdfImport(){
     item.registration=item.registration||item.code||"";
     item.workSchedule=item.schedule||item.workSchedule||"";
     item.appLogin=item.appLogin||employeeAppLoginFor(item.name);
-    item.appPassword=item.appPassword||"";
+    item.appPassword=item.appPassword||"1234";
     data.employees.push(item);
     created++;
     firstId=firstId||item.id;
@@ -6308,7 +6154,7 @@ function employeeForm(id,initialTab="manual"){
       ${field("Naturalidade","naturality",emp?.naturality||"")}
       ${field("Nacionalidade","nationality",emp?.nationality||"Brasileiro")}
       ${field("Nome do pai","father",emp?.father||"")}
-      ${field("Nome da Exemplo","mother",emp?.mother||"")}
+      ${field("Nome da mãe","mother",emp?.mother||"")}
       ${field("Escolaridade","education",emp?.education||"")}
 
       <h3 class="form-section">Endereço e contato</h3>
@@ -6360,7 +6206,7 @@ function employeeForm(id,initialTab="manual"){
 
       <h3 class="form-section">Acesso ao aplicativo das equipes</h3>
       ${field("Login do aplicativo","appLogin",emp?.appLogin||employeeAppLoginFor(emp?.name||""))}
-      ${field(emp?"Nova senha (deixe em branco para manter)":"Senha inicial","appPassword","","password")}
+      ${field(emp?"Nova senha (deixe em branco para manter)":"Senha inicial","appPassword",emp?"":"1234","password")}
       <div class="data-notice" style="grid-column:1/-1;margin:0;">
         O funcionário acessa pelo endereço <b>/app</b>. Ao salvar este cadastro, o login é enviado ao servidor central.
       </div>
@@ -6574,7 +6420,9 @@ function exames(){
 
 let pendingExamPdfImport=null;
 
-const EXAM_BULK_ASO_SOURCE=``;
+const EXAM_BULK_ASO_SOURCE=`Pessoa Demo Alfa;01/12/2027
+Pessoa Demo Beta;01/12/2027
+Pessoa Demo Gama;01/12/2027`;
 let pendingExamBulkRows=[];
 
 function parseBrazilDate(value){
@@ -6624,7 +6472,7 @@ function parseExamBulkList(text){
     const sourceDue=parseBrazilDate(parts[1]);
     if(!sourceDue) return {index,line:clean,name:parts[0]||"",error:"Data inválida"};
     const marker=normalizedText(parts.slice(2).join(" "));
-    const notCompleted=marker.includes("NAO REALIZADO")||marker.includes("PENDENTE")||normalizedText(parts[0]).startsWith("LUIZ Exemplo");
+    const notCompleted=marker.includes("NAO REALIZADO")||marker.includes("PENDENTE")||normalizedText(parts[0]).startsWith("LUIZ GUSTAVO");
     const matched=examBulkMatchEmployee(parts[0]);
     return {index,line:clean,name:parts[0],sourceDue,notCompleted,employeeId:matched?.id||""};
   }).filter(Boolean);
@@ -6946,7 +6794,7 @@ function examForm(id,initialTab="manual"){
       <div id="examBulkPanel" style="display:none;">
         <div class="data-notice">
           <strong>Lançamento em massa de ASO e exames periódicos.</strong>
-          <div class="muted" style="margin-top:4px;">Use uma linha por funcionário no formato <strong>Nome; DD/MM/AAAA</strong>. Quando a data já passou, o sistema considera o exame realizado e cria o próximo vencimento um ano depois. Marque “Exame ainda não realizado” para manter a pendência vencida — a lista abaixo já traz Luiz Exemplo dessa forma.</div>
+          <div class="muted" style="margin-top:4px;">Use uma linha por funcionário no formato <strong>Nome; DD/MM/AAAA</strong>. Quando a data já passou, o sistema considera o exame realizado e cria o próximo vencimento um ano depois. Marque “Exame ainda não realizado” para manter a pendência vencida — revise a lista abaixo antes de importar.</div>
         </div>
         <div class="card" style="margin-top:14px;">
           <div class="form-grid">
@@ -7638,7 +7486,7 @@ function fleetDateRange(days=7){
 function fleetIdentifier(vehicle){return vehicle.identifier||vehicle.plate||String(vehicle.id)}
 function fleetVehicleDisplay(vehicle){return vehicle.display_name||vehicle.description||`${vehicle.brand||""} ${vehicle.model||""}`.trim()||fleetIdentifier(vehicle)}
 function fleetStatusInfo(vehicle){
-  const raw=String(vehicle.reliable_status||vehicle.reliableStatus||vehicle.status||"").toUpperCase();
+  const raw=String(vehicle.reliable_status||vehicle.reliableStatus||vehicle.effective_status||vehicle.status||"").toUpperCase();
   if(raw.includes("MOVIMENTO")) return{label:"Em movimento",css:"ok",card:"moving"};
   if(raw.includes("SEM COMUNICAÇÃO")||raw.includes("OFFLINE")||raw.includes("INATIVO")) return{label:"Sem comunicação",css:"bad",card:"offline"};
   return{label:"Parado",css:"warn",card:"stopped"};
@@ -7694,11 +7542,11 @@ function fleetConnectionStatus(){
       <div class="fleet-connection-copy">
         <span class="fleet-live-dot ${mode}"></span>
         <div>
-          <strong>${fleetState.connected?"Backend Selsyn conectado":"Backend indisponível — sem dados simulados"}</strong>
+          <strong>${fleetState.connected?(fleetState.demo?"Demonstração local — posições simuladas":"Backend Selsyn conectado"):"Backend indisponível"}</strong>
           <div class="muted" style="font-size:.7rem;margin-top:2px">
             ${fleetState.connected
               ?`Atualização automática a cada ${Number(data.fleetSettings.refreshSeconds||10)} segundos.`
-              :"Os cadastros permanecem visíveis, mas posições e rotas só aparecem após conexão real com a Selsyn."}
+              :"Confira a configuração do servidor e tente atualizar."}
           </div>
         </div>
       </div>
@@ -7724,7 +7572,7 @@ function fleetTabs(){
 
 function veiculos(){
   ensureFleetData();
-  setHeader("Frota Selsyn","Rastreamento, histórico operacional, obras, condução, custos, manutenção e relatórios.");
+  setHeader("Gestão de Frota","Rastreamento, histórico operacional, obras, condução, custos, manutenção e relatórios.");
   document.getElementById("content").innerHTML=`
     <div class="fleet-shell">
       ${fleetTabs()}
@@ -7757,8 +7605,8 @@ async function fleetLoadConnection(){
   if(!data.fleetSettings.useBackend){fleetState.connected=false;fleetState.demo=false;return}
   try{
     fleetState.health=await fleetApi("/api/health");
-    fleetState.connected=!Boolean(fleetState.health.demo_mode);
-    fleetState.demo=false;
+    fleetState.connected=true;
+    fleetState.demo=Boolean(fleetState.health.demo_mode);
   }catch(error){
     fleetState.connected=false;
     fleetState.demo=false;
@@ -8288,7 +8136,7 @@ function fleetGeofenceForm(id){
     <div class="finance-note" style="grid-column:1/-1">Você pode localizar a obra por <strong>CEP/endereço</strong> ou colar coordenadas como <strong>27°35'47.3&quot;S 48°38'59.2&quot;W</strong>.</div>
     ${field("Nome da obra ou local","name",fence?.name||"","text",true)}${selectField("Tipo","fence_type",["OBRA","CASA","SEDE","OFICINA","POSTO","OUTRO"],fence?.fence_type||"OBRA")}
     <div class="form-group"><label>CEP</label><input name="postal_code" value="${esc(fence?.postal_code||"")}" placeholder="Ex.: 88164-220"></div>
-    <div class="form-group"><label>Endereço, cidade ou nome para localizar</label><input name="location_query" value="${esc(fence?.address||"")}" placeholder="Ex.: Rua..., Biguaçu - SC"></div>
+    <div class="form-group"><label>Endereço, cidade ou nome para localizar</label><input name="location_query" value="${esc(fence?.address||"")}" placeholder="Ex.: Rua..., Cidade Demo - SC"></div>
     <div style="grid-column:1/-1" class="actions"><button class="btn btn-light" type="button" onclick="searchFleetGeofenceLocation()">Buscar por CEP / endereço</button></div>
     <div id="fleetGeocodeResults" style="grid-column:1/-1"></div>
     <div class="form-group" style="grid-column:1/-1"><label>Coordenadas — decimal ou graus/minutos/segundos</label><input name="coordinate_text" value="${esc(coordinateValue)}" placeholder="27°35'47.3&quot;S 48°38'59.2&quot;W"><small class="form-help">Também aceita: -27.596472, -48.649778</small></div>
@@ -8973,7 +8821,7 @@ function companyForm(id){
         <input
           name="name"
           value="${esc(company?companyName(company.id):"")}"
-          placeholder="Ex.: Exemplo"
+          placeholder="Ex.: CONSTRUTORA DEMO"
           required
           autofocus
         >
@@ -9039,7 +8887,7 @@ function bulkCompanyForm(){
         <textarea
           name="names"
           style="min-height:360px;"
-          placeholder="MD&#10;RD&#10;Exemplo&#10;Exemplo"
+          placeholder="MD&#10;RD&#10;CONSTRUTORA DEMO&#10;CLIENTE DEMO"
           required
         ></textarea>
         <small class="muted">
@@ -9140,7 +8988,7 @@ function bulkCompanyWorkImportForm(){
     <form id="bulkCompanyWorkImportForm" class="form-grid" style="margin-top:12px">
       <div class="form-group" style="grid-column:1/-1">
         <label>Texto copiado da planilha</label>
-        <textarea name="text" rows="12" required placeholder="Exemplo&#9;Exemplo UNIC&#9;R$ 1.450,00&#9;R$ 900,00"></textarea>
+        <textarea name="text" rows="12" required placeholder="ALEX&#9;ALEX UNIC&#9;R$ 1.450,00&#9;R$ 900,00"></textarea>
       </div>
       <div id="bulkCompanyWorkSummary" class="card" style="grid-column:1/-1">Cole os dados para gerar a conferência.</div>
       <div id="bulkCompanyWorkPreview" class="bulk-work-preview" style="grid-column:1/-1"></div>
@@ -10674,7 +10522,7 @@ function teamManager(){
       Equipes sem lançamentos podem ser excluídas definitivamente.
       Quando já existe histórico, a exclusão arquiva a equipe para preservar
       os relatórios e os lançamentos financeiros.<br>
-      <strong>Regra de nomes:</strong> Exemplo/Exemplo e variações são consolidados em <strong>Exemplo</strong>; Exemplo/GU são consolidados em <strong>GU</strong>.
+      <strong>Regra de nomes:</strong> Emanuel/Emmanuel e variações são consolidados em <strong>EMMANUEL</strong>; Gustavo/GU são consolidados em <strong>GU</strong>.
     </div>
 
     <h3>Equipes ativas</h3>
@@ -11723,40 +11571,40 @@ function financeMonthSelector(onChangeFunction){
 }
 
 
-function alineTabs(active){
+function projectsTabs(active){
   return`
-    <div class="aline-tabs">
-      <button class="${active==="works"?"active":""}" onclick="currentArea='aline';page='alineWorks';render()">
+    <div class="projects-tabs">
+      <button class="${active==="works"?"active":""}" onclick="currentArea='projects';page='projectsWorks';render()">
         Obras
       </button>
-      <button class="${active==="processes"?"active":""}" onclick="currentArea='aline';page='alineProcesses';render()">
+      <button class="${active==="processes"?"active":""}" onclick="currentArea='projects';page='projectsProcesses';render()">
         Processos
       </button>
     </div>
   `;
 }
 
-function alineWorks(){
-  return alineWorksV24();
-  setHeader("Projetista — Processos | Obras","Organização das obras acompanhadas pela Processos.");
-  const rows=[...data.alineWorks].sort((a,b)=>
+function projectsWorks(){
+  return projectsWorksV24();
+  setHeader("Projetista — Projetos | Obras","Organização das obras acompanhadas pela Projetos.");
+  const rows=[...data.projectsWorks].sort((a,b)=>
     String(a.deadline||"9999-12-31").localeCompare(String(b.deadline||"9999-12-31"))
   );
   const active=rows.filter(item=>!["Concluída","Cancelada"].includes(item.status)).length;
   const overdue=rows.filter(item=>item.deadline && item.deadline<plusDays(0) && item.status!=="Concluída").length;
 
   document.getElementById("content").innerHTML=`
-    ${alineTabs("works")}
+    ${projectsTabs("works")}
 
     <div class="grid grid-3">
-      ${metric("Obras cadastradas",rows.length,"Controle da Processos")}
+      ${metric("Obras cadastradas",rows.length,"Controle da Projetos")}
       ${metric("Em andamento",active,"Ainda não concluídas",active?"warning":"success")}
       ${metric("Prazos vencidos",overdue,"Exigem revisão",overdue?"danger":"success")}
     </div>
 
     <div class="toolbar" style="margin-top:16px;">
-      <span class="muted">Cadastre e acompanhe as obras sob responsabilidade da Processos.</span>
-      <button class="btn btn-primary" onclick="alineWorkForm()">Nova obra</button>
+      <span class="muted">Cadastre e acompanhe as obras sob responsabilidade da Projetos.</span>
+      <button class="btn btn-primary" onclick="projectsWorkForm()">Nova obra</button>
     </div>
 
     ${table(
@@ -11772,19 +11620,19 @@ function alineWorks(){
       ]),
       index=>`
         <div class="actions">
-          <button class="btn btn-light" onclick="alineWorkForm(${rows[index].id})">Editar</button>
-          <button class="btn btn-danger" onclick="deleteAlineWork(${rows[index].id})">Excluir</button>
+          <button class="btn btn-light" onclick="projectsWorkForm(${rows[index].id})">Editar</button>
+          <button class="btn btn-danger" onclick="deleteProjetosWork(${rows[index].id})">Excluir</button>
         </div>
       `
     )}
   `;
 }
 
-function alineWorkForm(id){
-  const item=id?data.alineWorks.find(row=>row.id===Number(id)):null;
+function projectsWorkForm(id){
+  const item=id?data.projectsWorks.find(row=>row.id===Number(id)):null;
   modal(`
-    <h2>${item?"Editar obra da Processos":"Nova obra da Processos"}</h2>
-    <form id="alineWorkForm" class="form-grid">
+    <h2>${item?"Editar obra da Projetos":"Nova obra da Projetos"}</h2>
+    <form id="projectsWorkForm" class="form-grid">
       ${field("Nome da obra","name",item?.name||"","text",true)}
       ${field("Empresa","company",item?.company||"")}
       ${field("Cliente","client",item?.client||"")}
@@ -11802,44 +11650,44 @@ function alineWorkForm(id){
     </form>
   `);
 
-  document.getElementById("alineWorkForm").addEventListener("submit",event=>{
+  document.getElementById("projectsWorkForm").addEventListener("submit",event=>{
     event.preventDefault();
     const values=Object.fromEntries(new FormData(event.target).entries());
     const payload={...values,updatedAt:plusDays(0)};
     if(item) Object.assign(item,payload);
-    else data.alineWorks.push({id:nextId(data.alineWorks),createdAt:plusDays(0),...payload});
-    save();closeModal();render();showToast("Obra da Processos salva.");
+    else data.projectsWorks.push({id:nextId(data.projectsWorks),createdAt:plusDays(0),...payload});
+    save();closeModal();render();showToast("Obra da Projetos salva.");
   });
 }
 
-function deleteAlineWork(id){
-  const item=data.alineWorks.find(row=>row.id===Number(id));
+function deleteProjetosWork(id){
+  const item=data.projectsWorks.find(row=>row.id===Number(id));
   if(!item || !confirm(`Excluir a obra "${item.name}"?`)) return;
-  data.alineWorks=data.alineWorks.filter(row=>row.id!==item.id);
+  data.projectsWorks=data.projectsWorks.filter(row=>row.id!==item.id);
   save();render();showToast("Obra excluída.");
 }
 
-function alineProcesses(){
-  return alineProcessesV24();
-  setHeader("Projetista — Processos | Processos","Controle dos processos e protocolos acompanhados pela Processos.");
-  const rows=[...data.alineProcesses].sort((a,b)=>
+function projectsProcesses(){
+  return projectsProcessesV24();
+  setHeader("Projetista — Projetos | Processos","Controle dos processos e protocolos acompanhados pela Projetos.");
+  const rows=[...data.projectsProcesses].sort((a,b)=>
     String(a.deadline||"9999-12-31").localeCompare(String(b.deadline||"9999-12-31"))
   );
   const active=rows.filter(item=>!["Concluído","Cancelado"].includes(item.status)).length;
   const overdue=rows.filter(item=>item.deadline && item.deadline<plusDays(0) && item.status!=="Concluído").length;
 
   document.getElementById("content").innerHTML=`
-    ${alineTabs("processes")}
+    ${projectsTabs("processes")}
 
     <div class="grid grid-3">
-      ${metric("Processos cadastrados",rows.length,"Controle da Processos")}
+      ${metric("Processos cadastrados",rows.length,"Controle da Projetos")}
       ${metric("Em andamento",active,"Ainda não concluídos",active?"warning":"success")}
       ${metric("Prazos vencidos",overdue,"Exigem revisão",overdue?"danger":"success")}
     </div>
 
     <div class="toolbar" style="margin-top:16px;">
       <span class="muted">Acompanhe protocolos, aprovações e pendências documentais.</span>
-      <button class="btn btn-primary" onclick="alineProcessForm()">Novo processo</button>
+      <button class="btn btn-primary" onclick="projectsProcessForm()">Novo processo</button>
     </div>
 
     ${table(
@@ -11855,19 +11703,19 @@ function alineProcesses(){
       ]),
       index=>`
         <div class="actions">
-          <button class="btn btn-light" onclick="alineProcessForm(${rows[index].id})">Editar</button>
-          <button class="btn btn-danger" onclick="deleteAlineProcess(${rows[index].id})">Excluir</button>
+          <button class="btn btn-light" onclick="projectsProcessForm(${rows[index].id})">Editar</button>
+          <button class="btn btn-danger" onclick="deleteProjetosProcess(${rows[index].id})">Excluir</button>
         </div>
       `
     )}
   `;
 }
 
-function alineProcessForm(id){
-  const item=id?data.alineProcesses.find(row=>row.id===Number(id)):null;
+function projectsProcessForm(id){
+  const item=id?data.projectsProcesses.find(row=>row.id===Number(id)):null;
   modal(`
-    <h2>${item?"Editar processo da Processos":"Novo processo da Processos"}</h2>
-    <form id="alineProcessForm" class="form-grid">
+    <h2>${item?"Editar processo da Projetos":"Novo processo da Projetos"}</h2>
+    <form id="projectsProcessForm" class="form-grid">
       ${field("Título do processo","title",item?.title||"","text",true)}
       ${field("Cliente","client",item?.client||"")}
       ${field("Tipo de processo","processType",item?.processType||"")}
@@ -11885,20 +11733,20 @@ function alineProcessForm(id){
     </form>
   `);
 
-  document.getElementById("alineProcessForm").addEventListener("submit",event=>{
+  document.getElementById("projectsProcessForm").addEventListener("submit",event=>{
     event.preventDefault();
     const values=Object.fromEntries(new FormData(event.target).entries());
     const payload={...values,updatedAt:plusDays(0)};
     if(item) Object.assign(item,payload);
-    else data.alineProcesses.push({id:nextId(data.alineProcesses),createdAt:plusDays(0),...payload});
-    save();closeModal();render();showToast("Processo da Processos salvo.");
+    else data.projectsProcesses.push({id:nextId(data.projectsProcesses),createdAt:plusDays(0),...payload});
+    save();closeModal();render();showToast("Processo da Projetos salvo.");
   });
 }
 
-function deleteAlineProcess(id){
-  const item=data.alineProcesses.find(row=>row.id===Number(id));
+function deleteProjetosProcess(id){
+  const item=data.projectsProcesses.find(row=>row.id===Number(id));
   if(!item || !confirm(`Excluir o processo "${item.title}"?`)) return;
-  data.alineProcesses=data.alineProcesses.filter(row=>row.id!==item.id);
+  data.projectsProcesses=data.projectsProcesses.filter(row=>row.id!==item.id);
   save();render();showToast("Processo excluído.");
 }
 
@@ -13577,9 +13425,9 @@ function deleteInvoice(id){
 function projectBranchHeader(){
   return`
     <div class="project-branch">
-      <button type="button" class="active">Projetos — atendimento e orçamentos</button>
-      <button type="button" onclick="currentArea='aline';page='alineWorks';render()">
-        Ir para Processos — obras e processos
+      <button type="button" class="active">Projetista — atendimento e orçamentos</button>
+      <button type="button" onclick="currentArea='projects';page='projectsWorks';render()">
+        Ir para Projetos — obras e processos
       </button>
     </div>
   `;
@@ -13626,10 +13474,10 @@ function calculateProjectBudget(values){
     reasons.push("Informe a metragem aproximada do terreno.");
   }
   if(area>Number(config.maxAutomaticArea||5000)){
-    reasons.push(`Área acima de ${Number(config.maxAutomaticArea||5000).toLocaleString("pt-BR")} m²: consultar o Exemplo.`);
+    reasons.push(`Área acima de ${Number(config.maxAutomaticArea||5000).toLocaleString("pt-BR")} m²: consultar o Responsável Demo.`);
   }
   if(["Amembramento","Desmembramento"].includes(serviceType) && lotCount>Number(config.maxLots||3)){
-    reasons.push(`Mais de ${Number(config.maxLots||3)} terrenos: consultar o Exemplo.`);
+    reasons.push(`Mais de ${Number(config.maxLots||3)} terrenos: consultar o Responsável Demo.`);
   }
   if(serviceType==="Locação de Obras" && !rules.length){
     reasons.push("Não existe faixa automática cadastrada para locação de obras.");
@@ -13951,7 +13799,7 @@ function deleteProjectClient(id){
 
 function projectistDashboard(){
   setHeader(
-    "Projetista — Projetos",
+    "Projetista — Atendimento",
     "Atendimento, orçamentos, solicitações ao diretor e confirmações com clientes."
   );
 
@@ -13976,7 +13824,7 @@ function projectistDashboard(){
 
     <div class="toolbar" style="margin-top:18px;">
       <div>
-        <h2 style="margin:0;color:var(--azul-escuro);">Notificações da Projetos</h2>
+        <h2 style="margin:0;color:var(--azul-escuro);">Notificações da Projetista</h2>
         <span class="muted">${notifications.length} ação(ões) pendente(s)</span>
       </div>
       <button class="btn btn-primary" onclick="projectClientForm()">Novo cliente</button>
@@ -14006,7 +13854,7 @@ function projectistDashboard(){
           </div>
         </div>
       </div>
-    `).join(""):`<div class="card">Nenhuma notificação pendente para a Projetos.</div>`}
+    `).join(""):`<div class="card">Nenhuma notificação pendente para a Projetista.</div>`}
 
     <h2 class="section-title">Demandas ativas</h2>
     <div class="project-grid">
@@ -14030,7 +13878,7 @@ function projectistDashboard(){
 
 function projectistClients(){
   setHeader(
-    "Clientes e terrenos — Projetos",
+    "Clientes e terrenos — Projetista",
     "Cadastro do cliente, características do terreno, orçamento e andamento."
   );
 
@@ -14358,7 +14206,7 @@ function renderProjectClientDetail(client){
     <div class="toolbar">
       <button class="btn btn-light" onclick="closeProjectClientDetail()">← Voltar aos clientes</button>
       <div class="actions">
-        <button class="btn btn-primary" onclick="alineCreateWorkDemandFromHelenaV24(${client.id},'Projetos')">Enviar conferência para Processos</button>
+        <button class="btn btn-primary" onclick="projectsCreateWorkDemandFromProjetistaV24(${client.id},'Projetista')">Enviar conferência para Projetos</button>
         <button class="btn btn-light" onclick="projectClientForm(${client.id})">Editar ficha</button>
         <button class="btn btn-danger" onclick="deleteProjectClient(${client.id})">Excluir cliente</button>
       </div>
@@ -14501,7 +14349,7 @@ function renderProjectClientDetail(client){
         <div class="team-chat-list">
           ${(client.teamMessages||[]).length
             ?client.teamMessages.map(message=>`
-              <div class="team-chat-message ${message.senderRole==="Projetos"?"helena":"employee"}">
+              <div class="team-chat-message ${message.senderRole==="Projetista"?"projectist":"employee"}">
                 <strong>${esc(message.senderName||message.senderRole||"Equipe")}</strong><br>
                 ${esc(message.text)}
                 <small>${new Date(message.createdAt).toLocaleString("pt-BR")}</small>
@@ -14513,13 +14361,13 @@ function renderProjectClientDetail(client){
 
         <div class="team-chat-compose">
           <textarea
-            id="helenaTeamMessage_${client.id}"
+            id="projectistTeamMessage_${client.id}"
             placeholder="Informe observações, acesso ao terreno, pessoa de contato, equipamentos ou cuidados especiais..."
           ></textarea>
           <button
             type="button"
             class="btn btn-primary"
-            onclick="sendHelenaTeamMessage(${client.id})"
+            onclick="sendProjetistaTeamMessage(${client.id})"
           >Enviar à equipe</button>
         </div>
       `:`
@@ -14569,14 +14417,14 @@ function openEmployeeAppFileAdmin(fileId){
   link.remove();
 }
 
-function sendHelenaTeamMessage(clientId){
+function sendProjetistaTeamMessage(clientId){
   const client=projectClientById(clientId);
   if(!client || !client.scheduledTeamId){
     alert("O diretor ainda não selecionou uma equipe.");
     return;
   }
 
-  const field=document.getElementById(`helenaTeamMessage_${clientId}`);
+  const field=document.getElementById(`projectistTeamMessage_${clientId}`);
   const text=String(field?.value||"").trim();
 
   if(!text){
@@ -14590,8 +14438,8 @@ function sendHelenaTeamMessage(clientId){
     id:nextId(client.teamMessages),
     clientId:client.id,
     teamId:Number(client.scheduledTeamId),
-    senderRole:"Projetos",
-    senderName:"Projetos",
+    senderRole:"Projetista",
+    senderName:"Projetista",
     senderEmployeeId:"",
     text,
     createdAt:new Date().toISOString(),
@@ -14786,7 +14634,7 @@ function confirmProjectSchedule(id){
     location:[client.landLocation,client.landCityState].filter(Boolean).join(" — "),
     serviceType:projectServiceScheduleType(client.serviceType),
     observation:[
-      "Cliente cadastrado pela Projetos.",
+      "Cliente cadastrado pela Projetista.",
       client.serviceIntent,
       client.notes,
       client.locationMapUrl?`Mapa: ${client.locationMapUrl}`:""
@@ -14845,7 +14693,7 @@ function markProjectDayBeforeConfirmed(id){
 
 function projectistCalendar(){
   setHeader(
-    "Agenda da Projetos",
+    "Agenda da Projetista",
     "Horários disponibilizados pelo diretor e atendimentos confirmados."
   );
 
@@ -14927,7 +14775,7 @@ function projectBoardStage(client){
 
 function projectistTrello(){
   setHeader(
-    "Trello da Projetos",
+    "Trello da Projetista",
     "Quadro interno atualizado automaticamente conforme o andamento do cliente."
   );
 
@@ -14939,7 +14787,7 @@ function projectistTrello(){
 
     <div class="finance-note">
       Este é um quadro Trello interno da prévia. Os cartões mudam de coluna
-      automaticamente quando a Projetos ou o diretor atualizam o atendimento.
+      automaticamente quando a Projetista ou o diretor atualizam o atendimento.
     </div>
 
     <div class="project-trello">
@@ -14967,7 +14815,7 @@ function projectistTrello(){
 
 function directorRequests(){
   setHeader(
-    "Solicitações da Projetos",
+    "Solicitações da Projetista",
     "Função do diretor vinculada ao Administrativo: definir equipe, data e horário."
   );
 
@@ -14981,9 +14829,9 @@ function directorRequests(){
 
   document.getElementById("content").innerHTML=`
     <div class="finance-note">
-      A Projetos envia a solicitação após o cliente aprovar o orçamento.
+      A Projetista envia a solicitação após o cliente aprovar o orçamento.
       O diretor disponibiliza uma equipe, uma data e um horário.
-      O serviço só entra na agenda oficial depois que o cliente confirmar com a Projetos.
+      O serviço só entra na agenda oficial depois que o cliente confirmar com a Projetista.
     </div>
 
     <div class="grid grid-3">
@@ -15030,8 +14878,8 @@ function directorRequests(){
               `:""}
             </div>
             <div class="actions">
-              <button class="btn btn-light" onclick="alineCreateWorkDemandFromDirectorV24(${request.id})">
-                Enviar para Processos
+              <button class="btn btn-light" onclick="projectsCreateWorkDemandFromDirectorV24(${request.id})">
+                Enviar para Projetos
               </button>
               <button class="btn btn-primary" onclick="directorRequestForm(${request.id})">
                 ${request.status==="Pendente"?"Definir data e equipe":"Editar disponibilidade"}
@@ -15040,7 +14888,7 @@ function directorRequests(){
           </div>
         </div>
       `;
-    }).join(""):`<div class="card">Nenhuma solicitação recebida da Projetos.</div>`}
+    }).join(""):`<div class="card">Nenhuma solicitação recebida da Projetista.</div>`}
   `;
 }
 
@@ -15071,7 +14919,7 @@ function directorRequestForm(id){
       ${field("Horário","time",request.time||"08:00","time",true)}
 
       <div class="form-group" style="grid-column:1/-1;">
-        <label>Observação para a Projetos</label>
+        <label>Observação para a Projetista</label>
         <textarea name="directorNote">${esc(request.directorNote||"")}</textarea>
       </div>
 
@@ -15133,7 +14981,7 @@ function directorRequestForm(id){
     client.scheduledTeamId=request.teamId;
     client.directorNote=request.directorNote;
 
-    // Qualquer alteração feita pelo diretor exige uma nova confirmação da Projetos.
+    // Qualquer alteração feita pelo diretor exige uma nova confirmação da Projetista.
     client.scheduleConfirmedAt="";
     client.updatedAt=plusDays(0);
 
@@ -15160,7 +15008,7 @@ function directorRequestForm(id){
       dailyType:"",
       value:Number(client.budgetFinal||client.budgetMin||0),
 
-      // Enquanto Projetos não confirmar, permanece pendente.
+      // Enquanto Projetista não confirmar, permanece pendente.
       status:"Pendente",
 
       billingEntityId:"",
@@ -15171,7 +15019,7 @@ function directorRequestForm(id){
       ].filter(Boolean).join(" — "),
       serviceType:projectServiceScheduleType(client.serviceType),
       observation:[
-        "Cliente cadastrado pela Projetos.",
+        "Cliente cadastrado pela Projetista.",
         "Data disponibilizada pelo diretor aguardando confirmação.",
         client.serviceIntent,
         client.notes,
@@ -15209,7 +15057,7 @@ function directorRequestForm(id){
 
 
 function profileRoleLabel(role){
-  return({admin:"Administrativo",director:"Diretor",financial:"Financeiro",helena:"Projetos",aline:"Processos",employee:"Funcionário",client:"Cliente"})[role]||role||"Sem perfil";
+  return({admin:"Administrativo",director:"Diretor",financial:"Financeiro",projectist:"Projetista",projects:"Projetos",employee:"Funcionário",client:"Cliente"})[role]||role||"Sem perfil";
 }
 
 async function adminUsers(){
@@ -15601,8 +15449,8 @@ document.querySelectorAll("[data-area-switch]").forEach(button=>{
       ?"financeDashboard"
       :currentArea==="projectist"
         ?"projectistDashboard"
-      :currentArea==="aline"
-          ?"alineProcesses"
+      :currentArea==="projects"
+          ?"projectsProcesses"
           :"dashboard";
     closeSidebar();
     render();
@@ -15632,7 +15480,7 @@ document.getElementById("editToggle").addEventListener("click",()=>{
   if(label) label.textContent=editMode?"Desativar edição":"Ativar edição";
   render();
 });
-document.getElementById("exportButton").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="siemann_canvas_dados.json";a.click();URL.revokeObjectURL(a.href)});
+document.getElementById("exportButton").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="operational_canvas_dados.json";a.click();URL.revokeObjectURL(a.href)});
 document.getElementById("modalClose").addEventListener("click",event=>{
   event.preventDefault();
   event.stopPropagation();

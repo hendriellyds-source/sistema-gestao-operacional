@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <meta name="theme-color" content="#123d5a" />
+    <link rel="manifest" href="/assets/tablet_agenda.webmanifest" />
+    <link rel="icon" href="/assets/brand.svg" />
+    <link rel="stylesheet" href="/assets/tablet_agenda.css?v=1.2.1" />
+    <title>Agenda Gestão Operacional</title>
+    <script src="/assets/tablet_agenda.js?v=1.3.4" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img src="/assets/brand.svg" alt="" /><span
+          >Agenda Gestão Operacional</span
+        >
+      </div>
+      <div class="day-nav">
+        <button id="previousDay" aria-label="Dia anterior">‹</button>
+        <input id="day" type="date" aria-label="Data da página" />
+        <button id="nextDay" aria-label="Próximo dia">›</button>
+        <button id="today" class="subtle">Hoje</button>
+      </div>
+      <div class="top-actions">
+        <span id="syncStatus" class="sync-status" role="status"
+          >Carregando…</span
+        >
+        <a id="relogin" href="/login?next=/agenda-tablet" class="subtle" hidden
+          >Entrar novamente</a
+        >
+        <button id="install" class="subtle" hidden>Instalar</button>
+        <a href="/workspace" class="subtle">Sistema</a>
+      </div>
+    </header>
+    <main>
+      <section id="requestsPanel" class="requests-panel" hidden aria-live="polite"></section>
+      <section class="agenda-search" aria-label="Pesquisar serviços da agenda">
+        <label for="agendaSearch"><strong>Pesquisar obra ou empresa em toda a agenda</strong></label>
+        <input id="agendaSearch" type="search" placeholder="Digite o nome da obra ou empresa" autocomplete="off" />
+        <div id="agendaSearchResults" aria-live="polite"></div>
+      </section>
+      <div class="toolbar" aria-label="Ferramentas de escrita">
+        <span>Agendamentos e anotações nas linhas do dia</span>
+        <div class="mode-switch" role="group" aria-label="Modo da agenda">
+          <button id="textMode" class="primary" aria-pressed="true">Escrita</button>
+          <button id="drawMode" class="subtle" aria-pressed="false">Desenho</button>
+        </div>
+        <button id="aliasesButton" class="subtle">Siglas e apelidos</button>
+        <label id="inkColorLabel" hidden>Cor <input id="inkColor" type="color" value="#17394b" /></label>
+        <button id="undo" class="subtle" hidden>Desfazer traço</button>
+        <button id="reviewButton" class="primary">Conferir anotações</button>
+      </div>
+      <p id="modeHint" class="mode-hint">Digite em cada linha. Use / ou Shift para passar ao próximo item. As sugestões aparecem enquanto você escreve.</p>
+      <div class="notebook-wrap">
+        <div id="textNotebook" class="text-notebook"></div>
+        <canvas
+          id="paper"
+          width="1000"
+          height="1400"
+          aria-label="Página de escrita da agenda"
+          hidden
+        ></canvas>
+      </div>
+      <p class="hint">
+        Os traços são salvos neste tablet imediatamente. Aguarde “Sincronizado”
+        antes de limpar o navegador ou trocar de aparelho.
+      </p>
+    </main>
+    <div id="reviewOverlay" class="overlay" hidden>
+      <section
+        class="review-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="reviewTitle"
+      >
+        <header>
+          <h2 id="reviewTitle">Conferir anotações</h2>
+          <button id="closeReview" class="subtle">Fechar</button>
+        </header>
+        <p>
+          Cada linha mantém o traço original. Ao identificar uma obra, o
+          agendamento entra automaticamente no sistema. Confira abaixo se
+          aparece “Agendamento confirmado no sistema”.
+        </p>
+        <div id="reviewCards" class="review-cards"></div>
+      </section>
+    </div>
+    <div id="scheduleEditOverlay" class="overlay" hidden>
+      <section class="review-panel" role="dialog" aria-modal="true" aria-labelledby="scheduleEditTitle">
+        <header><h2 id="scheduleEditTitle">Editar serviço</h2><button id="closeScheduleEdit" type="button" class="subtle">Fechar</button></header>
+        <form id="scheduleEditForm" class="schedule-edit-form"></form>
+        <p id="scheduleEditMessage" role="status"></p>
+      </section>
+    </div>
+    <div id="aliasesOverlay" class="overlay" hidden>
+      <section class="review-panel alias-panel" role="dialog" aria-modal="true" aria-labelledby="aliasesTitle">
+        <header><h2 id="aliasesTitle">Siglas e apelidos</h2><button id="closeAliases" class="subtle">Fechar</button></header>
+        <p>Vincule uma sigla diretamente a uma equipe, empresa ou obra. Ela será reconhecida nas próximas anotações.</p>
+        <form id="aliasForm" class="alias-form">
+          <label>Sigla ou apelido<input id="aliasName" maxlength="80" required placeholder="Ex.: BETT" /></label>
+          <label>Tipo<select id="aliasKind"><option value="team">Equipe</option><option value="company">Empresa</option><option value="work">Obra</option></select></label>
+          <label>Vincular a<select id="aliasTarget" required></select></label>
+          <button class="primary" type="submit">Guardar sigla</button>
+        </form>
+        <p id="aliasMessage" role="status"></p>
+        <div id="aliasList" class="alias-list"></div>
+      </section>
+    </div>
+  </body>
+</html>

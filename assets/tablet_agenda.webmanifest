@@ -1,0 +1,18 @@
+{
+  "id": "/agenda-tablet",
+  "name": "Agenda Operacional — Demo",
+  "short_name": "Agenda",
+  "start_url": "/agenda-tablet",
+  "scope": "/agenda-tablet",
+  "display": "standalone",
+  "background_color": "#f4f1e9",
+  "theme_color": "#123d5a",
+  "icons": [
+    {
+      "src": "/assets/brand.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

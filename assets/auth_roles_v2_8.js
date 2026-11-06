@@ -4,8 +4,8 @@
 const V28_ROLE_NAMES={
   diretor:"Diretor",
   adm:"Administrativo",
-  helena:"Projetos",
-  aline:"Processos",
+  projectist:"Projetista",
+  projects:"Projetos",
   financeiro:"Financeiro"
 };
 const V28_STATUS=["Nova","Em andamento","Aguardando diretor","Concluída"];
@@ -95,7 +95,7 @@ window.internalDemands=async function(){
     const newCount=received.filter(item=>item.status==="Nova").length;
     content.innerHTML=`<div class="v28-demand-shell">
       <div class="v28-demand-hero">
-        <div><small>${isDirector?"DIREÇÃO":isAdmin?"PONTE ENTRE SETORES":"CAIXA DE ENTRADA E SAÍDA"}</small><h2>${isDirector?"Demandas para todos os setores":isAdmin?"Central de apoio administrativo":`Demandas — ${v28Esc(CURRENT_USER.display_name)}`}</h2><p>${isDirector?"Envie tarefas para Administrativo, Projetos, Processos e Financeiro.":isAdmin?"Receba pedidos de ajuda e distribua tarefas para os demais setores.":"Receba suas demandas e encaminhe dúvidas ou pedidos de ajuda ao Administrativo."}</p></div>
+        <div><small>${isDirector?"DIREÇÃO":isAdmin?"PONTE ENTRE SETORES":"CAIXA DE ENTRADA E SAÍDA"}</small><h2>${isDirector?"Demandas para todos os setores":isAdmin?"Central de apoio administrativo":`Demandas — ${v28Esc(CURRENT_USER.display_name)}`}</h2><p>${isDirector?"Envie tarefas para Administrativo, Projetista, Projetos e Financeiro.":isAdmin?"Receba pedidos de ajuda e distribua tarefas para os demais setores.":"Receba suas demandas e encaminhe dúvidas ou pedidos de ajuda ao Administrativo."}</p></div>
         ${CURRENT_USER.can_dispatch_demands?`<button class="btn btn-primary" onclick="newInternalDemandV28()">${isDirector||isAdmin?"Nova demanda":"Solicitar ajuda ao Administrativo"}</button>`:""}
       </div>
       <div class="grid grid-4">
@@ -113,7 +113,7 @@ window.internalDemands=async function(){
 window.newInternalDemandV28=function(){
   if(!CURRENT_USER.can_dispatch_demands)return;
   const targets=Array.isArray(CURRENT_USER.dispatch_targets)?CURRENT_USER.dispatch_targets:[];
-  modal(`<h2>${CURRENT_USER.role==="helena"||CURRENT_USER.role==="aline"||CURRENT_USER.role==="financeiro"?"Solicitar ajuda ao Administrativo":"Nova demanda interna"}</h2><form id="v28DemandForm" class="form-grid">
+  modal(`<h2>${CURRENT_USER.role==="projectist"||CURRENT_USER.role==="projects"||CURRENT_USER.role==="financeiro"?"Solicitar ajuda ao Administrativo":"Nova demanda interna"}</h2><form id="v28DemandForm" class="form-grid">
     <div class="form-group"><label>Setor de destino *</label><select name="target_role" required>${targets.map(value=>`<option value="${value}">${v28Esc(V28_ROLE_NAMES[value]||value)}</option>`).join("")}</select></div>
     <div class="form-group"><label>Prioridade</label><select name="priority"><option>Normal</option><option>Alta</option><option>Urgente</option></select></div>
     <div class="form-group" style="grid-column:1/-1"><label>Título *</label><input name="title" required></div>

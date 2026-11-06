@@ -1,11 +1,38 @@
+# Segredos
+.env
+
+# Ambiente Python
 .venv/
+venv/
 __pycache__/
 *.pyc
-.env
-.env.*
-!.env.example
+*.pyo
+
+# Bancos e dados locais
 *.db
+*.sqlite
+*.sqlite3
+
+# Logs e arquivos temporários
+*.log
+logs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Sistema operacional
+Thumbs.db
+.DS_Store
+# Runtime files and secrets
+data/**
+!data/.gitkeep
 *.db-*
-data/
+*.sqlite-*
 *.pem
 *.key
+*.pfx
+*.p12
+.env.*
+!.env.example
+supabase/.temp/
+node_modules/

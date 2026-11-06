@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <link rel="icon" type="image/svg+xml" href="/assets/brand.svg">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Relatório diário — {{ report.vehicle_name }}</title>
+  <style>
+    :root{font-family:Arial,sans-serif;color:#17202a}body{margin:0;background:#f4f6f8}.wrap{max-width:1050px;margin:0 auto;padding:24px}.head,.card{background:#fff;border:1px solid #dfe5e9;border-radius:12px;padding:18px;margin-bottom:14px}.head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.head h1{margin:0 0 7px;font-size:23px}.muted{color:#667584}.actions{display:flex;gap:8px}.btn{border:1px solid #176b87;background:#176b87;color:#fff;border-radius:8px;padding:9px 12px;cursor:pointer;text-decoration:none}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric{background:#fff;border:1px solid #dfe5e9;border-radius:10px;padding:13px}.metric span{display:block;color:#667584;font-size:12px}.metric strong{display:block;margin-top:5px;font-size:18px}.timeline{border-left:3px solid #176b87;margin-left:9px;padding-left:18px}.event{position:relative;padding:0 0 18px}.event:before{content:"";position:absolute;left:-25px;top:4px;width:11px;height:11px;border-radius:50%;background:#176b87}.event h3{margin:0 0 6px;font-size:15px}.event p{margin:4px 0;font-size:13px}.links a{margin-right:12px;color:#176b87;font-weight:700;text-decoration:none}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:9px;border-bottom:1px solid #e4e8eb;text-align:left}th{background:#f7f9fa}.notice{font-size:12px;color:#667584;margin-top:16px}@media(max-width:700px){.grid{grid-template-columns:1fr 1fr}.head{display:block}.actions{margin-top:12px}}@media print{body{background:#fff}.wrap{max-width:none;padding:0}.actions{display:none}.head,.card,.metric{box-shadow:none;break-inside:avoid}.links a{color:#000}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <section class="head">
+    <div>
+      <h1>Relatório diário do veículo</h1>
+      <div><strong>{{ report.vehicle_name }}</strong> — {{ report.identifier }}</div>
+      <div class="muted">Data: {{ report.report_date }}{% if report.driver %} • Motorista: {{ report.driver }}{% endif %}</div>
+    </div>
+    <div class="actions"><button class="btn" onclick="window.print()">Imprimir / salvar em PDF</button></div>
+  </section>
+
+  <div class="grid">
+    <div class="metric"><span>Saída de casa/origem</span><strong>{{ report.departure_home[11:16] if report.departure_home else 'Sem registro' }}</strong></div>
+    <div class="metric"><span>Chegada à obra/destino</span><strong>{{ report.arrival_work[11:16] if report.arrival_work else 'Sem registro' }}</strong></div>
+    <div class="metric"><span>Saída da obra/destino</span><strong>{{ report.departure_work[11:16] if report.departure_work else 'Sem registro' }}</strong></div>
+    <div class="metric"><span>Chegada em casa/final</span><strong>{{ report.arrival_home[11:16] if report.arrival_home else 'Sem registro' }}</strong></div>
+  </div>
+
+  <section class="card">
+    <h2 style="margin-top:0">Resumo do dia</h2>
+    <p><strong>Distância:</strong> {{ report.distance_km }} km &nbsp; • &nbsp; <strong>Período operacional:</strong> {{ report.operational_minutes }} min &nbsp; • &nbsp; <strong>Tempo em movimento:</strong> {{ report.moving_minutes }} min &nbsp; • &nbsp; <strong>Tempo parado após a saída:</strong> {{ report.stopped_minutes }} min &nbsp; • &nbsp; <strong>Paradas:</strong> {{ report.stops|length }}</p>
+    <p class="muted"><strong>Detalhamento:</strong> {{ report.work_stopped_minutes }} min em obra • {{ report.other_stopped_minutes }} min em outras paradas{% if report.home_stopped_minutes %} • {{ report.home_stopped_minutes }} min em casa/sede durante o período{% endif %}. Horas estacionado antes da primeira saída e depois da chegada final não entram no cálculo.</p>
+  </section>
+
+  <section class="card">
+    <h2 style="margin-top:0">Linha do tempo</h2>
+    <div class="timeline">
+      {% for item in report.timeline %}
+        <div class="event">
+          {% if item.kind == 'TRIP' %}
+            <h3>Deslocamento — {{ item.start_time[11:16] }} até {{ item.end_time[11:16] }}</h3>
+            <p><strong>Origem:</strong> {{ (item.start_location or {}).get('name','Local não identificado') }}</p>
+            <p><strong>Destino:</strong> {{ (item.end_location or {}).get('name','Local não identificado') }}</p>
+            <p>{{ item.distance_km }} km • {{ item.duration_minutes }} min</p>
+            <div class="links">
+              {% if item.end_location %}<a target="_blank" href="{{ item.end_location.maps_url }}">Abrir destino no Google Maps</a><a target="_blank" href="{{ item.end_location.street_view_url }}">Abrir Street View</a>{% endif %}
+            </div>
+          {% else %}
+            <h3>Parada — {{ item.start_time[11:16] }} até {{ item.end_time[11:16] }}</h3>
+            <p><strong>Local:</strong> {{ (item.location or {}).get('name','Local não identificado') }}</p>
+            <p><strong>Tempo parado:</strong> {{ item.duration_minutes }} min{% if item.category_label %} • {{ item.category_label }}{% endif %}</p>
+            <div class="links">
+              {% if item.location %}<a target="_blank" href="{{ item.location.maps_url }}">Abrir no Google Maps</a><a target="_blank" href="{{ item.location.street_view_url }}">Abrir Street View</a>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% else %}
+        <p class="muted">Nenhum deslocamento ou parada encontrado neste dia.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 style="margin-top:0">Ocorrências de condução</h2>
+    <table>
+      <thead><tr><th>Horário</th><th>Categoria</th><th>Descrição</th></tr></thead>
+      <tbody>
+      {% for item in report.violations %}<tr><td>{{ item.time }}</td><td>{{ item.category }}</td><td>{{ item.description }}</td></tr>{% else %}<tr><td colspan="3">Nenhuma ocorrência detectada.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </section>
+  <div class="notice">Endereços obtidos por OpenStreetMap/Nominatim. O link do Street View depende da disponibilidade de imagens do Google para a coordenada.</div>
+</div>
+</body>
+</html>
