@@ -1,0 +1,141 @@
+{
+  "employeeImportVersion": "portfolio-v1",
+  "settings": {
+    "title": "Dashboard — Portfólio",
+    "subtitle": "Demonstração com dados inteiramente fictícios.",
+    "primary": "#0b5e8e",
+    "primaryLight": "#3a9ed0",
+    "primaryDark": "#244f7d",
+    "background": "#f5f8fb"
+  },
+  "employees": [
+    {
+      "id": 1,
+      "name": "Pessoa Exemplo 01",
+      "registration": "DEMO-001",
+      "code": "DEMO-001",
+      "role": "Técnico de campo",
+      "sector": "Operações",
+      "unit": "Unidade demonstrativa",
+      "status": "Ativo",
+      "admission": "2026-01-01",
+      "birth": "",
+      "cpf": "",
+      "email": "",
+      "phone": "",
+      "currentSalary": 2500,
+      "salaryAtRecord": 2500,
+      "contract": "CLT",
+      "risk": "Exemplo",
+      "salaryHistory": [],
+      "roleHistory": [],
+      "scheduleHistory": [],
+      "functionalOccurrences": [],
+      "notes": "Cadastro sintético para portfólio."
+    },
+    {
+      "id": 2,
+      "name": "Pessoa Exemplo 02",
+      "registration": "DEMO-002",
+      "code": "DEMO-002",
+      "role": "Técnico de campo",
+      "sector": "Operações",
+      "unit": "Unidade demonstrativa",
+      "status": "Ativo",
+      "admission": "2026-01-01",
+      "birth": "",
+      "cpf": "",
+      "email": "",
+      "phone": "",
+      "currentSalary": 2500,
+      "salaryAtRecord": 2500,
+      "contract": "CLT",
+      "risk": "Exemplo",
+      "salaryHistory": [],
+      "roleHistory": [],
+      "scheduleHistory": [],
+      "functionalOccurrences": [],
+      "notes": "Cadastro sintético para portfólio."
+    },
+    {
+      "id": 3,
+      "name": "Pessoa Exemplo 03",
+      "registration": "DEMO-003",
+      "code": "DEMO-003",
+      "role": "Técnico de campo",
+      "sector": "Operações",
+      "unit": "Unidade demonstrativa",
+      "status": "Ativo",
+      "admission": "2026-01-01",
+      "birth": "",
+      "cpf": "",
+      "email": "",
+      "phone": "",
+      "currentSalary": 2500,
+      "salaryAtRecord": 2500,
+      "contract": "CLT",
+      "risk": "Exemplo",
+      "salaryHistory": [],
+      "roleHistory": [],
+      "scheduleHistory": [],
+      "functionalOccurrences": [],
+      "notes": "Cadastro sintético para portfólio."
+    }
+  ],
+  "clinics": [],
+  "exams": [],
+  "vacations": [],
+  "leaves": [],
+  "vehicles": [],
+  "maintenances": [],
+  "maintenanceHistory": [],
+  "maintenanceDrafts": [],
+  "fines": [],
+  "companies": [
+    {
+      "id": 1,
+      "name": "Empresa Exemplo",
+      "legalName": "Empresa Exemplo",
+      "tradeName": "Empresa Exemplo",
+      "notes": "Empresa fictícia"
+    }
+  ],
+  "works": [
+    {
+      "id": 1,
+      "companyId": 1,
+      "name": "Projeto Demonstrativo",
+      "city": "Cidade Exemplo",
+      "status": "Ativa",
+      "dailyValue": 1000,
+      "halfDailyValue": 500
+    }
+  ],
+  "workTeams": [
+    {
+      "id": 1,
+      "name": "Equipe Exemplo",
+      "employeeIds": [
+        1,
+        2
+      ],
+      "active": true
+    }
+  ],
+  "workScheduleEntries": [],
+  "billingEntities": [],
+  "invoices": [],
+  "projectClients": [],
+  "projectScheduleRequests": [],
+  "alineWorks": [],
+  "alineProcesses": [],
+  "employeeAppFiles": [],
+  "events": [
+    {
+      "id": 1,
+      "title": "Reunião demonstrativa",
+      "date": "2026-11-13",
+      "category": "Reunião"
+    }
+  ]
+}

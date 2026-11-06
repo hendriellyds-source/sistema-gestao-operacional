@@ -1,0 +1,49 @@
+.hidden{display:none!important}
+.rf-status{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:.72rem;font-weight:800}
+.rf-status.valid,.rf-status.paid{background:#e4f6eb;color:#226d48}
+.rf-status.expiring,.rf-status.scheduled{background:#fff2c9;color:#805e08}
+.rf-status.expired,.rf-status.overdue{background:#fde6e6;color:#a33434}
+.rf-status.no_expiration,.rf-status.cancelled{background:#edf1f4;color:#5c6972}
+.rf-status.pending{background:#e6f1f8;color:#245f80}
+.rf-certificate-toolbar,.rf-calendar-toolbar{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.rf-filter-grid{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.rf-filter-grid .form-group{margin:0;min-width:170px}
+.rf-certificate-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:13px}
+.rf-certificate-card{border:1px solid var(--borda);border-left:5px solid var(--verde);border-radius:14px;padding:14px;background:#fff}
+.rf-certificate-card.expiring{border-left-color:var(--amarelo)}
+.rf-certificate-card.expired{border-left-color:var(--vermelho)}
+.rf-certificate-card.no_expiration{border-left-color:#7b8790}
+.rf-certificate-card h3{margin:0 0 5px;color:var(--azul-escuro)}
+.rf-certificate-meta{display:grid;gap:5px;margin:11px 0;color:#5d7182;font-size:.82rem}
+.rf-calendar-shell{display:grid;gap:15px}
+.rf-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;border:1px solid var(--borda);border-radius:14px;overflow:hidden;background:var(--borda)}
+.rf-calendar-head{padding:9px 5px;text-align:center;background:var(--azul-escuro);color:#fff;font-size:.75rem;font-weight:800}
+.rf-calendar-day{min-height:116px;padding:8px;background:#fff;min-width:0}
+.rf-calendar-day.is-empty{background:#f3f6f8}
+.rf-calendar-day.is-today{box-shadow:inset 0 0 0 2px var(--azul-claro)}
+.rf-calendar-day-number{display:block;margin-bottom:6px;color:var(--azul-escuro);font-weight:800}
+.rf-event{display:block;width:100%;margin:0 0 5px;padding:5px 7px;border:0;border-left:4px solid var(--azul);border-radius:6px;background:#edf6fb;color:#244f67;text-align:left;font-size:.68rem;line-height:1.25;cursor:pointer;overflow:hidden}
+.rf-event.vehicle{border-left-color:#6d5bd0;background:#f0edff}
+.rf-event.employee{border-left-color:#2e8b57;background:#e9f7ef}
+.rf-event.tax{border-left-color:#c74747;background:#fdeaea}
+.rf-event.supplier,.rf-event.payroll{border-left-color:#d99b20;background:#fff4d7}
+.rf-event.document{border-left-color:#287aa5;background:#e9f4fa}
+.rf-event.maintenance{border-left-color:#9a5b22;background:#f8eee4}
+.rf-calendar-list{display:none;gap:9px}
+.rf-calendar-list-item{display:grid;grid-template-columns:78px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px;border:1px solid var(--borda);border-radius:12px;background:#fff;cursor:pointer}
+.rf-calendar-list-item strong{color:var(--azul-escuro)}
+.rf-calendar-warning{padding:10px 12px;border:1px solid #e6c66d;border-radius:10px;background:#fff6d9;color:#735709}
+.rf-category-legend{display:flex;gap:7px;flex-wrap:wrap}
+.rf-category-legend span{padding:4px 8px;border-radius:999px;background:#eef4f7;font-size:.7rem;font-weight:700}
+.rf-modal-actions{grid-column:1/-1;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.rf-checkbox{display:flex;align-items:center;gap:8px;padding-top:25px}
+.rf-checkbox input{width:auto}
+@media(max-width:800px){
+  .rf-calendar-grid{display:none}
+  .rf-calendar-list{display:grid}
+  .rf-calendar-list-item{grid-template-columns:70px minmax(0,1fr)}
+  .rf-calendar-list-item .rf-status{grid-column:2;justify-self:start}
+  .rf-certificate-toolbar,.rf-calendar-toolbar{align-items:stretch;flex-direction:column}
+  .rf-filter-grid{display:grid;grid-template-columns:1fr}
+  .rf-filter-grid .form-group{min-width:0}
+}

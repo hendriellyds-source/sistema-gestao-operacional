@@ -1,0 +1,24 @@
+.modal:has(#historicalSchedule){padding:12px}
+.modal-box:has(#historicalSchedule){width:min(1800px,100%);max-height:96vh}
+#modalContent:has(#historicalSchedule){width:100%}
+#historicalSchedule .actions{flex-wrap:wrap;gap:10px;align-items:center}
+#historicalSchedule input[type=checkbox]{width:auto;margin:4px}
+.historical-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,28%);gap:16px;margin:16px 0}
+.historical-grid{overflow:auto;max-height:65vh;border:1px solid var(--borda);border-radius:10px}
+.historical-grid table{min-width:1600px;width:100%;border-collapse:collapse}
+.historical-grid th{position:sticky;top:0;background:#edf8f2;z-index:1;text-align:left}
+.historical-grid td,.historical-grid th{padding:8px;vertical-align:top;border-bottom:1px solid var(--borda)}
+.historical-grid input:not([type=checkbox]),.historical-grid select{min-width:110px;width:100%}
+.historical-grid td:nth-child(-n+3){min-width:185px}
+.historical-grid td:nth-child(7),.historical-grid td:nth-child(8){min-width:190px}
+.historical-grid small{display:block;max-width:230px;color:#795500;margin-top:5px}
+.historical-grid .historical-pending{background:#fff4c7}
+#historicalPhotoArea{border:2px dashed var(--borda);border-radius:12px;padding:12px;max-height:65vh;overflow:auto}
+#historicalPhotoArea p{font-size:13px;color:var(--muted)}
+#historicalPhoto{width:100%;height:auto;margin-top:12px}
+#historicalMessage{font-weight:600;white-space:pre-wrap}
+.historical-footer{position:sticky;bottom:-22px;background:white;padding:12px 0;z-index:2;border-top:1px solid var(--borda)}
+.schedule-entry.historical-pending{background:#fff4c7}
+@media(max-width:800px){.historical-layout{grid-template-columns:1fr}.historical-grid{max-height:50vh}#historicalPhotoArea{max-height:40vh}}
+.historical-grid .historical-attention,.schedule-entry.historical-attention{background:#ffdbad;border-left:4px solid #d66b00}.historical-grid details{margin-top:6px}.historical-grid summary{cursor:pointer;color:#1b6647}.historical-grid details input{margin:4px 0}
+#historicalSchedule [data-issues]{white-space:normal;overflow-wrap:anywhere}
