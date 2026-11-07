@@ -54,6 +54,17 @@ class Settings(BaseSettings):
     aline_email_default_interval_seconds: int = Field(default=300, ge=60, le=3600)
     aline_email_max_messages_per_sync: int = Field(default=100, ge=1, le=500)
     aline_email_max_bytes: int = Field(default=35_000_000, ge=1_048_576, le=50_000_000)
+    # The renamed projects adapters coexist with the legacy aline adapters.
+    # Keep their stores independent so neither schema opens the other's database.
+    projects_db_path: str = "data/projects/projects.db"
+    projects_documents_root_path: str = "data/projects/clients"
+    projects_imports_root_path: str = "data/projects/imports"
+    projects_master_key_path: str = "data/projects/master.key"
+    projects_document_file_max_bytes: int = 26_214_400
+    projects_email_root_path: str = "data/projects/email_inbox"
+    projects_email_default_interval_seconds: int = Field(default=300, ge=60, le=3600)
+    projects_email_max_messages_per_sync: int = Field(default=100, ge=1, le=500)
+    projects_email_max_bytes: int = Field(default=35_000_000, ge=1_048_576, le=50_000_000)
     audit_db_path: str = "data/audit.db"
     history_db_path: str = "data/history.db"
     app_timezone: str = "America/Sao_Paulo"
