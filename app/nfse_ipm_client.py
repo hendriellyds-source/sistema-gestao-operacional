@@ -36,7 +36,7 @@ class IPMClient:
             )
 
         return (
-            "https://cidade_demo.atende.net/"
+            "https://biguacu.atende.net/"
             "?pg=rest&service=WNERestServiceNFSe"
         )
 

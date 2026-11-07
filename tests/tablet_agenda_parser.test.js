@@ -9,7 +9,7 @@ assert(start >= 0 && end > start, "As funções de interpretação da Agenda Tab
 
 const context = {
   catalog: {
-    teams: [{id: 1, name: "Neri"}, {id: 4, name: "Responsável Demo"}],
+    teams: [{id: 1, name: "Neri"}, {id: 4, name: "Daniel"}],
     companies: [{id: 2, name: "MDM"}],
     works: [{id: 3, companyId: 2, name: "Talantaia"}],
     aliases: [],
@@ -18,7 +18,7 @@ const context = {
 vm.createContext(context);
 vm.runInContext(source.slice(start, end), context);
 
-const review = {text_original: "Neri/Responsável Demo/MDM/Talantaia/1/4", extra_teams: []};
+const review = {text_original: "Neri/Daniel/MDM/Talantaia/1/4", extra_teams: []};
 context.resolveText(review);
 assert.strictEqual(review.team_id, 1);
 assert.strictEqual(review.company_id, 2);

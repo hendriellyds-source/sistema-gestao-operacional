@@ -35,28 +35,28 @@ QUEUES = (
         key="surveying",
         label="Levantamentos",
         menu_number="2",
-        default_assignee="Responsável Demo",
+        default_assignee="Equipe Demo",
         keywords=("levantamento", "levantamentos", "campo", "topografia", "medicao"),
     ),
     WhatsAppQueue(
         key="projects",
         label="Projetos",
         menu_number="3",
-        default_assignee="Projetista",
+        default_assignee="Helena",
         keywords=("projeto", "projetos", "processo", "prefeitura", "regularizacao"),
     ),
     WhatsAppQueue(
         key="commercial",
         label="Comercial",
         menu_number="4",
-        default_assignee="Responsável Demo",
+        default_assignee="Equipe Demo",
         keywords=("comercial", "orcamento", "proposta", "contratar", "servico"),
     ),
     WhatsAppQueue(
         key="other",
         label="Outros assuntos",
         menu_number="5",
-        default_assignee="Responsável Demo",
+        default_assignee="Equipe Demo",
         keywords=("outro", "outros", "atendente", "humano"),
     ),
 )
@@ -76,7 +76,7 @@ def _normalize(value: str | None) -> str:
 
 def menu_message() -> str:
     return (
-        "Olá! Você entrou em contato com a Sistema de Gestão Operacional — Demo.\n\n"
+        "Olá! Você entrou em contato com a empresa demonstrativa.\n\n"
         "Para encaminharmos seu atendimento, responda com uma opção:\n"
         "1 - Financeiro\n"
         "2 - Levantamentos\n"

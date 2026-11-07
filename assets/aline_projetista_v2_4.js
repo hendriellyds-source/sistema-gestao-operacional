@@ -42,11 +42,11 @@ function a24Select(name,values,selected="",placeholder="Selecione"){
   }</select>`;
 }
 function a24Profile(){
-  try{return currentArea==="admin"?"Diretor":currentArea==="projectist"?"Projetos":"Processos"}
-  catch(_){return "Processos"}
+  try{return currentArea==="admin"?"Diretor":currentArea==="projectist"?"Helena":"Aline"}
+  catch(_){return "Aline"}
 }
 async function a24Api(path,options={}){
-  const headers={"Content-Type":"application/json","X-Sistema Portfólio-Profile":a24Profile(),...(options.headers||{})};
+  const headers={"Content-Type":"application/json","X-Gestão Operacional-Profile":a24Profile(),...(options.headers||{})};
   const response=await fetch(`/api/aline${path}`,{...options,headers});
   const text=await response.text();
   let body={};
@@ -59,7 +59,7 @@ function a24Loading(title,subtitle){
   document.getElementById("content").innerHTML=`
     <div class="aline-v24-shell">
       ${a24Nav()}
-      <div class="aline-v24-empty">Carregando dados da Processos…</div>
+      <div class="aline-v24-empty">Carregando dados da Aline…</div>
     </div>`;
 }
 function a24Error(error){
@@ -105,7 +105,7 @@ function a24Deadline(item){
 }
 
 window.alineDashboardV24=function(){
-  a24Loading("Processos — Projetista","Processos, conferências de obras, prazos e documentos.");
+  a24Loading("Aline — Projetista","Processos, conferências de obras, prazos e documentos.");
   Promise.all([
     a24Api("/summary"),a24Api("/notifications?unread_only=true"),
     a24Api("/processes"),a24Api("/works")
@@ -113,7 +113,7 @@ window.alineDashboardV24=function(){
     if(typeof page!=="undefined"&&page!=="alineDashboard") return;
     document.getElementById("content").innerHTML=`
       <div class="aline-v24-shell">${a24Nav()}
-        ${a24Banner("Central de trabalho da Processos","Os prazos são calculados automaticamente: 10 dias para alerta e 2 dias para urgência.",
+        ${a24Banner("Central de trabalho da Aline","Os prazos são calculados automaticamente: 10 dias para alerta e 2 dias para urgência.",
           `<button class="btn" onclick="alineProcessFormV24()">Novo processo</button>
            <button class="btn" onclick="alineWorkFormV24()">Nova demanda de obra</button>`)}
         <div class="aline-v24-kpis">
@@ -168,7 +168,7 @@ window.alineOpenNotificationV24=async function(key,type,id){
 };
 
 window.alineClientsV24=function(){
-  a24Loading("Processos — Clientes","Cadastro central de pessoas físicas e jurídicas.");
+  a24Loading("Aline — Clientes","Cadastro central de pessoas físicas e jurídicas.");
   a24Api("/clients").then(rows=>{
     if(page!=="alineClients") return;
     document.getElementById("content").innerHTML=`<div class="aline-v24-shell">${a24Nav()}
@@ -273,7 +273,7 @@ function a24ProcessGrid(rows){
   </div>`).join("")}</div>`;
 }
 window.alineProcessesV24=function(){
-  a24Loading("Processos — Processos","Prefeitura e cartório organizados por cliente.");
+  a24Loading("Aline — Processos","Prefeitura e cartório organizados por cliente.");
   Promise.all([a24Api("/processes"),a24Api("/registries")]).then(([rows,registries])=>{
     A24.processes=rows;A24.registries=registries;
     document.getElementById("content").innerHTML=`<div class="aline-v24-shell">${a24Nav()}
@@ -318,7 +318,7 @@ window.alineProcessFormV24=async function(id,clientId){
         <div class="form-group"><label>Tipo *</label>${a24Select("process_type",["Prefeitura","Cartório"],value("process_type","Prefeitura"))}</div>
         <div class="form-group"><label>Serviço *</label>${a24Select("service_type",A24.services,value("service_type","Retificação de área"))}</div>
         <div class="form-group"><label>Cidade *</label>${a24Select("city",A24.cities,value("city","Biguaçu"))}</div>
-        ${field("Responsável","responsible",value("responsible","Processos"))}
+        ${field("Responsável","responsible",value("responsible","Aline"))}
         <div id="a24PrefeituraFields" style="display:contents">
           ${field("Código de entrada","entry_code",value("entry_code"))}
           ${field("Segundo código / verificador","secondary_code",value("secondary_code"))}
@@ -409,16 +409,16 @@ function a24WorkGrid(rows){
   </div>`).join("")}</div>`;
 }
 window.alineWorksV24=function(){
-  a24Loading("Processos — Obras","Demandas enviadas por Projetos e Diretor/Exemplo.");
+  a24Loading("Aline — Obras","Demandas enviadas por Helena e Diretor/Daniel.");
   Promise.all([a24Api("/works"),a24Api("/clients")]).then(([rows,clients])=>{
     A24.works=rows;A24.clients=clients;
     document.getElementById("content").innerHTML=`<div class="aline-v24-shell">${a24Nav()}
-      ${a24Banner("Conferência de obras","Prazo definido pela Projetos ou pelo Diretor, documentos, observações e histórico preservado.",
+      ${a24Banner("Conferência de obras","Prazo definido pela Helena ou pelo Diretor, documentos, observações e histórico preservado.",
         `<button class="btn" onclick="alineWorkFormV24()">Nova demanda</button>`)}
       <div class="aline-v24-filters" style="grid-template-columns:minmax(260px,2fr) repeat(2,minmax(150px,1fr))">
         <input id="a24WorkSearch" placeholder="Obra, empresa ou cliente" oninput="alineApplyWorkFiltersV24()">
         ${a24Select("status",["Aguardando","Iniciado","Em andamento","Perto do vencimento","Urgente"],"","Todos os status")}
-        ${a24Select("source",["Projetos","Diretor","Exemplo"],"","Todas as origens")}
+        ${a24Select("source",["Helena","Diretor","Daniel"],"","Todas as origens")}
       </div><div id="a24WorkGrid">${a24WorkGrid(rows)}</div></div>`;
     document.querySelectorAll(".aline-v24-filters select").forEach(select=>select.onchange=alineApplyWorkFiltersV24);
   }).catch(a24Error);
@@ -434,28 +434,28 @@ window.alineWorkFormV24=async function(id,clientId,prefill={}){
   try{
     const [clients,item]=await Promise.all([a24Api("/clients"),id?a24Api(`/works/${id}`):Promise.resolve(null)]);
     const value=(name,fallback="")=>item?.[name]??prefill[name]??fallback;
-    modal(`<h2>${item?"Editar demanda de obra":"Nova demanda para Processos"}</h2><form id="a24WorkForm" class="form-grid">
+    modal(`<h2>${item?"Editar demanda de obra":"Nova demanda para Aline"}</h2><form id="a24WorkForm" class="form-grid">
       <div class="form-group"><label>Cliente</label>${a24Select("client_id",clients,item?.client_id||clientId||prefill.client_id||"","Sem cliente vinculado")}</div>
       ${field("Nome da obra / demanda","work_name",value("work_name"),"text",true)}
       ${field("Empresa","company",value("company"))}
-      <div class="form-group"><label>Origem</label>${a24Select("source_profile",["Projetos","Diretor","Exemplo","Processos"],value("source_profile",a24Profile()))}</div>
+      <div class="form-group"><label>Origem</label>${a24Select("source_profile",["Helena","Diretor","Daniel","Aline"],value("source_profile",a24Profile()))}</div>
       ${field("Referência de origem","source_reference",value("source_reference"))}
       ${field("Prazo","deadline",value("deadline"),"date")}
-      ${field("Responsável","responsible",value("responsible","Processos"))}
+      ${field("Responsável","responsible",value("responsible","Aline"))}
       <div class="form-group"><label>Prioridade</label>${a24Select("priority",["Baixa","Normal","Alta","Urgente"],value("priority","Normal"))}</div>
       <div class="form-group"><label>Status</label>${a24Select("status_manual",["Aguardando","Iniciado","Em andamento","Concluído"],value("status_manual","Aguardando"))}</div>
       ${field("Valor previsto","expected_value",value("expected_value",0),"number")}
       ${field("Valor cobrado","billed_value",value("billed_value",0),"number")}
       ${field("Valor pago","paid_value",value("paid_value",0),"number")}
       <div class="form-group" style="grid-column:1/-1"><label>Descrição da conferência</label><textarea name="description">${a24Esc(value("description"))}</textarea></div>
-      <div class="form-group" style="grid-column:1/-1"><label>Observações de Projetos/Diretor/Processos</label><textarea name="observations">${a24Esc(value("observations"))}</textarea></div>
+      <div class="form-group" style="grid-column:1/-1"><label>Observações de Helena/Diretor/Aline</label><textarea name="observations">${a24Esc(value("observations"))}</textarea></div>
       <div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Salvar demanda</button></div>
     </form>`);
     document.getElementById("a24WorkForm").onsubmit=async event=>{
       event.preventDefault();const values=Object.fromEntries(new FormData(event.target).entries());
       try{
         const saved=await a24Api(id?`/works/${id}`:"/works",{method:id?"PUT":"POST",body:JSON.stringify({data:values})});
-        closeModal();showToast(saved.status==="Concluído"?"Demanda concluída e arquivada.":"Demanda salva para Processos.");alineWorkDetailV24(saved.id);
+        closeModal();showToast(saved.status==="Concluído"?"Demanda concluída e arquivada.":"Demanda salva para Aline.");alineWorkDetailV24(saved.id);
       }catch(error){alert(error.message)}
     };
   }catch(error){alert(error.message)}
@@ -501,7 +501,7 @@ window.alineUploadDocumentV24=function(ownerType,ownerId){
 function a24FileDataUrl(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file)})}
 
 window.alineRegistriesV24=function(){
-  a24Loading("Processos — Cartórios","Registros de imóveis, portais e cofre de credenciais.");
+  a24Loading("Aline — Cartórios","Registros de imóveis, portais e cofre de credenciais.");
   Promise.all([a24Api("/registries"),a24Api("/vault/status")]).then(([rows,vault])=>{
     A24.registries=rows;
     document.getElementById("content").innerHTML=`<div class="aline-v24-shell">${a24Nav()}
@@ -532,34 +532,34 @@ window.alineRegistryFormV24=function(id){
   };
 };
 window.alineVaultSetupV24=function(){
-  modal(`<h2>Configurar cofre da Processos</h2><div class="finance-note">Crie um PIN com pelo menos 6 caracteres. Guarde-o em local seguro: ele não poderá ser recuperado pelo navegador.</div><form id="a24VaultForm" class="form-grid"><div class="form-group" style="grid-column:1/-1"><label>Novo PIN *</label><input name="pin" type="password" minlength="6" required autocomplete="new-password"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Criar cofre</button></div></form>`);
+  modal(`<h2>Configurar cofre da Aline</h2><div class="finance-note">Crie um PIN com pelo menos 6 caracteres. Guarde-o em local seguro: ele não poderá ser recuperado pelo navegador.</div><form id="a24VaultForm" class="form-grid"><div class="form-group" style="grid-column:1/-1"><label>Novo PIN *</label><input name="pin" type="password" minlength="6" required autocomplete="new-password"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Criar cofre</button></div></form>`);
   document.getElementById("a24VaultForm").onsubmit=async event=>{event.preventDefault();try{await a24Api("/vault/setup",{method:"POST",body:JSON.stringify({pin:event.target.elements.pin.value})});closeModal();showToast("Cofre configurado.");alineRegistriesV24()}catch(error){alert(error.message)}};
 };
 window.alineRegistryCredentialsV24=function(id){
   modal(`<h2>Salvar credenciais do cartório</h2><div class="finance-note">Os dados serão criptografados no servidor. O sistema não fará login automático.</div><form id="a24CredentialsForm" class="form-grid"><div class="form-group"><label>Número de acesso / usuário</label><input name="access_number" autocomplete="off"></div><div class="form-group"><label>Senha</label><input name="password" type="password" autocomplete="new-password"></div><div class="form-group" style="grid-column:1/-1"><label>PIN do cofre *</label><input name="pin" type="password" required autocomplete="off"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Salvar criptografado</button></div></form>`);
-  document.getElementById("a24CredentialsForm").onsubmit=async event=>{event.preventDefault();const form=event.target;try{await a24Api(`/registries/${id}/credentials`,{method:"PUT",headers:{"X-Processos-Vault-Pin":form.elements.pin.value},body:JSON.stringify({access_number:form.elements.access_number.value,password:form.elements.password.value})});closeModal();showToast("Credenciais salvas no cofre.");alineRegistriesV24()}catch(error){alert(error.message)}};
+  document.getElementById("a24CredentialsForm").onsubmit=async event=>{event.preventDefault();const form=event.target;try{await a24Api(`/registries/${id}/credentials`,{method:"PUT",headers:{"X-Aline-Vault-Pin":form.elements.pin.value},body:JSON.stringify({access_number:form.elements.access_number.value,password:form.elements.password.value})});closeModal();showToast("Credenciais salvas no cofre.");alineRegistriesV24()}catch(error){alert(error.message)}};
 };
 window.alineRevealRegistryV24=function(id){
   modal(`<h2>Abrir credenciais</h2><form id="a24RevealForm" class="form-grid"><div class="form-group" style="grid-column:1/-1"><label>PIN do cofre *</label><input name="pin" type="password" required autocomplete="off"></div><div id="a24Revealed" style="grid-column:1/-1"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Fechar</button><button class="btn btn-primary">Revelar</button></div></form>`);
-  document.getElementById("a24RevealForm").onsubmit=async event=>{event.preventDefault();try{const result=await a24Api(`/registries/${id}/credentials/reveal`,{method:"POST",headers:{"X-Processos-Vault-Pin":event.target.elements.pin.value}});document.getElementById("a24Revealed").innerHTML=`<div class="aline-v24-secret"><b>Número de acesso:</b> ${a24Esc(result.access_number||"não informado")}<br><b>Senha:</b> ${a24Esc(result.password||"não informada")}</div>`}catch(error){alert(error.message)}};
+  document.getElementById("a24RevealForm").onsubmit=async event=>{event.preventDefault();try{const result=await a24Api(`/registries/${id}/credentials/reveal`,{method:"POST",headers:{"X-Aline-Vault-Pin":event.target.elements.pin.value}});document.getElementById("a24Revealed").innerHTML=`<div class="aline-v24-secret"><b>Número de acesso:</b> ${a24Esc(result.access_number||"não informado")}<br><b>Senha:</b> ${a24Esc(result.password||"não informada")}</div>`}catch(error){alert(error.message)}};
 };
 window.alineProcessCredentialsV24=function(id){
   modal(`<h2>Credenciais deste protocolo</h2><div class="finance-note">Use para número de acesso e senha específicos do processo. Os valores serão criptografados e não aparecem no histórico.</div><form id="a24ProcessCredentialsForm" class="form-grid"><div class="form-group"><label>Número de acesso / usuário</label><input name="access_number" autocomplete="off"></div><div class="form-group"><label>Senha</label><input name="password" type="password" autocomplete="new-password"></div><div class="form-group" style="grid-column:1/-1"><label>PIN do cofre *</label><input name="pin" type="password" required autocomplete="off"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Salvar criptografado</button></div></form>`);
-  document.getElementById("a24ProcessCredentialsForm").onsubmit=async event=>{event.preventDefault();const form=event.target;try{await a24Api(`/processes/${id}/credentials`,{method:"PUT",headers:{"X-Processos-Vault-Pin":form.elements.pin.value},body:JSON.stringify({access_number:form.elements.access_number.value,password:form.elements.password.value})});closeModal();showToast("Credenciais do protocolo salvas.");alineProcessDetailV24(id)}catch(error){alert(error.message)}};
+  document.getElementById("a24ProcessCredentialsForm").onsubmit=async event=>{event.preventDefault();const form=event.target;try{await a24Api(`/processes/${id}/credentials`,{method:"PUT",headers:{"X-Aline-Vault-Pin":form.elements.pin.value},body:JSON.stringify({access_number:form.elements.access_number.value,password:form.elements.password.value})});closeModal();showToast("Credenciais do protocolo salvas.");alineProcessDetailV24(id)}catch(error){alert(error.message)}};
 };
 window.alineRevealProcessV24=function(id){
   modal(`<h2>Abrir credenciais do protocolo</h2><form id="a24RevealProcessForm" class="form-grid"><div class="form-group" style="grid-column:1/-1"><label>PIN do cofre *</label><input name="pin" type="password" required autocomplete="off"></div><div id="a24RevealedProcess" style="grid-column:1/-1"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Fechar</button><button class="btn btn-primary">Revelar</button></div></form>`);
-  document.getElementById("a24RevealProcessForm").onsubmit=async event=>{event.preventDefault();try{const result=await a24Api(`/processes/${id}/credentials/reveal`,{method:"POST",headers:{"X-Processos-Vault-Pin":event.target.elements.pin.value}});document.getElementById("a24RevealedProcess").innerHTML=`<div class="aline-v24-secret"><b>Número de acesso:</b> ${a24Esc(result.access_number||"não informado")}<br><b>Senha:</b> ${a24Esc(result.password||"não informada")}</div>`}catch(error){alert(error.message)}};
+  document.getElementById("a24RevealProcessForm").onsubmit=async event=>{event.preventDefault();try{const result=await a24Api(`/processes/${id}/credentials/reveal`,{method:"POST",headers:{"X-Aline-Vault-Pin":event.target.elements.pin.value}});document.getElementById("a24RevealedProcess").innerHTML=`<div class="aline-v24-secret"><b>Número de acesso:</b> ${a24Esc(result.access_number||"não informado")}<br><b>Senha:</b> ${a24Esc(result.password||"não informada")}</div>`}catch(error){alert(error.message)}};
 };
 
 window.alineNotificationsV24=function(){
-  a24Loading("Processos — Notificações","Prazos e pendências que precisam de atenção.");
+  a24Loading("Aline — Notificações","Prazos e pendências que precisam de atenção.");
   a24Api("/notifications").then(rows=>{
     document.getElementById("content").innerHTML=`<div class="aline-v24-shell">${a24Nav()}${a24Banner("Notificações de prazos","Urgente: vencido ou até 2 dias. Perto do vencimento: até 10 dias. Aguardando: depende de terceiro.")}<div class="aline-v24-panel">${rows.length?rows.map(a24NotificationRow).join(""):a24Empty("Nenhuma notificação pendente.")}</div></div>`;
   }).catch(a24Error);
 };
 window.alineFinalizedV24=function(){
-  a24Loading("Processos — Finalizados","Histórico arquivado, preservado e consultável.");
+  a24Loading("Aline — Finalizados","Histórico arquivado, preservado e consultável.");
   Promise.all([a24Api("/processes?archived=true"),a24Api("/works?archived=true"),a24Api("/clients?archived=true")]).then(([processes,works,clients])=>{
     document.getElementById("content").innerHTML=`<div class="aline-v24-shell">${a24Nav()}
       ${a24Banner("Finalizados","Itens concluídos ficam ocultos das demandas ativas, mas nunca são apagados.")}
@@ -579,21 +579,21 @@ async function a24EnsureProjectClient(client){
   const rows=await a24Api(`/clients?search=${encodeURIComponent(client.name||"")}`);
   let match=rows.find(row=>String(row.name).toUpperCase()===String(client.name||"").toUpperCase());
   if(match) return match;
-  return a24Api("/clients",{method:"POST",headers:{"X-Sistema Portfólio-Profile":"Projetos"},body:JSON.stringify({data:{
+  return a24Api("/clients",{method:"POST",headers:{"X-Gestão Operacional-Profile":"Helena"},body:JSON.stringify({data:{
     person_type:String(client.cpfCnpj||client.cpf_cnpj||"").replace(/\D/g,"").length>11?"PJ":"PF",
-    name:client.name||"Cliente da Projetos",cpf_cnpj:client.cpfCnpj||client.cpf_cnpj||"",
+    name:client.name||"Cliente da Helena",cpf_cnpj:client.cpfCnpj||client.cpf_cnpj||"",
     phone:client.whatsapp||client.phone||"",email:client.email||"",
     city:client.landCityState||"",address:client.landLocation||"",
-    notes:"Cliente vinculado automaticamente a uma demanda enviada por Projetos/Diretor."
+    notes:"Cliente vinculado automaticamente a uma demanda enviada por Helena/Diretor."
   }})});
 }
-window.alineCreateWorkDemandFromHelenaV24=async function(clientId,sourceProfile="Projetos"){
+window.alineCreateWorkDemandFromHelenaV24=async function(clientId,sourceProfile="Helena"){
   try{
     const client=typeof projectClientById==="function"?projectClientById(clientId):null;
-    if(!client) throw new Error("Cliente da Projetos não encontrado.");
+    if(!client) throw new Error("Cliente da Helena não encontrado.");
     const central=await a24EnsureProjectClient(client);
     alineWorkFormV24(null,central.id,{
-      source_profile:sourceProfile,source_reference:`Projetos:${clientId}`,
+      source_profile:sourceProfile,source_reference:`Helena:${clientId}`,
       work_name:`${client.serviceType||"Conferência"} — ${client.name}`,
       company:client.company||"",description:`Conferir documentos e projeto após etapa de campo. Local: ${client.landLocation||"não informado"}.`,
       observations:[client.directorNote,client.notes,client.teamObservation].filter(Boolean).join("\n"),

@@ -15,7 +15,7 @@ from app.system_state import get_system_state, save_system_state
 def agenda_db(tmp_path, monkeypatch):
     monkeypatch.setattr(settings, "system_state_db_path", str(tmp_path / "state.db"))
     save_system_state({
-        "workTeams": [{"id": 1, "name": "Neri"}, {"id": 4, "name": "Responsável Demo"}, {"id": 5, "name": "Apoio"}],
+        "workTeams": [{"id": 1, "name": "Neri"}, {"id": 4, "name": "Daniel"}, {"id": 5, "name": "Apoio"}],
         "companies": [{"id": 2, "name": "MDM"}],
         "works": [{"id": 3, "companyId": 2, "name": "Talantaia", "dailyRate": 700, "halfDailyRate": 350}],
         "workScheduleEntries": [],
@@ -138,7 +138,7 @@ def test_quarter_day_and_extra_team_surcharge(agenda_db):
     support_review = str(uuid4())
     support_day = "2026-09-29"
     tablet_agenda.save_review(support_day, tablet_agenda.Review(
-        id=support_review, line_number=1, text_original="Neri/Responsável Demo/Talantaia",
+        id=support_review, line_number=1, text_original="Neri/Daniel/Talantaia",
         team_id=1, company_id=2, work_id=3,
         extra_teams=[{"team_id": 4, "amount": "1/4"}, {"team_id": 5, "amount": "125,50"}],
     ), agenda_db)
@@ -324,18 +324,18 @@ def test_old_saved_review_is_published_without_duplicate(agenda_db):
     assert by_review[new_work_id]["financialPending"] is True
 
 
-def test_existing_schedule_and_projectist_request_are_visible(agenda_db):
+def test_existing_schedule_and_helena_request_are_visible(agenda_db):
     state = get_system_state()["data"]
     state["workScheduleEntries"] = [{"id": 90, "date": "2026-09-26", "type": "Obra",
                                       "teamId": 1, "companyId": 2, "workId": 3, "status": "Planejado",
                                       "value": 875, "billingEntityId": 6}]
-    state["projectClients"] = [{"id": 8, "name": "Cliente Projetista", "serviceType": "Topografia",
+    state["projectClients"] = [{"id": 8, "name": "Cliente Helena", "serviceType": "Topografia",
                                 "landLocation": "Garopaba"}]
     state["projectScheduleRequests"] = [{"id": 7, "clientId": 8, "status": "Pendente"}]
     save_system_state(state, source="test", updated_by="test")
     page = tablet_agenda.read_page("2026-09-26", agenda_db)
     assert page["schedule_entries"][0]["id"] == 90
-    assert page["pending_requests"][0]["client_name"] == "Cliente Projetista"
+    assert page["pending_requests"][0]["client_name"] == "Cliente Helena"
     review_id = str(uuid4())
     linked = tablet_agenda.save_review("2026-09-26", tablet_agenda.Review(
         id=review_id, line_number=0, text_original="Neri/Talantaia",
@@ -378,7 +378,7 @@ def test_installed_app_page_and_worker_require_existing_access():
         worker = client.get("/agenda-tablet/sw.js")
         client.close()
     assert page.status_code == 200
-    assert "Agenda Gestão Operacional" in page.text
+    assert "Agenda Operacional" in page.text
     assert worker.status_code == 200
     assert worker.headers["service-worker-allowed"] == "/"
 

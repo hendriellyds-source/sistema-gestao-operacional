@@ -27,7 +27,7 @@ class HistoricalVisionTests(unittest.TestCase):
         vision._running.clear()
 
     def test_access_and_configuration(self):
-        self.role = "projects"
+        self.role = "aline"
         self.assertEqual(self.client.post(self.url, json={}).status_code, 403)
         self.role = "financial"
         with patch.object(vision.settings, "openai_api_key", ""):

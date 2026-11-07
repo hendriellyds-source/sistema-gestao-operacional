@@ -13,7 +13,7 @@ from .access_control import require_roles
 from .settings import settings
 
 router = APIRouter(prefix="/api/schedules/historical", tags=["Agenda histórica"])
-ROLES = {"admin", "director", "financial", "projectist"}
+ROLES = {"admin", "director", "financial", "helena"}
 MAX_BODY = 16 * 1024 * 1024
 _running: set[str] = set()
 _recent: dict[str, list[float]] = {}

@@ -10,13 +10,13 @@ ADMIN_ROLES = frozenset({"admin", "director"})
 HR_ROLES = frozenset({"admin", "director", "financial"})
 FINANCE_ROLES = frozenset({"admin", "director", "financial"})
 FLEET_ROLES = frozenset({"admin", "director", "financial"})
-PROJECTS_ROLES = frozenset({"admin", "director", "projectist", "projects"})
-PROJECTIST_ROLES = frozenset({"admin", "director", "projectist"})
+ALINE_ROLES = frozenset({"admin", "director", "helena", "aline"})
+PROJECTIST_ROLES = frozenset({"admin", "director", "helena"})
 SYSTEM_STATE_ROLES = frozenset(
-    {"admin", "director", "financial", "projectist", "projects"}
+    {"admin", "director", "financial", "helena", "aline"}
 )
 WHATSAPP_ROLES = frozenset(
-    {"admin", "director", "financial", "projectist", "projects"}
+    {"admin", "director", "financial", "helena", "aline"}
 )
 
 
@@ -25,7 +25,7 @@ MODULE_ROLES: dict[str, frozenset[str]] = {
     "hr": HR_ROLES,
     "finance": FINANCE_ROLES,
     "fleet": FLEET_ROLES,
-    "projects": PROJECTS_ROLES,
+    "aline": ALINE_ROLES,
     "projectist": PROJECTIST_ROLES,
     "system_state": SYSTEM_STATE_ROLES,
     "workspace": SYSTEM_STATE_ROLES,
@@ -120,8 +120,8 @@ def module_for_path(path: str) -> str | None:
         return "hr"
     if normalized.startswith("/api/employee-portal/admin"):
         return "system_state"
-    if normalized.startswith("/api/projects"):
-        return "projects"
+    if normalized.startswith("/api/aline"):
+        return "aline"
     if normalized.startswith("/api/system-state"):
         return "system_state"
     if normalized.startswith("/api/cora"):

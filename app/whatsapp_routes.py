@@ -195,8 +195,8 @@ def _assignee_terms(user: dict[str, Any]) -> list[str]:
     terms = [display_name, display_name.split(" ", 1)[0] if display_name else ""]
     role_aliases = {
         "financial": ["Financeiro"],
-        "projectist": ["Projetista"],
-        "projects": ["Projetos"],
+        "helena": ["Helena"],
+        "aline": ["Aline"],
     }
     terms.extend(role_aliases.get(role, []))
     return list(dict.fromkeys(term for term in terms if term))

@@ -1,5 +1,5 @@
-const CACHE='operational-tablet-agenda-v14';
-const SHELL=['/agenda-tablet','/assets/tablet_agenda.css?v=1.2.1','/assets/tablet_agenda.js?v=1.3.4','/assets/tablet_agenda.webmanifest','/assets/institutional/operational-globe.png'];
+const CACHE='portfolio-tablet-agenda-v14';
+const SHELL=['/agenda-tablet','/assets/tablet_agenda.css?v=1.2.1','/assets/tablet_agenda.js?v=1.3.4','/assets/tablet_agenda.webmanifest','/assets/app-mark.svg'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).then(()=>self.skipWaiting()));
 });

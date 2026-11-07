@@ -6,7 +6,7 @@ const S=window.A24;
 const MAIN_CITIES=["Biguaçu","Florianópolis","São José","Palhoça"];
 const OTHER_CITIES=["Balneário Camboriú","Blumenau","Brusque","Chapecó","Criciúma","Itajaí","Jaraguá do Sul","Joinville","Lages","Navegantes","Rio do Sul","Tijucas","Tubarão"];
 const CITIES=[...MAIN_CITIES,...OTHER_CITIES];
-const DEPENDENCIES=["Prefeitura","Cartório","Cliente","Projetos","Diretor","Documentação"];
+const DEPENDENCIES=["Prefeitura","Cartório","Cliente","Helena","Diretor","Documentação"];
 const legacyProcessForm=window.alineProcessFormV24;
 
 function norm(value){
@@ -72,7 +72,7 @@ function worksGrid(rows){
   if(!rows.length)return C.empty("Nenhuma demanda de obra nesta seleção.");
   return `<div class="aline-v24-grid">${rows.map(item=>`<article class="aline-v24-card">
     <div class="aline-v24-card-head"><div><h3>${C.esc(item.work_name)}</h3><div class="muted">${C.esc(item.source_profile)} • ${C.esc(item.client_name||item.company||"Sem cliente")}</div></div>${C.status(item.progress_status||item.status_manual||item.status)}</div>
-    <div class="aline-v24-meta"><div><small>Prazo</small>${deadline(item)}</div><div><small>Responsável</small>${C.esc(item.responsible||"Processos")}</div><div><small>Dependência</small>${C.esc(item.waiting_for?`AGUARDANDO — ação de ${item.waiting_for}`:"Nenhuma")}</div><div><small>Valor previsto</small>${C.money(item.expected_value)}</div></div>
+    <div class="aline-v24-meta"><div><small>Prazo</small>${deadline(item)}</div><div><small>Responsável</small>${C.esc(item.responsible||"Aline")}</div><div><small>Dependência</small>${C.esc(item.waiting_for?`AGUARDANDO — ação de ${item.waiting_for}`:"Nenhuma")}</div><div><small>Valor previsto</small>${C.money(item.expected_value)}</div></div>
     <div class="aline-v24-actions"><button class="btn btn-primary" onclick="alineWorkDetailV24(${item.id})">Abrir</button><button class="btn btn-light" onclick="alineWorkFormV24(${item.id})">Editar</button><button class="btn btn-light" onclick="alineWaitingV25('work',${item.id})">Dependência</button><button class="btn btn-danger-outline" onclick="alineDeleteV25('work',${item.id})">Excluir</button></div>
   </article>`).join("")}</div>`;
 }
@@ -171,7 +171,7 @@ window.alineSearchProcessesV25=function(){
   const target=document.getElementById("a25ProcessSearchResults");if(target)target.innerHTML=processesGrid(rows);
 };
 window.alineProcessesV25=function(){
-  C.loading("Processos — Processos","Processos organizados por cidade, cliente e prazo.");
+  C.loading("Aline — Processos","Processos organizados por cidade, cliente e prazo.");
   loadAll().then(all=>{
     S.clients=all.clients;S.processes=all.processes;S.registries=all.registries;S.a25All=all;
     const body=S.processCity?cityView(all,S.processCity):S.processCityMode==="other"?C.empty("Selecione uma das outras cidades de Santa Catarina para continuar."):overview(all);
@@ -180,7 +180,7 @@ window.alineProcessesV25=function(){
 };
 window.alineSetWorkSectionV25=function(section){S.workSection=section;page="alineWorks";alineWorksV25()};
 window.alineWorksV25=function(){
-  C.loading("Processos — Obras","Demandas de conferência recebidas de Projetos e do Diretor.");
+  C.loading("Aline — Obras","Demandas de conferência recebidas de Helena e do Diretor.");
   Promise.all([C.api("/works"),C.api("/works?archived=true")]).then(([works,archived])=>{
     S.works=works;const section=S.workSection;
     const progress=works.filter(item=>["Iniciado","Em andamento"].includes(item.progress_status||item.status_manual));
@@ -213,7 +213,7 @@ function calendarGrid(events,range){
   }).join("")}</div><div class="aline-v25-calendar-list">${events.map(item=>`<button onclick="alineOpenCalendarEventV25('${C.esc(item.entity_type)}',${Number(item.entity_id)})"><strong>${C.date(item.date)}</strong><span><b>${C.esc(item.title)}</b><small>${C.esc(item.client||item.city||"")} • ${C.esc(item.deadline_label)}</small></span></button>`).join("")||C.empty("Nenhum prazo ou vencimento neste mês.")}</div>`;
 }
 window.alineCalendarV25=function(){
-  C.loading("Processos — Calendário","Prazos de processos, obras e validade de documentos.");
+  C.loading("Aline — Calendário","Prazos de processos, obras e validade de documentos.");
   const range=calendarRange(),city=S.calendarCity||"";
   C.api(`/calendar?date_from=${range.from}&date_to=${range.to}&city=${encodeURIComponent(city)}`).then(result=>{
     const events=result.events||[];
@@ -232,7 +232,7 @@ window.alineOpenCalendarEventV25=function(type,id){
   if(type==="process")alineProcessDetailV24(id);else if(type==="work")alineWorkDetailV24(id);else if(type==="client")alineClientDetailV24(id);
 };
 window.alineNotificationsV25=function(){
-  C.loading("Processos — Notificações","Somente prazos e pendências que realmente exigem atenção.");
+  C.loading("Aline — Notificações","Somente prazos e pendências que realmente exigem atenção.");
   C.api("/notifications?unread_only=false").then(rows=>{
     const overdue=rows.filter(item=>state(item)==="VENCIDO").length;
     const due=rows.filter(item=>state(item)==="PRAZO A VENCER").length;
@@ -343,7 +343,7 @@ function emailMessageRows(rows,processes){
   </article>`).join("")}</div>`;
 }
 window.alineEmailsV26=function(){
-  C.loading("Processos — E-mails de processos","Leitura automática da caixa Terra pelo terceiro código.");
+  C.loading("Aline — E-mails de processos","Leitura automática da caixa Terra pelo terceiro código.");
   Promise.all([C.api("/email/status"),C.api("/email/messages?limit=100"),C.api("/processes"),C.api("/vault/status")]).then(([status,messages,processes,vault])=>{
     S.emailStatus=status;S.emailMessages=messages;S.processes=processes;S.emailVault=vault;
     const unmatched=messages.filter(item=>item.status==="unmatched"&&item.third_code),matched=messages.filter(item=>item.status==="matched");
@@ -352,19 +352,19 @@ window.alineEmailsV26=function(){
       ${C.banner("E-mails de processos","O sistema procura o terceiro código no assunto e no texto dos novos e-mails do Terra.",`${vault.configured?"":`<button class="btn" onclick="alineEmailVaultSetupV26()">Criar cofre</button>`}<button class="btn" onclick="alineEmailSettingsV26()" ${vault.configured?"":"disabled"}>Configurar Terra</button>`)}
       <div class="aline-v24-kpis">${C.kpi("Situação",stateLabel,status.last_error?"Verifique o erro abaixo":"senha protegida no cofre")}${C.kpi("Falhas para revisar",unmatched.length,"somente e-mails relacionados",unmatched.length?"urgent":"")}${C.kpi("Associados",matched.length,"mensagens recentes")}${C.kpi("Última consulta",status.last_sync_at?C.date(status.last_sync_at):"Ainda não realizada",status.enabled?`a cada ${Math.round(status.interval_seconds/60)} min`:"automação pausada")}</div>
       ${status.last_error?`<div class="aline-v26-email-error"><strong>Não foi possível consultar o Terra.</strong><span>${C.esc(status.last_error)}</span></div>`:""}
-      <div class="toolbar"><div><h3>Mensagens relacionadas</h3><p class="muted">O Terra permanece intacto. O Sistema Portfólio copia somente mensagens com terceiro código reconhecido.</p></div><button class="btn btn-primary" onclick="alineSyncEmailsV26()" ${status.enabled?"":"disabled"}>Consultar agora</button></div>
+      <div class="toolbar"><div><h3>Mensagens relacionadas</h3><p class="muted">O Terra permanece intacto. O Gestão Operacional copia somente mensagens com terceiro código reconhecido.</p></div><button class="btn btn-primary" onclick="alineSyncEmailsV26()" ${status.enabled?"":"disabled"}>Consultar agora</button></div>
       ${unmatched.length?`<div class="aline-v24-panel"><h3>Falhas para revisar (${unmatched.length})</h3>${emailMessageRows(unmatched,processes)}</div>`:""}
       <div class="aline-v24-panel" style="margin-top:16px"><h3>Associados recentemente</h3>${emailMessageRows(matched,processes)}</div>
     </div>`;
   }).catch(C.error);
 };
 window.alineEmailVaultSetupV26=function(){
-  modal(`<h2>Criar cofre da Processos</h2><p class="muted">Crie um PIN com pelo menos 6 caracteres para proteger a senha do e-mail.</p><form id="a26EmailVault" class="form-grid"><div class="form-group" style="grid-column:1/-1"><label>Novo PIN</label><input name="pin" type="password" minlength="6" required autocomplete="new-password"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Criar cofre</button></div></form>`);
+  modal(`<h2>Criar cofre da Aline</h2><p class="muted">Crie um PIN com pelo menos 6 caracteres para proteger a senha do e-mail.</p><form id="a26EmailVault" class="form-grid"><div class="form-group" style="grid-column:1/-1"><label>Novo PIN</label><input name="pin" type="password" minlength="6" required autocomplete="new-password"></div><div class="config-actions" style="grid-column:1/-1"><button type="button" class="btn btn-light" onclick="closeModal()">Cancelar</button><button class="btn btn-primary">Criar cofre</button></div></form>`);
   document.getElementById("a26EmailVault").onsubmit=async event=>{event.preventDefault();try{await C.api("/vault/setup",{method:"POST",body:JSON.stringify({pin:event.target.elements.pin.value})});closeModal();showToast("Cofre criado. Agora configure o Terra.");alineEmailsV26()}catch(error){alert(error.message)}};
 };
 window.alineEmailSettingsV26=function(){
   const item=S.emailStatus||{};
-  modal(`<h2>Automação do e-mail Terra</h2><p class="muted">A senha fica criptografada. Para trocar usuário ou senha, informe também o PIN do cofre da Processos.</p><form id="a26EmailSettings" class="form-grid">
+  modal(`<h2>Automação do e-mail Terra</h2><p class="muted">A senha fica criptografada. Para trocar usuário ou senha, informe também o PIN do cofre da Aline.</p><form id="a26EmailSettings" class="form-grid">
     ${field("E-mail Terra","username",item.username||"","email")}${field("Senha do e-mail","password","","password")}
     ${field("PIN do cofre","vault_pin","","password")}
     <div class="form-group"><label>Consulta automática</label>${C.select("enabled",[{id:"true",name:"Ativa"},{id:"false",name:"Pausada"}],String(Boolean(item.enabled)))}</div>
@@ -375,7 +375,7 @@ window.alineEmailSettingsV26=function(){
   document.getElementById("a26EmailSettings").onsubmit=async event=>{
     event.preventDefault();const values=Object.fromEntries(new FormData(event.target).entries());
     const payload={username:values.username,password:values.password,enabled:values.enabled==="true",interval_seconds:Number(values.interval_minutes||5)*60,allowed_senders:values.allowed_senders,mark_read:false};
-    try{await C.api("/email/settings",{method:"PUT",headers:{"X-Processos-Vault-Pin":values.vault_pin},body:JSON.stringify(payload)});closeModal();showToast("Automação de e-mail atualizada.");alineEmailsV26()}catch(error){alert(error.message)}
+    try{await C.api("/email/settings",{method:"PUT",headers:{"X-Aline-Vault-Pin":values.vault_pin},body:JSON.stringify(payload)});closeModal();showToast("Automação de e-mail atualizada.");alineEmailsV26()}catch(error){alert(error.message)}
   };
 };
 window.alineSyncEmailsV26=async function(){

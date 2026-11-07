@@ -96,10 +96,7 @@ def _plus_days(days: int) -> str:
 
 
 def default_portal_state() -> dict[str, Any]:
-    if settings.demo_mode:
-        from .demo_seed import build_demo_state
-        return build_demo_state()
-    return {key: [] for key in ("employees", "workTeams", "companies", "works", "clinics", "workScheduleEntries", "projectClients", "exams", "employeeAppFiles")}
+    return {'employees': [], 'workTeams': [], 'companies': [], 'works': [], 'clinics': [], 'workScheduleEntries': [], 'projectClients': [], 'exams': [], 'employeeAppFiles': []}
 
 
 

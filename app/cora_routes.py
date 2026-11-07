@@ -146,7 +146,7 @@ def _find_internal_invoice(
                 str(item.get("id") or ""),
                 str(item.get("invoiceNumber") or "").strip(),
                 str(item.get("coraCode") or "").strip(),
-                f"operational-invoice-{item.get('id')}",
+                f"portfolio-invoice-{item.get('id')}",
             }
         ]
         if len(by_code) == 1:

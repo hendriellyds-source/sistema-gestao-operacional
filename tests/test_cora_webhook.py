@@ -39,7 +39,7 @@ class CoraWebhookTests(unittest.TestCase):
                     }
                 ],
                 "billingEntities": [
-                    {"id": 4, "cnpj": "00.000.000/0000-00"}
+                    {"id": 4, "cnpj": "12.345.678/0001-90"}
                 ],
                 "companies": [],
             },
@@ -65,7 +65,7 @@ class CoraWebhookTests(unittest.TestCase):
             "occurrence_date": "2026-08-11T10:20:00",
             "payment_terms": {"due_date": "2026-08-20"},
             "customer": {
-                "document": {"identity": "00000000000000", "type": "CNPJ"}
+                "document": {"identity": "12345678000190", "type": "CNPJ"}
             },
         }
 

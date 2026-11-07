@@ -13,15 +13,17 @@ from .supabase_client import create_admin_supabase, create_public_supabase
 
 
 router = APIRouter(tags=["Autenticação"])
-COOKIE_NAME = "operational_session"
+COOKIE_NAME = "portfolio_session"
+
+_DEMO_SESSIONS: dict[str, dict[str, Any]] = {}
 
 
 ROLE_TO_LEGACY = {
     "admin": "adm",
     "director": "diretor",
     "financial": "financeiro",
-    "projectist": "projectist",
-    "projects": "projects",
+    "helena": "helena",
+    "aline": "aline",
     "employee": "funcionario",
     "client": "cliente",
     "pending": "pending",
@@ -30,18 +32,18 @@ ROLE_TO_LEGACY = {
 ROLE_AREAS = {
     "diretor": ["admin", "finance"],
     "adm": ["admin", "finance"],
-    "projectist": ["projectist"],
-    "projects": ["projects"],
+    "helena": ["projectist"],
+    "aline": ["aline"],
     "financeiro": ["finance", "admin"],
     "funcionario": ["employee"],
     "cliente": ["client"],
 }
 
 DEMAND_DISPATCH_TARGETS = {
-    "diretor": ("adm", "projectist", "projects", "financeiro"),
-    "adm": ("diretor", "projectist", "projects", "financeiro"),
-    "projectist": ("adm",),
-    "projects": ("adm",),
+    "diretor": ("adm", "helena", "aline", "financeiro"),
+    "adm": ("diretor", "helena", "aline", "financeiro"),
+    "helena": ("adm",),
+    "aline": ("adm",),
     "financeiro": ("adm",),
 }
 
@@ -183,8 +185,25 @@ def authenticate(
     password: str,
 ) -> dict[str, Any] | None:
     if settings.demo_mode:
-        from .demo_auth import authenticate_demo
-        return authenticate_demo(email, password)
+        if email.strip().lower() != settings.demo_email.strip().lower():
+            return None
+        if password != settings.demo_password:
+            return None
+        return {
+            "username": settings.demo_email,
+            "email": settings.demo_email,
+            "display_name": settings.demo_display_name,
+            "role": "adm",
+            "role_code": "admin",
+            "areas": ["admin", "finance"],
+            "can_dispatch_demands": True,
+            "dispatch_targets": ["diretor", "helena", "aline", "financeiro"],
+            "profile_id": "demo-profile",
+            "auth_user_id": "demo-user",
+            "organization_id": "demo-organization",
+            "avatar_url": None,
+        }
+
     try:
         result = create_public_supabase().auth.sign_in_with_password(
             {
@@ -218,9 +237,6 @@ def create_session(
     *,
     hours: int | None = None,
 ) -> tuple[str, str]:
-    if settings.demo_mode:
-        from .demo_auth import create_demo_session
-        return create_demo_session(profile_id, hours or settings.auth_session_hours)
     token = secrets.token_urlsafe(48)
 
     created_at = _now()
@@ -231,6 +247,16 @@ def create_session(
     user_agent = str(
         request.headers.get("user-agent") or ""
     )[:500]
+
+    if settings.demo_mode:
+        _DEMO_SESSIONS[_token_hash(token)] = {
+            "profile_id": profile_id,
+            "created_at": created_at.isoformat(),
+            "last_seen_at": created_at.isoformat(),
+            "expires_at": expires_at.isoformat(),
+            "user_agent": user_agent,
+        }
+        return token, expires_at.isoformat()
 
     create_admin_supabase().table("web_sessions").insert(
         {
@@ -252,10 +278,17 @@ def user_from_session(
     if not token:
         return None
 
-    if settings.demo_mode:
-        from .demo_auth import demo_user_from_session
-        return demo_user_from_session(token)
     token_digest = _token_hash(token)
+
+    if settings.demo_mode:
+        session = _DEMO_SESSIONS.get(token_digest)
+        if not session:
+            return None
+        expires_at = _parse_datetime(session.get("expires_at"))
+        if expires_at is None or expires_at <= _now():
+            _DEMO_SESSIONS.pop(token_digest, None)
+            return None
+        return authenticate(settings.demo_email, settings.demo_password)
 
     result = (
         create_admin_supabase()
@@ -314,9 +347,9 @@ def delete_session(token: str | None) -> None:
         return
 
     if settings.demo_mode:
-        from .demo_auth import delete_demo_session
-        delete_demo_session(token)
+        _DEMO_SESSIONS.pop(_token_hash(token), None)
         return
+
     (
         create_admin_supabase()
         .table("web_sessions")
@@ -366,7 +399,7 @@ def login(
         value=token,
         max_age=session_hours * 3600,
         httponly=True,
-        secure=settings.auth_cookie_secure,
+        secure=(settings.auth_cookie_secure and not settings.demo_mode),
         samesite="lax",
         path="/",
     )
@@ -381,15 +414,15 @@ def login(
 @router.post("/api/auth/logout")
 def logout(
     response: Response,
-    operational_session: str | None = Cookie(default=None),
+    portfolio_session: str | None = Cookie(default=None),
 ) -> dict[str, Any]:
-    delete_session(operational_session)
+    delete_session(portfolio_session)
 
     response.delete_cookie(
         key=COOKIE_NAME,
         path="/",
         httponly=True,
-        secure=settings.auth_cookie_secure,
+        secure=(settings.auth_cookie_secure and not settings.demo_mode),
         samesite="lax",
     )
 
@@ -398,9 +431,9 @@ def logout(
 
 @router.get("/api/auth/me")
 def me(
-    operational_session: str | None = Cookie(default=None),
+    portfolio_session: str | None = Cookie(default=None),
 ) -> dict[str, Any]:
-    user = user_from_session(operational_session)
+    user = user_from_session(portfolio_session)
 
     if not user:
         raise HTTPException(

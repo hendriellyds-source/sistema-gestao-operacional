@@ -1,6 +1,6 @@
 {
   "id": "/agenda-tablet",
-  "name": "Agenda Operacional — Demo",
+  "name": "Agenda Gestão Operacional",
   "short_name": "Agenda",
   "start_url": "/agenda-tablet",
   "scope": "/agenda-tablet",
@@ -9,9 +9,9 @@
   "theme_color": "#123d5a",
   "icons": [
     {
-      "src": "/assets/brand.svg",
+      "src": "/assets/app-mark.svg",
       "sizes": "any",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     }
   ]

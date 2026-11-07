@@ -57,8 +57,8 @@ class WhatsAppRouteTests(unittest.TestCase):
     def test_visual_whatsapp_pages_are_unavailable(self) -> None:
         user = {
             "id": 1,
-            "display_name": "Responsável Demo Gestão Operacional",
-            "email": "contato@example.invalid",
+            "display_name": "Recrutador Demo",
+            "email": "demo@portfolio.local",
             "role_code": "director",
         }
         with patch("app.main.user_from_session", return_value=user):
@@ -71,8 +71,8 @@ class WhatsAppRouteTests(unittest.TestCase):
     def test_embedded_signup_activates_encrypted_operational_connection(self) -> None:
         user = {
             "id": 1,
-            "display_name": "Responsável Demo Gestão Operacional",
-            "email": "contato@example.invalid",
+            "display_name": "Recrutador Demo",
+            "email": "demo@portfolio.local",
             "role_code": "director",
         }
         with tempfile.TemporaryDirectory() as temporary_directory:

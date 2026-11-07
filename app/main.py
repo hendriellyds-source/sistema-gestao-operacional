@@ -121,16 +121,16 @@ from .employee_portal import (
 from .selsyn_client import SelsynClient, SelsynError
 from .settings import settings
 from .profile_photos import router as profile_photos_router
-from .projects_projects import (
-    projects_health,
-    init_projects_projects,
-    router as projects_router,
+from .aline_projects import (
+    aline_health,
+    init_aline_projects,
+    router as aline_router,
 )
-from .projects_email import (
-    projects_email_interval_seconds,
-    init_projects_email,
-    router as projects_email_router,
-    sync_projects_email_once,
+from .aline_email import (
+    aline_email_interval_seconds,
+    init_aline_email,
+    router as aline_email_router,
+    sync_aline_email_once,
 )
 from .system_state import (
     filter_state_for_user,
@@ -504,8 +504,6 @@ def normalize_live_position(item: dict[str, Any]) -> dict[str, Any]:
 
 def normalize_and_assess(item: dict[str, Any]) -> dict[str, Any]:
     live = assess_live_position(normalize_live_position(item))
-    if settings.demo_mode:
-        live["effective_status"] = "EM MOVIMENTO SIMULADO" if float(live.get("speed") or 0) > 0 else "PARADO SIMULADO"
     profile = get_vehicle_profile(live["identifier"])
     live["profile"] = profile
     live["display_name"] = profile.get("description") or live.get("description") or live["identifier"]
@@ -623,13 +621,13 @@ async def tracker_health_loop() -> None:
         await asyncio.sleep(max(settings.poll_interval_seconds, 60))
 
 
-async def projects_email_loop() -> None:
+async def aline_email_loop() -> None:
     """Consulta periodicamente a caixa Terra quando a automacao estiver ativa."""
     while True:
-        interval = settings.projects_email_default_interval_seconds
+        interval = settings.aline_email_default_interval_seconds
         try:
-            await asyncio.to_thread(sync_projects_email_once)
-            interval = projects_email_interval_seconds()
+            await asyncio.to_thread(sync_aline_email_once)
+            interval = aline_email_interval_seconds()
         except Exception:
             pass
         await asyncio.sleep(interval)
@@ -643,10 +641,9 @@ async def lifespan(_: FastAPI):
     init_tracker_health_db()
     init_employee_portal_db()
     init_document_storage()
-    if not settings.demo_mode:
-        purge_demo_vehicle_documents()
-    init_projects_projects()
-    init_projects_email()
+    purge_demo_vehicle_documents()
+    init_aline_projects()
+    init_aline_email()
     init_system_state()
     init_cora_webhooks()
     if not settings.demo_mode:
@@ -656,27 +653,25 @@ async def lifespan(_: FastAPI):
         seed_demo_history()
         seed_demo_operations()
         upsert_alerts(demo_alerts())
-        from .demo_seed import seed_demo_state
-        seed_demo_state()
     sync_task = asyncio.create_task(auto_sync_loop())
     tracker_task = asyncio.create_task(tracker_health_loop())
-    projects_email_task = asyncio.create_task(projects_email_loop()) if settings.integrations_enabled and not settings.demo_mode else None
+    background_tasks = [sync_task, tracker_task]
+    if not settings.demo_mode:
+        background_tasks.append(asyncio.create_task(aline_email_loop()))
     try:
         yield
     finally:
-        for task in (sync_task, tracker_task, projects_email_task):
-            if task is not None:
-                task.cancel()
-        for task in (sync_task, tracker_task, projects_email_task):
-            if task is not None:
-                with suppress(asyncio.CancelledError):
-                    await task
+        for task in background_tasks:
+            task.cancel()
+        for task in background_tasks:
+            with suppress(asyncio.CancelledError):
+                await task
 
 
-app = FastAPI(title="Sistema de Gestão Operacional — Demo", version="2.9.0", lifespan=lifespan)
+app = FastAPI(title="Sistema de Gestão Operacional — Demo", description="Case técnico de portfólio com dados fictícios e integrações desabilitadas por padrão.", version="3.0.0-demo", lifespan=lifespan)
 app.mount("/assets", StaticFiles(directory="assets"), name="assets")
-app.include_router(projects_router)
-app.include_router(projects_email_router)
+app.include_router(aline_router)
+app.include_router(aline_email_router)
 app.include_router(system_state_router)
 from .historical_vision import router as historical_vision_router
 app.include_router(historical_vision_router)
@@ -688,16 +683,11 @@ app.include_router(profile_photos_router)
 app.include_router(whatsapp_router)
 app.include_router(cora_router)
 app.include_router(tablet_agenda_router)
-from .routes.pages import router as pages_router
-app.include_router(pages_router)
 
 
 @app.middleware("http")
 async def require_system_login(request: Request, call_next):
     path = request.url.path
-    external_paths = ("/api/whatsapp", "/api/cora", "/api/nfse", "/api/projects/email", "/api/schedules/historical")
-    if (settings.demo_mode or not settings.integrations_enabled) and path.startswith(external_paths):
-        return JSONResponse(status_code=503, content={"detail": "Integração desabilitada nesta instalação de demonstração."})
     public_exact = {
         "/",
         "/login",
@@ -740,6 +730,84 @@ async def require_system_login(request: Request, call_next):
     return await call_next(request)
 
 
+@app.get("/login", response_class=HTMLResponse)
+async def login_page(request: Request):
+    if user_from_session(request.cookies.get(COOKIE_NAME)):
+        destination = "/agenda-tablet" if request.query_params.get("next") == "/agenda-tablet" else "/workspace"
+        return RedirectResponse(destination, status_code=303)
+    return templates.TemplateResponse(
+        request=request,
+        name="login.html",
+        context={"tablet_login": request.query_params.get("next") == "/agenda-tablet"},
+    )
+
+
+@app.get("/agenda-tablet", response_class=HTMLResponse)
+async def tablet_agenda_page(request: Request):
+    return templates.TemplateResponse(request=request, name="tablet_agenda.html", context={})
+
+
+@app.get("/agenda-tablet/sw.js")
+async def tablet_agenda_service_worker():
+    from fastapi.responses import FileResponse
+    return FileResponse("assets/tablet_agenda_sw.js", media_type="text/javascript",
+                        headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"})
+
+
+@app.get("/", response_class=HTMLResponse)
+async def institutional_home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="institutional.html",
+        context={
+            "contact_email": settings.public_contact_email,
+            "contact_phone": settings.public_contact_phone,
+            "whatsapp_url": settings.public_whatsapp_url or None,
+            "instagram_handle": settings.public_instagram_handle,
+            "instagram_url": settings.public_instagram_url,
+        },
+    )
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="privacy.html",
+        context={
+            "contact_email": settings.public_contact_email,
+            "contact_phone": settings.public_contact_phone,
+            "whatsapp_url": settings.public_whatsapp_url,
+        },
+    )
+
+
+@app.get("/terms", response_class=HTMLResponse)
+async def terms_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="terms.html",
+        context={
+            "contact_email": settings.public_contact_email,
+            "contact_phone": settings.public_contact_phone,
+            "whatsapp_url": settings.public_whatsapp_url,
+        },
+    )
+
+
+@app.get("/data-deletion", response_class=HTMLResponse)
+async def data_deletion_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="data_deletion.html",
+        context={
+            "contact_email": settings.public_contact_email,
+            "contact_phone": settings.public_contact_phone,
+            "whatsapp_url": settings.public_whatsapp_url,
+        },
+    )
+
+
 @app.get("/workspace", response_class=HTMLResponse)
 async def dashboard(request: Request):
     user = request.state.system_user
@@ -779,7 +847,7 @@ async def liveness():
 async def health():
     return {
         "ok": True,
-        "version": "2.9.0",
+        "version": "3.0.0-demo",
         "demo_mode": settings.demo_mode,
         "base_url": settings.selsyn_base_url,
         "api_key_configured": bool(settings.selsyn_api_key),
@@ -791,7 +859,7 @@ async def health():
         "tracker_health": tracker_health_summary(),
         "employee_portal": admin_state_summary(),
         "employee_app_url": "/app",
-        "projects_projects": projects_health(),
+        "aline_projects": aline_health(),
         "system_state": state_health(),
         "document_storage": {
             "ok": True,
@@ -826,7 +894,7 @@ async def meta_whatsapp_callback():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sistema de Gestão Operacional — Demo | WhatsApp</title>
+        <title>Gestão Operacional Topografia | WhatsApp</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -861,7 +929,7 @@ async def meta_whatsapp_callback():
 
     <body>
         <div class="card">
-            <h1>Sistema de Gestão Operacional — Demo</h1>
+            <h1>Gestão Operacional Topografia</h1>
             <p>
                 Conexão com o WhatsApp Business processada.
             </p>
@@ -986,11 +1054,11 @@ async def employee_portal_admin_sync(
     "exams",
     "employeeAppFiles",
 },
-        "projectist": {
+        "helena": {
             "employees", "workTeams", "companies", "works",
             "workScheduleEntries", "projectClients",
         },
-        "projects": set(),
+        "aline": set(),
     }.get(role_code)
     data = payload.data
     if allowed_keys is not None:
@@ -1005,7 +1073,7 @@ async def employee_portal_admin_state(request: Request):
     return {
         "ok": True,
         "updatedAt": state.get("serverUpdatedAt"),
-        "projectClients": state.get("projectClients", []) if role_code in {"admin", "director", "projectist"} else [],
+        "projectClients": state.get("projectClients", []) if role_code in {"admin", "director", "helena"} else [],
         "employeeAppFiles": state.get("employeeAppFiles", []) if role_code in {"admin", "director", "financial"} else [],
         "summary": admin_state_summary(state),
     }

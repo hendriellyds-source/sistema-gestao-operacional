@@ -81,7 +81,7 @@ class DemoCleanupTests(unittest.TestCase):
         self.assertEqual(stats["vehicles"], 1)
         self.assertEqual(len(original["vehicles"]), 2, "a limpeza não deve alterar o objeto de entrada")
 
-    def test_demo_mode_can_be_enabled_by_environment_configuration(self) -> None:
+    def test_demo_mode_can_be_enabled_for_portfolio(self) -> None:
         configured = Settings(demo_mode=True, _env_file=None)
         self.assertTrue(configured.demo_mode)
 
@@ -408,14 +408,14 @@ class OperationalUiAndMigrationTests(unittest.TestCase):
         self.assertNotIn("truncate ", sql)
 
         html = Path("app/templates/index.html").read_text(encoding="utf-8")
-        self.assertIn("/assets/brand.svg", html)
+        self.assertIn("/assets/app-mark.svg", html)
         self.assertIn('id="fleetHistoryDate"', html)
         self.assertNotIn('id="fleetDateFrom"', html)
         self.assertIn("selectFleetTripRoute", html)
         self.assertIn('"funcionarios","exames","ferias","clinicas","veiculos"', html)
         self.assertIn('rhName.textContent="RH"', html)
         self.assertIn('financeName.textContent="Financeiro"', html)
-        self.assertTrue(Path("assets/brand.svg").is_file())
+        self.assertTrue(Path("assets/app-mark.svg").is_file())
 
 
 if __name__ == "__main__":

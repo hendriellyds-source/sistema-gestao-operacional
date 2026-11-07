@@ -55,7 +55,7 @@ def _credential_cipher() -> Fernet:
         )
     digest = hmac.new(
         app_secret.encode("utf-8"),
-        b"operational-whatsapp-operational-token-v1",
+        b"portfolio-whatsapp-operational-token-v1",
         sha256,
     ).digest()
     return Fernet(urlsafe_b64encode(digest))

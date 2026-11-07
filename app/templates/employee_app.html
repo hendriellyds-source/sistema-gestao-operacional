@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b5e8e">
 <title>Gestão Operacional Equipes</title>
-<link rel="icon" type="image/svg+xml" href="/assets/brand.svg">
+<link rel="icon" type="image/png" href="/assets/app-mark.svg">
 <style>
 :root{
   --primary:#0b5e8e;
@@ -98,7 +98,7 @@ button{cursor:pointer}
 .exam-date-box small{color:var(--muted)}
 .chat-list{display:flex;flex-direction:column;gap:9px;max-height:48vh;overflow:auto;padding:3px}
 .chat-message{max-width:86%;padding:10px 12px;border-radius:15px;background:#eaf1f5;line-height:1.45;font-size:.8rem}
-.chat-message.projectist{align-self:flex-start;background:#e6f2fa;color:#174b6e}
+.chat-message.helena{align-self:flex-start;background:#e6f2fa;color:#174b6e}
 .chat-message.me{align-self:flex-end;background:var(--green-soft);color:#245b40}
 .chat-message small{display:block;margin-top:5px;opacity:.6;font-size:.65rem}
 .chat-compose{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}
@@ -149,11 +149,11 @@ button{cursor:pointer}
 <section id="loginPage" class="login-page">
   <div class="login-card">
     <div class="logo-box">
-      <img src="/assets/brand.svg" alt="Sistema de Gestão Operacional — Demo">
+      <img src="/assets/app-mark.svg" alt="Gestão Operacional Demo">
     </div>
     <h1>Gestão Operacional Equipes</h1>
     <p>
-      Acesso individual para visualizar agenda, exames, mensagens da Projetista,
+      Acesso individual para visualizar agenda, exames, mensagens da Helena,
       localização das obras e arquivos da equipe.
     </p>
 
@@ -228,8 +228,8 @@ button{cursor:pointer}
 <div id="toast" class="toast"></div>
 
 <script>
-const STORAGE_KEY="operational_employee_server_cache";
-const SESSION_KEY="operational_employee_server_token";
+const STORAGE_KEY="portfolio_employee_server_cache";
+const SESSION_KEY="portfolio_employee_server_token";
 const MAX_FILE_SIZE={{ employee_file_max_bytes|default(5242880) }};
 let sessionToken=localStorage.getItem(SESSION_KEY)||"";
 
@@ -329,7 +329,7 @@ function usernameForEmployee(employee){
 function passwordForEmployee(employee){
   return String(employee.appPassword||"1234");
 }
-function fallbackData(){return {"employees": [], "clinics": [], "exams": [], "vacations": [], "leaves": [], "vehicles": [], "maintenances": [], "maintenanceHistory": [], "maintenanceDrafts": [], "fines": [], "companies": [], "works": [], "workTeams": [], "workScheduleEntries": [], "billingEntities": [], "invoices": [], "projectClients": [], "projectScheduleRequests": [], "projectsWorks": [], "projectsProcesses": [], "employeeAppFiles": [], "events": [], "settings": {"title": "Dashboard", "subtitle": "Gestão operacional integrada", "primary": "#0b5e8e", "primaryLight": "#3a9ed0", "primaryDark": "#244f7d", "background": "#f5f8fb"}, "employeeImportVersion": "portfolio-v1"};}
+function fallbackData(){return {"employees": [], "workTeams": [], "companies": [], "works": [], "clinics": [], "workScheduleEntries": [], "projectClients": [], "exams": [], "employeeAppFiles": []};}
 function loadData(){
   try{
     const saved=localStorage.getItem(STORAGE_KEY);
@@ -461,13 +461,13 @@ function unreadMessages(){
   employeeEntries().forEach(entry=>{
     chatMessages(entry).forEach(message=>{
       if(
-        message.senderRole==="Projetista" &&
+        message.senderRole==="Helena" &&
         !Array.isArray(message.readBy)
       ){
         message.readBy=[];
       }
       if(
-        message.senderRole==="Projetista" &&
+        message.senderRole==="Helena" &&
         !message.readBy.map(Number).includes(Number(currentEmployee.id))
       ){
         total++;
@@ -573,7 +573,7 @@ function renderHome(){
 
     ${unread?`
       <section class="card notification-card">
-        <strong>💬 ${unread} mensagem(ns) nova(s) da Projetista</strong>
+        <strong>💬 ${unread} mensagem(ns) nova(s) da Helena</strong>
         <p style="margin:5px 0 0;color:var(--muted);font-size:.78rem">
           Abra o serviço para ler as observações e responder.
         </p>
@@ -683,7 +683,7 @@ function renderMessages(){
       const messages=chatMessages(entry);
       const latest=messages[messages.length-1];
       const unread=messages.filter(message=>
-        message.senderRole==="Projetista" &&
+        message.senderRole==="Helena" &&
         !(message.readBy||[]).map(Number).includes(Number(currentEmployee.id))
       ).length;
       return`
@@ -885,11 +885,11 @@ function openJob(id,tab="details"){
       `:`<span class="status amber">Localização exata pendente</span>`}
     </div>
 
-    <div class="section-title"><h2>Conversa com a Projetista</h2></div>
+    <div class="section-title"><h2>Conversa com a Helena</h2></div>
     <div class="card" style="box-shadow:none">
       <div class="chat-list" id="jobChatList">
         ${messages.length?messages.map(message=>`
-          <div class="chat-message ${message.senderEmployeeId&&Number(message.senderEmployeeId)===Number(currentEmployee.id)?"me":"projectist"}">
+          <div class="chat-message ${message.senderEmployeeId&&Number(message.senderEmployeeId)===Number(currentEmployee.id)?"me":"helena"}">
             <strong>${escapeHtml(message.senderName||message.senderRole||"Equipe")}</strong><br>
             ${escapeHtml(message.text)}
             <small>${new Date(message.createdAt).toLocaleString("pt-BR")}</small>
@@ -897,7 +897,7 @@ function openJob(id,tab="details"){
         `).join(""):`<span style="color:var(--muted)">Nenhuma mensagem nesta obra.</span>`}
       </div>
       <div class="chat-compose">
-        <textarea id="employeeReply" placeholder="Responder à Projetista..."></textarea>
+        <textarea id="employeeReply" placeholder="Responder à Helena..."></textarea>
         <button class="btn btn-green" onclick="sendEmployeeReply(${entry.id})">Enviar</button>
       </div>
     </div>
@@ -945,7 +945,7 @@ async function sendEmployeeReply(entryId){
   const text=String(field?.value||"").trim();
 
   if(!client){
-    showToast("Esta obra ainda não possui conversa vinculada à Projetista.");
+    showToast("Esta obra ainda não possui conversa vinculada à Helena.");
     return;
   }
   if(!text){
@@ -959,7 +959,7 @@ async function sendEmployeeReply(entryId){
     });
     applyServerView(result);
     openJob(entryId,"chat");
-    showToast("Resposta enviada à Projetista.");
+    showToast("Resposta enviada à Helena.");
   }catch(error){
     showToast(error.message);
   }
@@ -1107,7 +1107,7 @@ function sendBrowserSummaryNotification(){
   if(todayJobs.length||todayExams.length){
     new Notification("Gestão Operacional Equipes",{
       body:`Hoje: ${todayJobs.length} serviço(s) e ${todayExams.length} exame(s).`,
-      icon:"/assets/brand.svg"
+      icon:"/assets/app-mark.svg"
     });
   }
 }
@@ -1118,7 +1118,7 @@ function maybeShowExamPopup(){
     item.scheduled&&[today,tomorrow].includes(item.scheduled)
   );
   if(!exam) return;
-  const popupKey=`operational_exam_popup_${currentEmployee.id}_${exam.id}_${exam.scheduled}`;
+  const popupKey=`portfolio_exam_popup_${currentEmployee.id}_${exam.id}_${exam.scheduled}`;
   if(sessionStorage.getItem(popupKey)) return;
   sessionStorage.setItem(popupKey,"1");
 

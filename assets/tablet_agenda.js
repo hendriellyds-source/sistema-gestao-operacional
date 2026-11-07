@@ -70,7 +70,7 @@ function key(item) {
 }
 function openDb() {
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("operational-tablet-agenda", 1);
+    const request = indexedDB.open("portfolio-tablet-agenda", 1);
     request.onupgradeneeded = () => {
       const store = request.result;
       store.createObjectStore("ink", { keyPath: "key" });
@@ -513,7 +513,7 @@ function renderDailyPanels() {
   const requestsPanel = document.getElementById("requestsPanel");
   requestsPanel.hidden = !pendingRequests.length;
   requestsPanel.innerHTML = pendingRequests.length
-    ? `<div class="panel-heading"><strong>${pendingRequests.length} solicitação${pendingRequests.length > 1 ? "ões" : ""} da Projetista aguardando marcação</strong>${"Notification" in window && Notification.permission === "default" ? '<button id="enableNotifications" class="subtle">Ativar avisos no tablet</button>' : ""}</div>` +
+    ? `<div class="panel-heading"><strong>${pendingRequests.length} solicitação${pendingRequests.length > 1 ? "ões" : ""} da Helena aguardando marcação</strong>${"Notification" in window && Notification.permission === "default" ? '<button id="enableNotifications" class="subtle">Ativar avisos no tablet</button>' : ""}</div>` +
       pendingRequests.map((item) => `<div class="request-item"><strong>${escapeHtml(item.client_name)}</strong><span>${escapeHtml([item.service_type, item.location].filter(Boolean).join(" · "))}</span></div>`).join("")
     : "";
   notifyPendingRequests();
@@ -534,9 +534,9 @@ async function notifyPendingRequests() {
     notifyingRequests.add(id);
     try {
       const worker = await navigator.serviceWorker.ready;
-      await worker.showNotification("Nova solicitação da Projetista", {
+      await worker.showNotification("Nova solicitação da Helena", {
         body: `${item.client_name}${item.location ? ` · ${item.location}` : ""}`,
-        tag: `agenda-projectist-${id}`, data: { url: "/agenda-tablet" },
+        tag: `agenda-helena-${id}`, data: { url: "/agenda-tablet" },
       });
       notified.add(id);
       localStorage.setItem("agenda-request-notified", JSON.stringify([...notified]));

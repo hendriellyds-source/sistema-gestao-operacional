@@ -55,7 +55,7 @@ FINANCIAL_STATE_KEYS = frozenset(
         "fleetSettings",
     }
 )
-PROJECTIST_STATE_KEYS = frozenset(
+HELENA_STATE_KEYS = frozenset(
     {
         "settings",
         "employees",
@@ -69,8 +69,8 @@ PROJECTIST_STATE_KEYS = frozenset(
         "employeeAppFiles",
     }
 )
-PROJECTS_STATE_KEYS = frozenset(
-    {"settings", "companies", "works", "projectsWorks", "projectsProcesses"}
+ALINE_STATE_KEYS = frozenset(
+    {"settings", "companies", "works", "alineWorks", "alineProcesses"}
 )
 
 
@@ -79,10 +79,10 @@ def allowed_state_keys(role_code: str) -> frozenset[str] | None:
         return None
     if role_code == "financial":
         return FINANCIAL_STATE_KEYS
-    if role_code == "projectist":
-        return PROJECTIST_STATE_KEYS
-    if role_code == "projects":
-        return PROJECTS_STATE_KEYS
+    if role_code == "helena":
+        return HELENA_STATE_KEYS
+    if role_code == "aline":
+        return ALINE_STATE_KEYS
     return frozenset()
 
 

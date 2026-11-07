@@ -173,7 +173,7 @@ def _extract_photo(page: Any) -> str:
 
 def _parse_family(first_text: str) -> list[dict[str, str]]:
     match = re.search(
-        r"Ficha Familiar\s+Nome\s+Nascimento\s*Parentesco\s*(?P<body>.*?)(?=\n\s*Biguacu,|\n\s*Cidade Demo,|\n\s*Data da dispensa)",
+        r"Ficha Familiar\s+Nome\s+Nascimento\s*Parentesco\s*(?P<body>.*?)(?=\n\s*Biguacu,|\n\s*Biguaçu,|\n\s*Data da dispensa)",
         first_text,
         re.I | re.S,
     )

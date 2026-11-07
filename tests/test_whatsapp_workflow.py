@@ -343,11 +343,11 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             self.assertEqual(active.json()["messages"], 1)
             self.assertEqual(list_conversations()[0]["last_message_text"], "Número atual")
 
-    def test_business_app_echo_is_mirrored_as_contato(self) -> None:
+    def test_business_app_echo_is_mirrored_as_daniel(self) -> None:
         with (
             patch.object(settings, "whatsapp_db_path", self.database_path),
             patch.object(settings, "whatsapp_app_secret", "test-app-secret"),
-            patch.object(settings, "whatsapp_mobile_sender_name", "Responsável Demo"),
+            patch.object(settings, "whatsapp_mobile_sender_name", "Daniel"),
         ):
             response = self._post(self._echo_payload("wamid.echo.1", "Já respondi"))
             self.assertEqual(response.status_code, 200, response.text)
@@ -355,7 +355,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             message = list_messages(conversation["id"])[0]
             self.assertEqual(message["direction"], "outbound")
             self.assertEqual(message["source"], "business_app")
-            self.assertEqual(message["actor_name"], "Responsável Demo")
+            self.assertEqual(message["actor_name"], "Daniel")
 
     def test_history_is_imported_without_creating_unread_notifications(self) -> None:
         with (
@@ -364,7 +364,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         ):
             response = self._post(self._history_payload())
             self.assertEqual(response.status_code, 200, response.text)
-            conversation = list_conversations(viewer_key="projectist")[0]
+            conversation = list_conversations(viewer_key="helena")[0]
             messages = list_messages(conversation["id"])
             self.assertEqual(len(messages), 2)
             self.assertEqual(conversation["viewer_unread_count"], 0)
@@ -383,7 +383,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                 list_conversations(viewer_key="admin")[0]["viewer_unread_count"], 0
             )
             self.assertEqual(
-                list_conversations(viewer_key="projectist")[0]["viewer_unread_count"], 1
+                list_conversations(viewer_key="helena")[0]["viewer_unread_count"], 1
             )
             label = create_label(name="Funcionário", color="#1976c9")
             labels = set_contact_labels(
@@ -399,7 +399,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         admin = {
             "id": 1, "display_name": "Administrador", "role_code": "admin"
         }
-        projectist = {"id": 2, "display_name": "Projetista", "role_code": "projectist"}
+        helena = {"id": 2, "display_name": "Helena", "role_code": "helena"}
         with (
             patch.object(settings, "whatsapp_db_path", self.database_path),
             patch.object(settings, "whatsapp_app_secret", "test-app-secret"),
@@ -407,7 +407,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         ):
             self._post(self._payload("wamid.agent.unread", "Preciso de um projeto"))
             conversation = list_conversations()[0]
-            update_conversation(conversation["id"], assignee="Projetista")
+            update_conversation(conversation["id"], assignee="Helena")
             with patch("app.main.user_from_session", return_value=admin):
                 preview = self.client.post(
                     f"/api/whatsapp/conversations/{conversation['id']}/read",
@@ -419,7 +419,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                 list_conversations(viewer_key="2")[0]["viewer_unread_count"], 1
             )
             with (
-                patch("app.main.user_from_session", return_value=projectist),
+                patch("app.main.user_from_session", return_value=helena),
                 patch("app.whatsapp_routes.whatsapp_client.mark_message_read") as mark,
             ):
                 read = self.client.post(
@@ -436,7 +436,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             )
 
     def test_failed_meta_read_receipt_is_retried(self) -> None:
-        projectist = {"id": 2, "display_name": "Projetista", "role_code": "projectist"}
+        helena = {"id": 2, "display_name": "Helena", "role_code": "helena"}
         with (
             patch.object(settings, "whatsapp_db_path", self.database_path),
             patch.object(settings, "whatsapp_app_secret", "test-app-secret"),
@@ -444,9 +444,9 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         ):
             self._post(self._payload("wamid.read.retry", "Preciso de ajuda"))
             conversation = list_conversations()[0]
-            update_conversation(conversation["id"], assignee="Projetista")
+            update_conversation(conversation["id"], assignee="Helena")
             with (
-                patch("app.main.user_from_session", return_value=projectist),
+                patch("app.main.user_from_session", return_value=helena),
                 patch(
                     "app.whatsapp_routes.whatsapp_client.mark_message_read",
                     side_effect=WhatsAppAPIError("falha temporária"),
@@ -461,7 +461,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                 self.assertTrue(first.json()["queued_for_whatsapp"])
                 self.assertEqual(mark.call_count, 1)
             with (
-                patch("app.main.user_from_session", return_value=projectist),
+                patch("app.main.user_from_session", return_value=helena),
                 patch("app.whatsapp_routes.whatsapp_client.mark_message_read") as mark,
             ):
                 second = self.client.post(
@@ -478,7 +478,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                 self.assertFalse(third.json()["queued_for_whatsapp"])
 
     def test_agent_cannot_open_another_persons_conversation(self) -> None:
-        projectist = {"id": 2, "display_name": "Projetista", "role_code": "projectist"}
+        helena = {"id": 2, "display_name": "Helena", "role_code": "helena"}
         with (
             patch.object(settings, "whatsapp_db_path", self.database_path),
             patch.object(settings, "whatsapp_app_secret", "test-app-secret"),
@@ -486,8 +486,8 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         ):
             self._post(self._payload("wamid.private", "Olá"))
             conversation = list_conversations()[0]
-            update_conversation(conversation["id"], assignee="Responsável Demo")
-            with patch("app.main.user_from_session", return_value=projectist):
+            update_conversation(conversation["id"], assignee="Daniel")
+            with patch("app.main.user_from_session", return_value=helena):
                 response = self.client.get(
                     f"/api/whatsapp/conversations/{conversation['id']}"
                 )
@@ -500,17 +500,17 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             "display_name": "Administrador",
             "role_code": "admin",
         }
-        projectist = {
+        helena = {
             "profile_id": "22222222-2222-4222-8222-222222222222",
             "organization_id": "org-test",
-            "display_name": "Projetista Projetos",
-            "role_code": "projectist",
+            "display_name": "Helena Projetos",
+            "role_code": "helena",
         }
         other = {
             "profile_id": "33333333-3333-4333-8333-333333333333",
             "organization_id": "org-test",
-            "display_name": "Projetista Projetos",
-            "role_code": "projects",
+            "display_name": "Helena Projetos",
+            "role_code": "aline",
         }
         provider_response = WhatsAppSendResponse(
             status_code=200, payload={"messages": [{"id": "wamid.assigned.out"}]}
@@ -526,17 +526,17 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                 patch("app.main.user_from_session", return_value=admin),
                 patch(
                     "app.whatsapp_routes._assignable_profile",
-                    return_value={"id": projectist["profile_id"], "name": projectist["display_name"]},
+                    return_value={"id": helena["profile_id"], "name": helena["display_name"]},
                 ),
             ):
                 assigned = self.client.patch(
                     f"/api/whatsapp/conversations/{conversation_id}",
-                    json={"assignee_profile_id": projectist["profile_id"], "status": "open"},
+                    json={"assignee_profile_id": helena["profile_id"], "status": "open"},
                 )
                 self.assertEqual(assigned.status_code, 200, assigned.text)
                 self.assertEqual(
                     assigned.json()["conversation"]["assignee_profile_id"],
-                    projectist["profile_id"],
+                    helena["profile_id"],
                 )
                 preview = self.client.post(
                     f"/api/whatsapp/conversations/{conversation_id}/read",
@@ -553,7 +553,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                     )
                 self.assertEqual(sent.status_code, 200, sent.text)
 
-            with patch("app.main.user_from_session", return_value=projectist):
+            with patch("app.main.user_from_session", return_value=helena):
                 inbox = self.client.get("/api/whatsapp/conversations?view=mine")
                 detail = self.client.get(f"/api/whatsapp/conversations/{conversation_id}")
             self.assertEqual(inbox.status_code, 200, inbox.text)
@@ -562,7 +562,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             self.assertEqual(detail.status_code, 200, detail.text)
             self.assertEqual(
                 detail.json()["conversation"]["assignee_profile_id"],
-                projectist["profile_id"],
+                helena["profile_id"],
             )
 
             with patch("app.main.user_from_session", return_value=other):
@@ -575,24 +575,24 @@ class WhatsAppWorkflowTests(unittest.TestCase):
 
     def test_only_admin_can_list_assignable_profiles(self) -> None:
         admin = {"role_code": "admin", "organization_id": "org-test"}
-        projectist = {"role_code": "projectist", "organization_id": "org-test"}
-        profiles = [{"id": "profile-1", "name": "Projetista", "role_code": "projectist"}]
+        helena = {"role_code": "helena", "organization_id": "org-test"}
+        profiles = [{"id": "profile-1", "name": "Helena", "role_code": "helena"}]
         with patch("app.main.user_from_session", return_value=admin), patch(
             "app.whatsapp_routes._assignable_profiles", return_value=profiles
         ):
             response = self.client.get("/api/whatsapp/assignees")
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(response.json()["items"], profiles)
-        with patch("app.main.user_from_session", return_value=projectist):
+        with patch("app.main.user_from_session", return_value=helena):
             denied = self.client.get("/api/whatsapp/assignees")
         self.assertEqual(denied.status_code, 403)
 
     def test_director_can_switch_between_all_and_own_conversations(self) -> None:
-        contato = {
-            "role_code": "director", "display_name": "Responsável Demo Gestão Operacional",
+        daniel = {
+            "role_code": "director", "display_name": "Recrutador Demo",
             "profile_id": "0588a421-468e-496d-ae17-b2252e944784",
         }
-        projectist_id = "a22ab0b3-28ec-40fc-b9dd-079391012632"
+        helena_id = "a22ab0b3-28ec-40fc-b9dd-079391012632"
         second = self._payload("wamid.second.view", "Projeto")
         change = second["entry"][0]["changes"][0]["value"]
         change["contacts"][0]["wa_id"] = "5548999888777"
@@ -609,22 +609,22 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             for conversation in conversations:
                 if conversation["contact_phone"] == "5548999999999":
                     update_conversation(
-                        conversation["id"], assignee="Responsável Demo Gestão Operacional",
-                        assignee_profile_id=contato["profile_id"],
+                        conversation["id"], assignee="Recrutador Demo",
+                        assignee_profile_id=daniel["profile_id"],
                     )
                 else:
                     update_conversation(
-                        conversation["id"], assignee="Projetista",
-                        assignee_profile_id=projectist_id,
+                        conversation["id"], assignee="Helena",
+                        assignee_profile_id=helena_id,
                     )
-            with patch("app.main.user_from_session", return_value=contato):
+            with patch("app.main.user_from_session", return_value=daniel):
                 all_items = self.client.get("/api/whatsapp/conversations?view=all")
                 mine = self.client.get("/api/whatsapp/conversations?view=mine")
             self.assertEqual(all_items.status_code, 200, all_items.text)
             self.assertEqual(len(all_items.json()["items"]), 2)
             self.assertEqual(mine.status_code, 200, mine.text)
             self.assertEqual(len(mine.json()["items"]), 1)
-            self.assertEqual(mine.json()["items"][0]["assignee_profile_id"], contato["profile_id"])
+            self.assertEqual(mine.json()["items"][0]["assignee_profile_id"], daniel["profile_id"])
 
     def test_assignable_profiles_are_active_internal_accounts_in_same_organization(self) -> None:
         from app.whatsapp_routes import _assignable_profiles
@@ -635,9 +635,9 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         query.order.return_value = query
         query.execute.return_value.data = [
             {
-                "id": "projectist-id", "auth_user_id": "auth-projectist",
-                "full_name": "Projetista", "email": "projectist@example.com",
-                "role_code": "projectist", "status": "active",
+                "id": "helena-id", "auth_user_id": "auth-helena",
+                "full_name": "Helena", "email": "helena@example.com",
+                "role_code": "helena", "status": "active",
             },
             {
                 "id": "client-id", "auth_user_id": "auth-client",
@@ -654,12 +654,12 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         supabase.table.return_value = query
         with patch("app.whatsapp_routes.create_admin_supabase", return_value=supabase):
             profiles = _assignable_profiles({"organization_id": "org-test"})
-        self.assertEqual([profile["id"] for profile in profiles], ["projectist-id"])
+        self.assertEqual([profile["id"] for profile in profiles], ["helena-id"])
         self.assertIn(("organization_id", "org-test"), [call.args for call in query.eq.call_args_list])
         self.assertIn(("status", "active"), [call.args for call in query.eq.call_args_list])
 
     def test_audio_upload_is_recorded_for_responsible_attendant(self) -> None:
-        projectist = {"id": 2, "display_name": "Projetista", "role_code": "projectist"}
+        helena = {"id": 2, "display_name": "Helena", "role_code": "helena"}
         provider_response = WhatsAppSendResponse(
             status_code=200, payload={"messages": [{"id": "wamid.audio.out"}]}
         )
@@ -670,9 +670,9 @@ class WhatsAppWorkflowTests(unittest.TestCase):
         ):
             self._post(self._payload("wamid.before.audio", "Olá"))
             conversation = list_conversations()[0]
-            update_conversation(conversation["id"], assignee="Projetista")
+            update_conversation(conversation["id"], assignee="Helena")
             with (
-                patch("app.main.user_from_session", return_value=projectist),
+                patch("app.main.user_from_session", return_value=helena),
                 patch(
                     "app.whatsapp_routes.whatsapp_client.upload_audio",
                     return_value="media-audio-id",
@@ -699,7 +699,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             )
             message = list_messages(conversation["id"])[-1]
             self.assertEqual(message["message_type"], "audio")
-            self.assertEqual(message["actor_name"], "Projetista")
+            self.assertEqual(message["actor_name"], "Helena")
             self.assertTrue(message["media_path"])
 
     def test_document_received_can_be_downloaded_only_by_responsible_user(self) -> None:
@@ -711,8 +711,8 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             "type": "document",
             "document": {"id": "meta-pdf-id", "mime_type": "application/pdf", "filename": "contrato.pdf"},
         })
-        projectist = {"role_code": "projectist", "display_name": "Projetista", "profile_id": "a22ab0b3-28ec-40fc-b9dd-079391012632"}
-        other = {"role_code": "projects", "display_name": "Projetos", "profile_id": "38d6ac77-246a-4b77-a399-2731b510a18f"}
+        helena = {"role_code": "helena", "display_name": "Helena", "profile_id": "a22ab0b3-28ec-40fc-b9dd-079391012632"}
+        other = {"role_code": "aline", "display_name": "Aline", "profile_id": "38d6ac77-246a-4b77-a399-2731b510a18f"}
         with (
             patch.object(settings, "whatsapp_db_path", self.database_path),
             patch.object(settings, "whatsapp_app_secret", "test-app-secret"),
@@ -722,11 +722,11 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             response = self._post(payload)
             self.assertEqual(response.status_code, 200, response.text)
             conversation = list_conversations()[0]
-            update_conversation(conversation["id"], assignee="Projetista", assignee_profile_id=projectist["profile_id"])
+            update_conversation(conversation["id"], assignee="Helena", assignee_profile_id=helena["profile_id"])
             saved = list_messages(conversation["id"])[0]
             self.assertEqual(saved["message_type"], "document")
             self.assertTrue(saved["media_path"])
-            with patch("app.main.user_from_session", return_value=projectist):
+            with patch("app.main.user_from_session", return_value=helena):
                 result = self.client.get(f"/api/whatsapp/messages/{saved['id']}/media?download=true")
             self.assertEqual(result.status_code, 200, result.text)
             self.assertEqual(result.content, document)
@@ -738,7 +738,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             download.assert_called_once_with("meta-pdf-id")
 
     def test_document_upload_is_sent_and_recorded(self) -> None:
-        user = {"role_code": "admin", "display_name": "Responsável Demo", "profile_id": "daecab59-3abf-4fc7-bdc8-6ae85acc9201"}
+        user = {"role_code": "admin", "display_name": "Daniel", "profile_id": "daecab59-3abf-4fc7-bdc8-6ae85acc9201"}
         document = b"%PDF-1.4\n%%EOF\n"
         provider_response = WhatsAppSendResponse(
             status_code=200, payload={"messages": [{"id": "wamid.outbound.pdf"}]}
@@ -822,7 +822,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
 
     def test_admin_disconnect_preserves_history_and_stops_webhook_processing(self) -> None:
         admin = {"role_code": "admin", "display_name": "Administrador"}
-        projectist = {"role_code": "projectist", "display_name": "Projetista"}
+        helena = {"role_code": "helena", "display_name": "Helena"}
         with (
             patch.object(settings, "whatsapp_db_path", self.database_path),
             patch.object(settings, "whatsapp_app_secret", "test-app-secret"),
@@ -836,7 +836,7 @@ class WhatsAppWorkflowTests(unittest.TestCase):
             first["entry"][0]["id"] = "123456"
             self.assertEqual(self._post(first).status_code, 200)
             conversation = list_conversations()[0]
-            with patch("app.main.user_from_session", return_value=projectist):
+            with patch("app.main.user_from_session", return_value=helena):
                 forbidden = self.client.post(
                     f"/api/whatsapp/onboarding/connections/{connected['id']}/disconnect",
                     json={"waba_id": "123456", "confirmation": "DESCONECTAR"},
@@ -903,8 +903,8 @@ class WhatsAppWorkflowTests(unittest.TestCase):
     def test_start_conversation_sends_template_and_records_message(self) -> None:
         user = {
             "id": 1,
-            "display_name": "Responsável Demo Gestão Operacional",
-            "email": "contato@example.invalid",
+            "display_name": "Recrutador Demo",
+            "email": "demo@portfolio.local",
             "role_code": "director",
         }
         provider_response = WhatsAppSendResponse(
@@ -925,14 +925,14 @@ class WhatsAppWorkflowTests(unittest.TestCase):
                 "/api/whatsapp/conversations",
                 json={
                     "phone": "+55 (47) 99709-8277",
-                    "profile_name": "Responsável Demo Teste",
+                    "profile_name": "Daniel Teste",
                 },
             )
 
             self.assertEqual(response.status_code, 200, response.text)
             conversation = response.json()["conversation"]
             self.assertEqual(conversation["contact_phone"], "5547997098277")
-            self.assertEqual(conversation["profile_name"], "Responsável Demo Teste")
+            self.assertEqual(conversation["profile_name"], "Daniel Teste")
             self.assertEqual(conversation["status"], "open")
             messages = list_messages(conversation["id"])
             self.assertEqual(len(messages), 1)

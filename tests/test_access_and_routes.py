@@ -19,15 +19,15 @@ def user(role_code: str) -> dict[str, object]:
         "admin": "adm",
         "director": "diretor",
         "financial": "financeiro",
-        "projectist": "projectist",
-        "projects": "projects",
+        "helena": "helena",
+        "aline": "aline",
     }.get(role_code, role_code)
     areas = {
         "admin": ["admin", "finance"],
         "director": ["admin", "finance"],
         "financial": ["finance", "admin"],
-        "projectist": ["projectist"],
-        "projects": ["projects"],
+        "helena": ["projectist"],
+        "aline": ["aline"],
     }.get(role_code, [])
     return {
         "role_code": role_code,
@@ -77,15 +77,15 @@ class AccessRouteTests(unittest.TestCase):
                 "admin",
                 "director",
                 "financial",
-                "projectist",
-                "projects",
+                "helena",
+                "aline",
                 "employee",
                 "client",
                 "pending",
             },
         )
-        self.assertEqual(ROLE_AREAS["projectist"], ["projectist"])
-        self.assertEqual(ROLE_AREAS["projects"], ["projects"])
+        self.assertEqual(ROLE_AREAS["helena"], ["projectist"])
+        self.assertEqual(ROLE_AREAS["aline"], ["aline"])
 
     def test_financial_accesses_hr_fleet_and_calendar_pages(self) -> None:
         self.current_user = user("financial")
@@ -107,8 +107,8 @@ class AccessRouteTests(unittest.TestCase):
         self.current_user = user("financial")
         self.assertEqual(self.client.get("/admin/users").status_code, 403)
 
-    def test_projectist_and_projects_cannot_access_finance(self) -> None:
-        for role in ("projectist", "projects"):
+    def test_helena_and_aline_cannot_access_finance(self) -> None:
+        for role in ("helena", "aline"):
             self.current_user = user(role)
             self.assertEqual(self.client.get("/finance/calendar").status_code, 403)
             self.assertEqual(self.client.get("/rh/employees").status_code, 403)
@@ -120,17 +120,17 @@ class AccessRouteTests(unittest.TestCase):
                 403,
             )
 
-    def test_filtered_state_does_not_expose_finance_to_projectist_or_projects(self) -> None:
+    def test_filtered_state_does_not_expose_finance_to_helena_or_aline(self) -> None:
         state = {
             "has_state": True,
             "data": {
                 "projectClients": [{"id": 1}],
-                "projectsProcesses": [{"id": 2}],
+                "alineProcesses": [{"id": 2}],
                 "invoices": [{"id": 3, "total": 999}],
                 "billingEntities": [{"id": 4}],
             },
         }
-        for role in ("projectist", "projects"):
+        for role in ("helena", "aline"):
             filtered = filter_state_for_user(state, user(role))["data"]
             self.assertNotIn("invoices", filtered)
             self.assertNotIn("billingEntities", filtered)
@@ -180,7 +180,7 @@ class AccessRouteTests(unittest.TestCase):
             self.assertEqual(download.json()["url"], "https://signed.invalid/certificate")
             self.assertGreater(download.json()["expires_in"], 0)
             signed_url.assert_called_once()
-            self.current_user = user("projectist")
+            self.current_user = user("helena")
             self.assertEqual(
                 self.client.get(f"/api/employee-certificates/{certificate_id}/download").status_code,
                 403,

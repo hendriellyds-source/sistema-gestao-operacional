@@ -25,7 +25,7 @@ class HistoricalScheduleStateTests(unittest.TestCase):
                 save_system_state({"workScheduleEntries": entries}, source="sistema-web", updated_by="test")
                 state = get_system_state()
                 self.assertEqual(state["data"]["workScheduleEntries"], entries)
-                for role in ("admin", "director", "financial", "projectist"):
+                for role in ("admin", "director", "financial", "helena"):
                     self.assertEqual(filter_state_for_user(state, {"role_code": role})["data"]["workScheduleEntries"], entries)
 
 
