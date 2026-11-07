@@ -38,3 +38,19 @@ jobs:
           name: pytest-report
           path: test-results.xml
           if-no-files-found: ignore
+  docker:
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start demo
+        run: docker compose up -d --build --wait --wait-timeout 120
+      - name: Exercise demo over HTTP
+        run: python3 scripts/smoke_demo.py
+      - name: Container logs
+        if: always()
+        run: docker compose logs --no-color
+      - name: Stop containers
+        if: always()
+        run: docker compose down --volumes

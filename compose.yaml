@@ -1,0 +1,24 @@
+services:
+  demo:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DEMO_MODE: "true"
+      INTEGRATIONS_ENABLED: "false"
+      AUTH_COOKIE_SECURE: "false"
+      DEMO_EMAIL: "demo@portfolio.local"
+      DEMO_PASSWORD: "Demo@12345"
+      APP_TIMEZONE: "America/Sao_Paulo"
+    volumes:
+      - demo-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  demo-data:

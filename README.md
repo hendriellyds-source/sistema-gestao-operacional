@@ -2,6 +2,18 @@
 
 > Case técnico de uma aplicação web criada para centralizar processos operacionais que antes dependiam de controles dispersos. Esta versão pública usa **dados 100% fictícios** e mantém integrações externas desabilitadas por padrão.
 
+## Executar com Docker
+
+Com Docker Engine/Docker Desktop e Docker Compose v2 instalados, execute na raiz:
+
+```bash
+docker compose up --build
+```
+
+Abra [a demonstração local](http://127.0.0.1:8000). Login: `demo@portfolio.local` / `Demo@12345`.
+
+Para parar, use `Ctrl+C` e `docker compose down`. O volume `demo-data` preserva as alterações entre execuções. A porta fica acessível somente pelo próprio computador; o Compose não carrega seu `.env` nem credenciais reais. O contêiner executa sem root e usa uma verificação de saúde HTTP. O CI valida o build e o fluxo de login do contêiner.
+
 ## Visão geral
 
 O sistema integra, em uma única aplicação, rotinas de **operações, agenda, RH, frota, financeiro, documentos, permissões e indicadores**. O objetivo do case é demonstrar modelagem de regras de negócio, backend em Python, interface web, persistência local, integrações e preocupação com segurança.

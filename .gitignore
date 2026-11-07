@@ -36,3 +36,15 @@ Thumbs.db
 .coverage
 htmlcov/
 coverage.xml
+
+# All generated demo stores, uploads and private runtime files
+data/**
+!data/.gitkeep
+*.db-*
+*.sqlite*
+*.pfx
+*.p12
+test-results.xml
+
+# Unused legacy corporate media kept outside version control
+assets/institutional/clients/
