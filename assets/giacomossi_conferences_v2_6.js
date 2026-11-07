@@ -1,7 +1,7 @@
 (function(){
 "use strict";
 
-const G26_KIND="GIACOMOSSI_CONFERENCE";
+const G26_KIND="HORIZONTE_CONFERENCE";
 const G26_STATUSES=[
   "Aguardando conferência",
   "Em conferência",
@@ -50,7 +50,7 @@ async function g26Api(path,options={}){
 }
 function g26CompanyId(){
   const source=typeof data!=="undefined"?data:{companies:[],works:[]};
-  const company=(source.companies||[]).find(item=>g26Norm(item.name).includes("GIACOMOSSI"));
+  const company=(source.companies||[]).find(item=>g26Norm(item.name).includes("HORIZONTE"));
   return company?.id??null;
 }
 function g26Works(){
@@ -76,7 +76,7 @@ function g26Card(item,helena=true){
   const waiting=item.waiting_for?`Aguardando ação de ${item.waiting_for}`:"";
   return `<article class="g26-card" data-search="${g26Esc(g26Norm(`${item.work_name} ${item.status_manual} ${item.requested_files}`))}">
     <div class="g26-card-head">
-      <div><small>GIACOMOSSI</small><h3>${g26Esc(item.work_name)}</h3></div>
+      <div><small>HORIZONTE</small><h3>${g26Esc(item.work_name)}</h3></div>
       <span class="g26-status ${g26StatusClass(item.status_manual)}">${g26Esc(item.status_manual)}</span>
     </div>
     <div class="g26-meta">
@@ -104,12 +104,12 @@ function g26FilterRows(){
 }
 async function g26Load(){
   const rows=await g26Api("/works?archived=false");
-  G26.demands=rows.filter(item=>item.demand_kind===G26_KIND||g26Norm(item.company)==="GIACOMOSSI"&&String(item.source_reference||"").startsWith("GIACOMOSSI:"));
+  G26.demands=rows.filter(item=>item.demand_kind===G26_KIND||g26Norm(item.company)==="HORIZONTE"&&String(item.source_reference||"").startsWith("HORIZONTE:"));
   return G26.demands;
 }
 
-window.projectistGiacomossi=async function(){
-  setHeader("Helena — Conferências Giacomossi","Envio obrigatório das pastas de obras para conferência da Aline.");
+window.projectistHorizonte=async function(){
+  setHeader("Helena — Conferências Horizonte","Envio obrigatório das pastas de obras para conferência da Aline.");
   const content=document.getElementById("content");
   content.innerHTML=`<div class="card">Carregando obras e demandas…</div>`;
   try{
@@ -121,11 +121,11 @@ window.projectistGiacomossi=async function(){
     const pending=demands.filter(item=>!["Conferida","Concluído"].includes(item.status_manual)).length;
     content.innerHTML=`<div class="g26-shell">
       <div class="g26-hero">
-        <div><span>FLUXO SEPARADO</span><h2>Conferências obrigatórias — Giacomossi</h2><p>Os arquivos permanecem no Google Drive. O sistema registra a pasta, o prazo, o andamento e as notificações.</p></div>
+        <div><span>FLUXO SEPARADO</span><h2>Conferências obrigatórias — Horizonte</h2><p>Os arquivos permanecem no Google Drive. O sistema registra a pasta, o prazo, o andamento e as notificações.</p></div>
         <button class="btn btn-primary" onclick="giacomossiDemandFormV26()">Nova demanda para Aline</button>
       </div>
       <div class="grid grid-4">
-        ${metric("Obras Giacomossi",works.length,"Cadastro administrativo")}
+        ${metric("Obras Horizonte",works.length,"Cadastro administrativo")}
         ${metric("Demandas ativas",pending,"Aguardando conclusão",pending?"warning":"success")}
         ${metric("Correções",corrections,"Ação necessária da Helena",corrections?"danger":"success")}
         ${metric("Vencidas",overdue,"Prazo ultrapassado",overdue?"danger":"success")}
@@ -140,7 +140,7 @@ window.projectistGiacomossi=async function(){
         <input id="g26Search" placeholder="Buscar obra ou arquivo" oninput="giacomossiFilterV26()">
         <select id="g26Status" onchange="giacomossiFilterV26()"><option value="">Todos os status</option>${G26_STATUSES.map(s=>`<option>${g26Esc(s)}</option>`).join("")}</select>
       </div>
-      <div id="g26DemandGrid" class="g26-grid">${demands.length?demands.map(item=>g26Card(item,true)).join(""):`<div class="card">Nenhuma demanda Giacomossi enviada para Aline.</div>`}</div>
+      <div id="g26DemandGrid" class="g26-grid">${demands.length?demands.map(item=>g26Card(item,true)).join(""):`<div class="card">Nenhuma demanda Horizonte enviada para Aline.</div>`}</div>
     </div>`;
     giacomossiRefreshBadgeV26();
   }catch(error){
@@ -156,8 +156,8 @@ window.giacomossiWorksListV26=function(){
     const id=Number(item.admin_work_id);
     if(id)linked.set(id,(linked.get(id)||0)+1);
   });
-  modal(`<h2>Obras da Giacomossi</h2><p class="muted">Esta lista vem do cadastro administrativo de empresas e obras.</p>
-    <div class="g26-work-list">${works.map(work=>`<div><span><strong>${g26Esc(work.name)}</strong><small>${linked.get(Number(work.id))||0} demanda(s) de conferência</small></span><button class="btn btn-primary" onclick="giacomossiDemandFormV26(null,${work.id})">Criar demanda</button></div>`).join("")||"Nenhuma obra vinculada à empresa GIACOMOSSI."}</div>`);
+  modal(`<h2>Obras da Horizonte</h2><p class="muted">Esta lista vem do cadastro administrativo de empresas e obras.</p>
+    <div class="g26-work-list">${works.map(work=>`<div><span><strong>${g26Esc(work.name)}</strong><small>${linked.get(Number(work.id))||0} demanda(s) de conferência</small></span><button class="btn btn-primary" onclick="giacomossiDemandFormV26(null,${work.id})">Criar demanda</button></div>`).join("")||"Nenhuma obra vinculada à empresa HORIZONTE."}</div>`);
 };
 
 window.giacomossiDemandFormV26=async function(id=null,preferredWorkId=null){
@@ -165,11 +165,11 @@ window.giacomossiDemandFormV26=async function(id=null,preferredWorkId=null){
     const item=id?await g26Api(`/works/${id}`):null;
     const works=g26Works();
     const selected=Number(preferredWorkId||item?.admin_work_id||works[0]?.id||0);
-    if(!works.length){alert("Nenhuma obra da GIACOMOSSI foi encontrada no cadastro administrativo.");return}
-    modal(`<h2>${item?"Editar demanda":"Nova conferência Giacomossi"}</h2>
+    if(!works.length){alert("Nenhuma obra da HORIZONTE foi encontrada no cadastro administrativo.");return}
+    modal(`<h2>${item?"Editar demanda":"Nova conferência Horizonte"}</h2>
       <div class="g26-info">Primeiro envie os arquivos para a pasta do Google Drive. Depois cole o link abaixo para a Aline abrir diretamente.</div>
       <form id="g26Form" class="form-grid">
-        <div class="form-group" style="grid-column:1/-1"><label>Obra da Giacomossi *</label><select name="admin_work_id" required>${works.map(work=>`<option value="${work.id}" ${Number(work.id)===selected?"selected":""}>${g26Esc(work.name)}</option>`).join("")}</select></div>
+        <div class="form-group" style="grid-column:1/-1"><label>Obra da Horizonte *</label><select name="admin_work_id" required>${works.map(work=>`<option value="${work.id}" ${Number(work.id)===selected?"selected":""}>${g26Esc(work.name)}</option>`).join("")}</select></div>
         <div class="form-group" style="grid-column:1/-1"><label>Link da pasta no Google Drive *</label><input name="drive_folder_url" type="url" required placeholder="https://drive.google.com/drive/folders/..." value="${g26Esc(item?.drive_folder_url||"")}"></div>
         <div class="form-group"><label>Nome da pasta</label><input name="drive_folder_name" value="${g26Esc(item?.drive_folder_name||"")}"></div>
         <div class="form-group"><label>Prazo da conferência *</label><input name="deadline" type="date" required value="${g26Esc(item?.deadline||"")}"></div>
@@ -188,10 +188,10 @@ window.giacomossiDemandFormV26=async function(id=null,preferredWorkId=null){
         ...(item||{}),
         client_id:null,
         source_profile:"Helena",
-        source_reference:`GIACOMOSSI:${adminWorkId}`,
-        company:"GIACOMOSSI",
+        source_reference:`HORIZONTE:${adminWorkId}`,
+        company:"HORIZONTE",
         work_name:work.name,
-        description:"Conferência obrigatória dos arquivos da obra Giacomossi.",
+        description:"Conferência obrigatória dos arquivos da obra Horizonte.",
         deadline:form.elements.deadline.value,
         responsible:"Aline",
         priority:form.elements.priority.value,
@@ -207,7 +207,7 @@ window.giacomossiDemandFormV26=async function(id=null,preferredWorkId=null){
         transition_note:item?"Demanda e pasta do Drive atualizadas pela Helena.":"Pasta do Drive enviada para conferência da Aline."
       };
       await g26Api(id?`/works/${id}`:"/works",{method:id?"PUT":"POST",body:JSON.stringify({data:payload})});
-      closeModal();showToast("Demanda enviada para a Aline.");projectistGiacomossi();
+      closeModal();showToast("Demanda enviada para a Aline.");projectistHorizonte();
     };
   }catch(error){alert(error.message)}
 };
@@ -219,7 +219,7 @@ window.giacomossiResendV26=async function(id){
       ...item,status_manual:"Aguardando conferência",waiting_for:"Aline",
       transition_note:"Correções realizadas no Drive; demanda reenviada para a Aline."
     }})});
-    showToast("Demanda reenviada para conferência.");projectistGiacomossi();
+    showToast("Demanda reenviada para conferência.");projectistHorizonte();
   }catch(error){alert(error.message)}
 };
 
@@ -228,7 +228,7 @@ window.giacomossiDeleteV26=async function(id){
     const impact=await g26Api(`/delete-impact/work/${id}`);
     if(!confirm(`Excluir permanentemente a demanda “${impact.title}”?\\n\\n${impact.message}\\n\\nA pasta e os arquivos do Google Drive não serão excluídos.`))return;
     await g26Api(`/delete/work/${id}?confirmed=true`,{method:"DELETE"});
-    showToast("Demanda excluída. A pasta do Drive não foi alterada.");projectistGiacomossi();
+    showToast("Demanda excluída. A pasta do Drive não foi alterada.");projectistHorizonte();
   }catch(error){alert(error.message)}
 };
 
@@ -277,7 +277,7 @@ window.alineWorkDetailV24=function(id){
     const due=g26Deadline(item.deadline);
     content.innerHTML=`<div class="g26-shell">
       <div class="toolbar"><button class="btn btn-light" onclick="currentArea='aline';page='alineWorks';render()">← Voltar para Obras</button>${g26DriveLink(item.drive_folder_url)}</div>
-      <div class="g26-hero"><div><span>CONFERÊNCIA GIACOMOSSI</span><h2>${g26Esc(item.work_name)}</h2><p>Enviada por ${g26Esc(item.source_profile)} para conferência obrigatória.</p></div><span class="g26-status ${g26StatusClass(item.status_manual)}">${g26Esc(item.status_manual)}</span></div>
+      <div class="g26-hero"><div><span>CONFERÊNCIA HORIZONTE</span><h2>${g26Esc(item.work_name)}</h2><p>Enviada por ${g26Esc(item.source_profile)} para conferência obrigatória.</p></div><span class="g26-status ${g26StatusClass(item.status_manual)}">${g26Esc(item.status_manual)}</span></div>
       <div class="grid grid-4">
         ${metric("Prazo",g26Date(item.deadline),due.label,due.css==="overdue"?"danger":due.css==="urgent"?"warning":"")}
         ${metric("Prioridade",item.priority||"Normal","Definida por Helena")}

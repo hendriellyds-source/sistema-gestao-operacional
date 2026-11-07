@@ -1,170 +1,165 @@
 # Sistema de Gestão Operacional — Demo
 
-> Plataforma web desenvolvida para centralizar processos operacionais de uma empresa de serviços de campo, conectando pessoas, equipes, obras, agenda, frota, financeiro e indicadores em um único ambiente.
+> Case técnico de uma aplicação web criada para centralizar processos operacionais que antes dependiam de controles dispersos. Esta versão pública usa **dados 100% fictícios** e mantém integrações externas desabilitadas por padrão.
 
-Este repositório é uma **versão de portfólio anonimizada** de um sistema que desenvolvi por iniciativa própria para resolver necessidades reais de operação. A edição pública/demo preserva arquitetura, regras de negócio e integrações relevantes, mas utiliza dados fictícios e mantém serviços externos desabilitados por padrão.
+## Visão geral
 
-## Visão rápida
+O sistema integra, em uma única aplicação, rotinas de **operações, agenda, RH, frota, financeiro, documentos, permissões e indicadores**. O objetivo do case é demonstrar modelagem de regras de negócio, backend em Python, interface web, persistência local, integrações e preocupação com segurança.
 
-- **Backend:** Python, FastAPI, Pydantic, Uvicorn
-- **Frontend:** Jinja2, HTML, CSS, JavaScript, Leaflet
-- **Persistência demo:** SQLite
-- **Integrações preservadas:** Supabase, WhatsApp Cloud API, Cora, NFS-e/IPM, OpenAI, IMAP e serviços de rastreamento
-- **Qualidade:** testes Python, testes JavaScript e workflow de CI
+### O que este projeto demonstra
 
-### O problema
+- Backend com **FastAPI** e rotas organizadas por domínio
+- Interface web responsiva em **HTML, CSS e JavaScript**
+- Controle de acesso por perfil (RBAC)
+- Gestão de equipes, agenda e atividades operacionais
+- RH: colaboradores, exames, férias e documentos
+- Frota: veículos, manutenção, custos, alertas e histórico
+- Financeiro e calendário de compromissos
+- Persistência local com SQLite e suporte a Supabase no modo integrado
+- Integrações desacopladas (WhatsApp, rastreamento, cobrança e NFS-e)
+- Testes automatizados de fluxos críticos
+- **Modo demo isolado**, sem dependência de serviços externos
 
-A operação original dependia de informações distribuídas entre agendas, cadastros, equipes, veículos, documentos e controles financeiros. Isso aumentava retrabalho, dificultava a rastreabilidade e tornava a gestão dependente de conferências manuais.
+## Telas da demonstração
 
-### A solução
+### Agenda operacional
 
-O sistema centraliza os principais fluxos operacionais e relaciona informações que antes ficavam separadas: uma obra pode ser conectada ao cliente, agenda, equipe, veículo, produção, documentos e financeiro.
+Alocação de equipes e serviços em uma visão de calendário.
 
-## Demonstração
+![Agenda operacional com dados fictícios](docs/screenshots/agenda.png)
 
-A aplicação possui um **modo demo totalmente local**, com dados fictícios e sem dependência de contas externas.
+### Gestão de frota
 
-### Credenciais
+Veículos, posições simuladas e acompanhamento operacional.
 
-| Acesso | Valor |
-|---|---|
-| E-mail | `demo@portfolio.local` |
-| Senha | `Demo@12345` |
-| Perfil | Administrador Demo |
-| Portal das equipes | `pessoa.demo1` / `DemoPortal123` |
+![Frota no modo demonstração](docs/screenshots/frota.png)
 
-> As credenciais acima existem exclusivamente para a demonstração local.
+### Financeiro
 
-## Como executar
+Indicadores e serviços vinculados à operação.
 
-### Windows / PowerShell
+![Painel financeiro com dados fictícios](docs/screenshots/financeiro.png)
+
+## Stack
+
+`Python` · `FastAPI` · `Pydantic` · `Jinja2` · `JavaScript` · `HTML/CSS` · `SQLite` · `Supabase` · `Pytest`
+
+## Executar localmente
+
+### 1. Criar ambiente virtual
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-Copy-Item .env.example .env
-.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+.\.venv\Scripts\Activate.ps1
 ```
 
-### Linux / macOS
+Linux/macOS:
 
 ```bash
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-cp .env.example .env
-.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+python -m venv .venv
+source .venv/bin/activate
 ```
 
-Depois acesse `http://127.0.0.1:8000/`.
+### 2. Instalar dependências
 
-## Principais módulos
+```bash
+python -m pip install -r requirements.txt
+```
 
-| Área | O que demonstra |
+### 3. Criar configuração local
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Linux/macOS:
+
+```bash
+cp .env.example .env
+```
+
+O arquivo de exemplo já vem configurado com `DEMO_MODE=true`.
+
+### 4. Iniciar
+
+```bash
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Abra **http://127.0.0.1:8000**.
+
+## Credenciais de demonstração
+
+| Campo | Valor |
 |---|---|
-| Dashboard | visão consolidada da operação e indicadores |
-| Pessoas / RH | colaboradores, exames, férias e afastamentos |
-| Obras e empresas | cadastros, relacionamentos e histórico operacional |
-| Agenda | alocação de equipes, conflitos e acompanhamento |
-| Agenda em tablet | fluxo de campo, desenho, revisão e confirmação idempotente |
-| Frota | veículos, posições, trajetos, alertas, geofences, custos e manutenção |
-| Financeiro | lançamentos, cobranças e vínculos com serviços e diárias |
-| Projetos | clientes, orçamentos, documentos e acompanhamento |
-| Acesso | autenticação, sessão, perfis e autorização |
+| E-mail | `demo@portfolio.local` |
+| Senha | `Demo@12345` |
+
+O login demo é processado localmente. **Supabase não é necessário** neste modo.
 
 ## Arquitetura
 
 ```text
-app/
-  main.py               composição da aplicação e rotas operacionais
-  routes/pages.py       páginas públicas, login e agenda em tablet
-  auth.py               autenticação e autorização
-  demo_auth.py          autenticação local do modo demo
-  demo_seed.py          cenário sintético e dados fictícios
-  settings.py           configuração e isolamento de integrações
-  system_state.py       estado central, revisão e histórico
-  operations.py         regras operacionais e frota
-  calendar_service.py   consolidação de eventos
-  *_client.py           adaptadores de serviços externos
-  templates/            interface renderizada no servidor
-assets/                  recursos do navegador
-migrations/              migrações incrementais
-tests/                   testes de domínio, API, segurança e interface
-docs/                    arquitetura, validação e material de demonstração
-data/                    dados locais de execução (não versionados)
+Browser
+  │
+  ▼
+FastAPI / Jinja2
+  ├── Autenticação e acesso
+  ├── Operações e agenda
+  ├── RH e documentos
+  ├── Frota e telemetria
+  ├── Financeiro
+  └── Integrações opcionais
+          │
+          ├── Supabase
+          ├── WhatsApp Cloud API
+          ├── Rastreamento
+          ├── Cobrança
+          └── NFS-e
+
+Modo Demo → SQLite + dados fictícios locais
 ```
 
-A estratégia adotada foi de **refatoração incremental**: preservar regras de negócio já validadas e reduzir acoplamento progressivamente, sem reescrever o sistema apenas para fins de portfólio.
+Mais detalhes em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
-## Modo demo e segurança
+## Segurança e sanitização
 
-`DEMO_MODE=true` é o padrão da versão de portfólio. Nesse modo:
+A versão de portfólio foi preparada especificamente para exposição técnica:
 
-- os dados são gravados em `data/demo/`;
-- integrações externas ficam desabilitadas;
-- não são enviadas mensagens reais;
-- não são geradas cobranças ou notas fiscais reais;
-- credenciais externas não são necessárias;
-- o cenário inicial é criado com dados sintéticos.
+- dados reais de colaboradores foram substituídos por registros fictícios;
+- credenciais e arquivos `.env` não são versionados;
+- artefatos de banco e arquivos temporários são ignorados;
+- integrações externas ficam `false` por padrão;
+- contatos e endpoints empresariais foram removidos da configuração de exemplo.
 
-Para limpar a demonstração, pare o servidor, remova `data/demo/` e inicie novamente.
-
-## Integrações reais
-
-Os adaptadores foram mantidos no código para demonstrar a arquitetura utilizada em produção, mas ficam desabilitados por padrão.
-
-```env
-DEMO_MODE=true
-INTEGRATIONS_ENABLED=false
-```
-
-Uma instalação operacional exige configuração própria, credenciais válidas e ativação explícita das integrações. Nenhum segredo de produção faz parte deste repositório.
+Veja [`SECURITY.md`](SECURITY.md).
 
 ## Testes
 
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
-.\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m compileall -q app
+```bash
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
+python -m compileall -q app
 node --test tests/*.test.js
 ```
 
-Os testes cobrem regras de negócio, APIs, autenticação, persistência, fluxo demo e bloqueio de conexões externas.
+Node.js 20+ é necessário para os testes JavaScript. A validação em ambiente virtual novo passou em 120 testes Python, 8 subtestes e 5 suítes JavaScript. Veja [o registro de validação](docs/VALIDATION.md) e [as instruções de atualização](docs/UPDATE.md).
 
-## Decisões técnicas que eu destacaria em entrevista
+## Decisões técnicas
 
-**SQLite no modo demo.** Permite executar o projeto sem infraestrutura externa, mantendo persistência e transações reais.
-
-**Adaptadores preservados.** As integrações continuam visíveis arquiteturalmente, porém isoladas e desabilitadas no portfólio.
-
-**Dados sintéticos.** O seed demonstra relacionamentos reais entre entidades sem expor informações de clientes, funcionários ou operação.
-
-**Refatoração incremental.** Em vez de reescrever uma aplicação funcional, priorizei isolamento, testabilidade e redução gradual de acoplamento.
-
-**Estado com histórico.** A aplicação preserva versões e detecta alterações concorrentes em fluxos centrais.
-
-## Minha participação
-
-O sistema foi **concebido e desenvolvido por mim por iniciativa própria**, a partir da observação de necessidades reais de uma operação de topografia. Trabalhei desde o levantamento dos fluxos até a implementação da aplicação, regras de negócio, interface, banco de dados e integrações.
-
-Para este portfólio, adaptei o projeto para um cenário demonstrativo: removi dados específicos da organização, isolei integrações externas e criei um ambiente reproduzível com informações fictícias.
+Este projeto nasceu de uma necessidade operacional real e evoluiu de forma incremental. Para a versão de portfólio, a prioridade foi **preservar a riqueza das regras de negócio sem expor informações privadas da operação original**. Por isso, integrações permanecem representadas na arquitetura, mas o caminho padrão é um ambiente demo autocontido.
 
 ## Próximas evoluções
 
-- decomposição adicional de `main.py` em módulos de domínio;
-- cobertura de testes ampliada por serviço;
-- tipagem estática progressiva;
-- observabilidade e métricas estruturadas;
-- containerização para execução ainda mais rápida.
+- Modularização progressiva de rotas ainda concentradas no `main.py`
+- Cobertura de testes ampliada por domínio
+- Containers Docker para onboarding em um comando
+- Dashboard de observabilidade e métricas
 
-## Documentação
+## Autoria
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — visão técnica resumida
-- [`docs/DEMO.md`](docs/DEMO.md) — roteiro para avaliar o projeto
-- [`SECURITY.md`](SECURITY.md) — política de segurança do repositório
-- [`PORTFOLIO_NOTES.md`](PORTFOLIO_NOTES.md) — escopo da adaptação de portfólio
-- [`CHANGELOG.md`](CHANGELOG.md) — histórico das principais mudanças
+Desenvolvido por **Hendrielly de Souza** como solução aplicada a processos empresariais e adaptado para apresentação técnica em portfólio.
 
----
+## Integração contínua
 
-**Autora:** Hendrielly de Souza  
-Projeto apresentado como case técnico de desenvolvimento de software e automação de processos.
+O workflow `.github/workflows/ci.yml` executa compilação, pytest, validação das dependências e testes JavaScript. O runtime usa versões fixadas em `requirements-lock.txt`. O relatório JUnit é preservado mesmo em caso de falha. A execução não requer segredos de serviços externos.

@@ -2953,7 +2953,7 @@ textarea:focus{
         >
           <span class="user-avatar projectist">HE</span>
           <span class="user-card-copy">
-            <strong>Helena — Projetista</strong>
+            <strong>Projetista — Projetista</strong>
             <small>Clientes, orçamentos e retornos</small>
           </span>
           <span class="user-active-dot" aria-hidden="true"></span>
@@ -2966,7 +2966,7 @@ textarea:focus{
         >
           <span class="user-avatar projectist">AL</span>
           <span class="user-card-copy">
-            <strong>Aline — Projetista</strong>
+            <strong>Projetos — Projetista</strong>
             <small>Obras e acompanhamento de processos</small>
           </span>
           <span class="user-active-dot" aria-hidden="true"></span>
@@ -3030,7 +3030,7 @@ textarea:focus{
         </button>
         <button id="directorRequestsButton" data-area="admin" data-page="directorRequests">
           <span class="nav-icon">↔</span>
-          <span class="nav-label" id="directorRequestsLabel">Solicitações da Helena</span>
+          <span class="nav-label" id="directorRequestsLabel">Solicitações de projetos</span>
           <span class="nav-badge hidden" id="directorRequestsBadge"></span>
         </button>
       </div>
@@ -3047,7 +3047,7 @@ textarea:focus{
         </button>
         <button data-area="admin" data-page="veiculos">
           <span class="nav-icon">◇</span>
-          <span class="nav-label">Frota Selsyn</span>
+          <span class="nav-label">Gestão de Frota</span>
         </button>
       </div>
 
@@ -3143,9 +3143,9 @@ textarea:focus{
           <span class="nav-icon">👤</span>
           <span class="nav-label">Clientes e terrenos</span>
         </button>
-        <button data-area="projectist" data-page="projectistGiacomossi">
+        <button data-area="projectist" data-page="projectistHorizonte">
           <span class="nav-icon">✓</span>
-          <span class="nav-label">Conferências Giacomossi</span>
+          <span class="nav-label">Conferências Horizonte</span>
           <span class="nav-badge hidden" id="giacomossiHelenaBadge"></span>
         </button>
       </div>
@@ -3307,764 +3307,9 @@ function plusDays(days){
   return d.toISOString().slice(0,10);
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
-const OFFICIAL_EMPLOYEE_IMPORT_VERSION="fichas-registros-2026-07-21";
+const OFFICIAL_EMPLOYEE_IMPORT_VERSION="portfolio-v1";
 const LEGACY_DEMO_CPFS=["123.456.789-10","987.654.321-00","456.789.123-55","741.852.963-44"];
-const demoData={
-  employeeImportVersion:OFFICIAL_EMPLOYEE_IMPORT_VERSION,
-  settings:{
-    title:"Dashboard",
-    subtitle:"Visão geral de exames, férias e pendências.",
-    primary:"#0b5e8e",
-    primaryLight:"#3a9ed0",
-    primaryDark:"#244f7d",
-    background:"#f5f8fb"
-  },
-  employees:[{"id":1,"name":"Marina Costa","code":"D001","registration":"D001","father":"","mother":"","birth":"1994-05-12","sex":"Feminino","maritalStatus":"Solteiro","raceColor":"","naturality":"","nationality":"Brasileiro","address":"Rua Exemplo, 120","neighborhood":"Centro","zip":"00.000-000","city":"Cidade Demo - SC","cpf":"000.000.000-00","rg":"DEMO-001","rgIssuer":"","rgState":"SC","rgIssueDate":"","ctpsNumber":"","ctpsSeries":"","ctpsState":"","ctpsIssueDate":"","pis":"","pisDate":"","education":"Ensino superior completo","cnh":"","cnhCategory":"","cnhValidity":"","foreignVisaType":"","rne":"","rneValidity":"","email":"marina@demo.local","phone":"(00) 90000-0001","admission":"2025-01-10","fgtsOptIn":"Sim","fgtsDate":"2025-01-10","role":"Coordenadora Operacional","cbo":"","unit":"Matriz","sector":"Operações","contract":"CLT","salaryAtRecord":5200,"currentSalary":5600,"paymentMethod":"Conta bancária","salaryPeriod":"Mensal","schedule":"08:00 12:00 13:00 17:00","weeklyHours":"040:00","workSchedule":"08:00 12:00 13:00 17:00","status":"Ativo","risk":"Administrativo","salaryHistory":[{"date":"2025-01-10","effectDate":"","value":5200,"reason":"Admissão"},{"date":"2026-01-01","effectDate":"","value":5600,"reason":"Reajuste anual"}],"roleHistory":[{"date":"2025-01-10","code":"DEMO","role":"Coordenadora Operacional","cbo":"","reason":"Admissão"}],"scheduleHistory":[],"functionalOccurrences":[],"notes":"Registro fictício para demonstração.","source":"demo","sourcePages":"","imported":false,"importedAt":"","sourceDocument":""},{"id":2,"name":"Lucas Almeida","code":"D002","registration":"D002","father":"","mother":"","birth":"1998-09-21","sex":"Masculino","maritalStatus":"Solteiro","raceColor":"","naturality":"","nationality":"Brasileiro","address":"Avenida Demonstração, 45","neighborhood":"Jardim","zip":"00.000-000","city":"Cidade Demo - SC","cpf":"111.111.111-11","rg":"DEMO-002","rgIssuer":"","rgState":"SC","rgIssueDate":"","ctpsNumber":"","ctpsSeries":"","ctpsState":"","ctpsIssueDate":"","pis":"","pisDate":"","education":"Técnico completo","cnh":"","cnhCategory":"B","cnhValidity":"2028-01-01","foreignVisaType":"","rne":"","rneValidity":"","email":"lucas@demo.local","phone":"(00) 90000-0002","admission":"2025-03-03","fgtsOptIn":"Sim","fgtsDate":"2025-03-03","role":"Técnico de Campo","cbo":"","unit":"Matriz","sector":"Campo","contract":"CLT","salaryAtRecord":3200,"currentSalary":3500,"paymentMethod":"Conta bancária","salaryPeriod":"Mensal","schedule":"07:00 12:00 13:00 16:00","weeklyHours":"040:00","workSchedule":"07:00 12:00 13:00 16:00","status":"Ativo","risk":"Atividade externa","salaryHistory":[{"date":"2025-03-03","effectDate":"","value":3200,"reason":"Admissão"}],"roleHistory":[{"date":"2025-03-03","code":"DEMO","role":"Técnico de Campo","cbo":"","reason":"Admissão"}],"scheduleHistory":[],"functionalOccurrences":[{"start":"2026-08-14","end":"2026-08-14","description":"Treinamento"}],"notes":"Registro fictício para demonstração.","source":"demo","sourcePages":"","imported":false,"importedAt":"","sourceDocument":""},{"id":3,"name":"Ana Ribeiro","code":"D003","registration":"D003","father":"","mother":"","birth":"1996-02-15","sex":"Feminino","maritalStatus":"Casado","raceColor":"","naturality":"","nationality":"Brasileiro","address":"Rua Portfolio, 88","neighborhood":"Centro","zip":"00.000-000","city":"Cidade Demo - SC","cpf":"222.222.222-22","rg":"DEMO-003","rgIssuer":"","rgState":"SC","rgIssueDate":"","ctpsNumber":"","ctpsSeries":"","ctpsState":"","ctpsIssueDate":"","pis":"","pisDate":"","education":"Ensino superior completo","cnh":"","cnhCategory":"","cnhValidity":"","foreignVisaType":"","rne":"","rneValidity":"","email":"ana@demo.local","phone":"(00) 90000-0003","admission":"2024-11-18","fgtsOptIn":"Sim","fgtsDate":"2024-11-18","role":"Analista Financeira","cbo":"","unit":"Matriz","sector":"Financeiro","contract":"CLT","salaryAtRecord":4200,"currentSalary":4700,"paymentMethod":"Conta bancária","salaryPeriod":"Mensal","schedule":"08:00 12:00 13:00 17:00","weeklyHours":"040:00","workSchedule":"08:00 12:00 13:00 17:00","status":"Ativo","risk":"Administrativo","salaryHistory":[],"roleHistory":[],"scheduleHistory":[],"functionalOccurrences":[],"notes":"Registro fictício para demonstração.","source":"demo","sourcePages":"","imported":false,"importedAt":"","sourceDocument":""},{"id":4,"name":"Carlos Mendes","code":"D004","registration":"D004","father":"","mother":"","birth":"1990-07-30","sex":"Masculino","maritalStatus":"Casado","raceColor":"","naturality":"","nationality":"Brasileiro","address":"Rua Teste, 310","neighborhood":"Industrial","zip":"00.000-000","city":"Cidade Demo - SC","cpf":"333.333.333-33","rg":"DEMO-004","rgIssuer":"","rgState":"SC","rgIssueDate":"","ctpsNumber":"","ctpsSeries":"","ctpsState":"","ctpsIssueDate":"","pis":"","pisDate":"","education":"Ensino médio completo","cnh":"","cnhCategory":"AB","cnhValidity":"2029-06-20","foreignVisaType":"","rne":"","rneValidity":"","email":"carlos@demo.local","phone":"(00) 90000-0004","admission":"2025-06-02","fgtsOptIn":"Sim","fgtsDate":"2025-06-02","role":"Supervisor de Campo","cbo":"","unit":"Matriz","sector":"Campo","contract":"CLT","salaryAtRecord":4500,"currentSalary":4800,"paymentMethod":"Conta bancária","salaryPeriod":"Mensal","schedule":"07:00 12:00 13:00 16:00","weeklyHours":"040:00","workSchedule":"07:00 12:00 13:00 16:00","status":"Ativo","risk":"Atividade externa","salaryHistory":[],"roleHistory":[],"scheduleHistory":[],"functionalOccurrences":[],"notes":"Registro fictício para demonstração.","source":"demo","sourcePages":"","imported":false,"importedAt":"","sourceDocument":""}],
-  clinics:[
-    {id:1,name:"Clínica Vida Ocupacional",city:"São Paulo",address:"Av. Central, 850",responsible:"Fernanda",whatsapp:"5511987654321",email:"agenda.clinica@demo.local",hours:"Seg–Sex, 7h às 17h"},
-    {id:2,name:"Saúde Empresa Medicina do Trabalho",city:"Campinas",address:"Rua das Flores, 140",responsible:"Rafael",whatsapp:"5519976543210",email:"rh.clinica@demo.local",hours:"Seg–Sex, 8h às 18h"}
-  ],
-  exams:[],
-  vacations:[],
-  leaves:[],
-  vehicles:[
-    {
-      id:1,
-      plate:"ABC1D23",
-      brand:"Fiat",
-      model:"Strada",
-      year:2023,
-      color:"Branca",
-      fuel:"Flex",
-      odometer:48200,
-      purchaseDate:"2023-02-10",
-      purchaseValue:105000,
-      estimatedValue:89000,
-      status:"Em uso",
-      holderEmployeeId:"",
-      nextMaintenanceDate:plusDays(18),
-      nextMaintenanceKm:50000,
-      notes:"Veículo destinado às equipes de campo."
-    },
-    {
-      id:2,
-      plate:"DEF4G56",
-      brand:"Toyota",
-      model:"Hilux",
-      year:2022,
-      color:"Prata",
-      fuel:"Diesel",
-      odometer:71350,
-      purchaseDate:"2022-04-18",
-      purchaseValue:238000,
-      estimatedValue:196000,
-      status:"Disponível",
-      holderEmployeeId:"",
-      nextMaintenanceDate:plusDays(42),
-      nextMaintenanceKm:75000,
-      notes:""
-    },
-    {
-      id:3,
-      plate:"GHI7J89",
-      brand:"Volkswagen",
-      model:"Saveiro",
-      year:2020,
-      color:"Branca",
-      fuel:"Flex",
-      odometer:96800,
-      purchaseDate:"2020-08-05",
-      purchaseValue:76000,
-      estimatedValue:52000,
-      status:"Em manutenção",
-      holderEmployeeId:"",
-      nextMaintenanceDate:plusDays(-4),
-      nextMaintenanceKm:95000,
-      notes:"Aguardando conclusão da revisão."
-    }
-  ],
-  maintenances:[
-    {
-      id:1,
-      vehicleId:1,
-      type:"Troca de óleo e filtros",
-      scheduledDate:plusDays(18),
-      completedDate:"",
-      odometer:50000,
-      supplier:"Auto Center Central",
-      cost:0,
-      status:"Agendada",
-      nextDate:"",
-      nextKm:60000,
-      notes:""
-    },
-    {
-      id:2,
-      vehicleId:3,
-      type:"Revisão geral",
-      scheduledDate:plusDays(-4),
-      completedDate:"",
-      odometer:96800,
-      supplier:"Oficina Norte",
-      cost:1850,
-      status:"Em andamento",
-      nextDate:plusDays(175),
-      nextKm:105000,
-      notes:"Troca de pastilhas e verificação da suspensão."
-    },
-    {
-      id:3,
-      vehicleId:2,
-      type:"Alinhamento e balanceamento",
-      scheduledDate:plusDays(-35),
-      completedDate:plusDays(-34),
-      odometer:69000,
-      supplier:"Pneus & Cia",
-      cost:320,
-      status:"Concluída",
-      nextDate:"",
-      nextKm:79000,
-      notes:""
-    }
-  ],
-  maintenanceHistory:[
-    {
-      id:1,
-      vehicleId:2,
-      date:plusDays(-190),
-      odometer:62000,
-      supplier:"Pneus & Cia",
-      items:[
-        {description:"4 pneus",value:2800},
-        {description:"Alinhamento e balanceamento",value:320}
-      ],
-      total:3120,
-      notes:"Troca preventiva para uso em campo."
-    }
-  ],
-  maintenanceDrafts:[
-    {
-      id:1,
-      title:"Manutenção informada — aguardando veículo e data",
-      raw:`Válvula termostática 80
-Bomba d'água 115
-Jogo de balancim 366
-Serviço de torno100
-Jogo de junta superior 206
-Cabo 161
-Vela105
-Filtro do ar 17
-Capa da correia dentada 80
-Mangueira do respiro 35
-Mangueira tubo d'água 47
-4 litros de óleo 250
-Filtro de óleo 35
-Cano d'água 23
-Retentor do comando 35
-Kit correia dentada 231
-2 ferradura da suspensão 178
-Serviço de retifica 1280
-4 água desmerelizada 40
-2 aditivo do radiador 100
-Mão de obra 1300`,
-      total:4784
-    }
-  ],
-  fines:[
-    {
-      id:1,
-      vehicleId:1,
-      employeeId:"",
-      aitNumber:"AIT-DEMO-001",
-      renainfNumber:"",
-      authority:"Órgão autuador de exemplo",
-      authorityCode:"",
-      infractionCode:"745-50",
-      description:"Transitar em velocidade superior à máxima permitida",
-      responsibilityType:"Condutor",
-      infractionDate:plusDays(-28),
-      infractionTime:"14:35",
-      location:"Rodovia de exemplo, km 120",
-      city:"São Paulo",
-      state:"SP",
-      nature:"Grave",
-      points:5,
-      originalAmount:195.23,
-      discountAmount:156.18,
-      paidAmount:0,
-      notificationType:"Notificação de autuação",
-      noticeDate:plusDays(-20),
-      driverDeadline:plusDays(10),
-      defenseDeadline:plusDays(10),
-      appealDeadline:"",
-      dueDate:plusDays(35),
-      paymentDate:"",
-      status:"Aguardando indicação do condutor",
-      cnhNumber:"",
-      cnhCategory:"",
-      cnhState:"",
-      documentName:"notificacao_exemplo.pdf",
-      notes:"Registro fictício para demonstrar a aba de multas."
-    }
-  ],
-  companies:[
-    {
-      id:1,
-      name:"MD",
-      legalName:"MD",
-      tradeName:"MD",
-      notes:""
-    },
-    {
-      id:2,
-      name:"RD",
-      legalName:"RD",
-      tradeName:"RD",
-      notes:""
-    },
-    {
-      id:3,
-      name:"GIACOMOSSI",
-      legalName:"GIACOMOSSI",
-      tradeName:"GIACOMOSSI",
-      notes:""
-    },
-    {
-      id:4,
-      name:"PROCAVE",
-      legalName:"PROCAVE",
-      tradeName:"PROCAVE",
-      notes:""
-    },
-    {
-      id:5,
-      name:"SCIRE EMPREENDIMENTOS",
-      legalName:"SCIRE EMPREENDIMENTOS",
-      tradeName:"SCIRE EMPREENDIMENTOS",
-      notes:""
-    },
-    {
-      id:6,
-      name:"KOCH",
-      legalName:"KOCH",
-      tradeName:"KOCH",
-      notes:""
-    },
-    {
-      id:7,
-      name:"MS EMPREENDIMENTOS",
-      legalName:"MS EMPREENDIMENTOS",
-      tradeName:"MS EMPREENDIMENTOS",
-      notes:""
-    },
-    {
-      id:8,
-      name:"ENG KOERICH",
-      legalName:"ENG KOERICH",
-      tradeName:"ENG KOERICH",
-      notes:""
-    },
-    {
-      id:9,
-      name:"BPM PRE MOLDADOS",
-      legalName:"BPM PRE MOLDADOS",
-      tradeName:"BPM PRE MOLDADOS",
-      notes:""
-    },
-    {
-      id:10,
-      name:"ENG GUILHERME",
-      legalName:"ENG GUILHERME",
-      tradeName:"ENG GUILHERME",
-      notes:""
-    },
-    {
-      id:11,
-      name:"HOGAR",
-      legalName:"HOGAR",
-      tradeName:"HOGAR",
-      notes:""
-    },
-    {
-      id:12,
-      name:"CASTELO ALEXANDRE",
-      legalName:"CASTELO ALEXANDRE",
-      tradeName:"CASTELO ALEXANDRE",
-      notes:""
-    },
-    {
-      id:13,
-      name:"CASTELO LUCAS",
-      legalName:"CASTELO LUCAS",
-      tradeName:"CASTELO LUCAS",
-      notes:""
-    },
-    {
-      id:14,
-      name:"VALDIR",
-      legalName:"VALDIR",
-      tradeName:"VALDIR",
-      notes:""
-    },
-    {
-      id:15,
-      name:"EMPREITEIRA BOTANIC",
-      legalName:"EMPREITEIRA BOTANIC",
-      tradeName:"EMPREITEIRA BOTANIC",
-      notes:""
-    },
-    {
-      id:16,
-      name:"GIASSI",
-      legalName:"GIASSI",
-      tradeName:"GIASSI",
-      notes:""
-    },
-    {
-      id:17,
-      name:"PERVILLE",
-      legalName:"PERVILLE",
-      tradeName:"PERVILLE",
-      notes:""
-    },
-    {
-      id:18,
-      name:"LEANDRO DALLO",
-      legalName:"LEANDRO DALLO",
-      tradeName:"LEANDRO DALLO",
-      notes:""
-    },
-    {
-      id:19,
-      name:"ISRAEL DALLO",
-      legalName:"ISRAEL DALLO",
-      tradeName:"ISRAEL DALLO",
-      notes:""
-    },
-    {
-      id:20,
-      name:"ALEX",
-      legalName:"ALEX",
-      tradeName:"ALEX",
-      notes:""
-    },
-    {
-      id:21,
-      name:"CASSOL",
-      legalName:"CASSOL",
-      tradeName:"CASSOL",
-      notes:""
-    },
-    {
-      id:22,
-      name:"UNIBASE",
-      legalName:"UNIBASE",
-      tradeName:"UNIBASE",
-      notes:""
-    },
-    {
-      id:23,
-      name:"MILTON GRAVATAL",
-      legalName:"MILTON GRAVATAL",
-      tradeName:"MILTON GRAVATAL",
-      notes:""
-    },
-    {
-      id:24,
-      name:"MARCIO AMBROSI PORTO BELO",
-      legalName:"MARCIO AMBROSI PORTO BELO",
-      tradeName:"MARCIO AMBROSI PORTO BELO",
-      notes:""
-    },
-    {
-      id:25,
-      name:"CBA",
-      legalName:"CBA",
-      tradeName:"CBA",
-      notes:""
-    },
-    {
-      id:26,
-      name:"SURFLAND",
-      legalName:"SURFLAND",
-      tradeName:"SURFLAND",
-      notes:""
-    },
-    {
-      id:27,
-      name:"MANTURI - DANIEL ENG PALHOÇA",
-      legalName:"MANTURI - DANIEL ENG PALHOÇA",
-      tradeName:"MANTURI - DANIEL ENG PALHOÇA",
-      notes:""
-    },
-    {
-      id:28,
-      name:"ENG FABIANA",
-      legalName:"ENG FABIANA",
-      tradeName:"ENG FABIANA",
-      notes:""
-    },
-    {
-      id:29,
-      name:"ALMEIDA JUNIOR",
-      legalName:"ALMEIDA JUNIOR",
-      tradeName:"ALMEIDA JUNIOR",
-      notes:""
-    },
-    {
-      id:30,
-      name:"MONTEBIANC",
-      legalName:"MONTEBIANC",
-      tradeName:"MONTEBIANC",
-      notes:""
-    },
-    {
-      id:31,
-      name:"SATIMAR",
-      legalName:"SATIMAR",
-      tradeName:"SATIMAR",
-      notes:""
-    },
-    {
-      id:32,
-      name:"JULIANA VOTIS",
-      legalName:"JULIANA VOTIS",
-      tradeName:"JULIANA VOTIS",
-      notes:""
-    }
-  ],
-  works:[
-    {
-      id:1,
-      companyId:3,
-      name:"GIA SSGR",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:2,
-      companyId:3,
-      name:"GIA PROVESI",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:3,
-      companyId:3,
-      name:"GIA YING",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:4,
-      companyId:3,
-      name:"GIA CONSTRUFOR",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:5,
-      companyId:3,
-      name:"GIA GENERAL BELT",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:6,
-      companyId:3,
-      name:"GIA GIRO BC",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:7,
-      companyId:3,
-      name:"GIA KOMPRAO PIÇARRAS",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:8,
-      companyId:3,
-      name:"GIA GREEN VALEY",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:9,
-      companyId:3,
-      name:"GIA MARINE TIJUCAS",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:10,
-      companyId:3,
-      name:"GIA SCASS PIÇARRAS",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:11,
-      companyId:3,
-      name:"GIA VIEIRA E CUNHA PORTO BELO",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:12,
-      companyId:3,
-      name:"GIA WFK NAVEGANTES",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:13,
-      companyId:3,
-      name:"GIA BYD",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:14,
-      companyId:3,
-      name:"GIA SAVANA CRICIUMA",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:15,
-      companyId:3,
-      name:"GIA FIGUEIRA - CAMBORIU",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:16,
-      companyId:3,
-      name:"GIA CAT - PORTO BELO",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:17,
-      companyId:3,
-      name:"GIA COLEGIO SÃO LUIS - BRUSQUE",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:18,
-      companyId:3,
-      name:"GIA BRESSI MEGA MOTORS - BRUSQUE",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:19,
-      companyId:3,
-      name:"GIA REDE TOP - PORTO BELO",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:20,
-      companyId:3,
-      name:"GIA SALT LIFE - TIJUCAS",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:21,
-      companyId:3,
-      name:"GIA EMBRALOT 5 E 6",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:22,
-      companyId:3,
-      name:"GIA FABRICA",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:23,
-      companyId:3,
-      name:"GIA ESCRITORIO",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:24,
-      companyId:3,
-      name:"GIA KOCH JOINVILLE",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:25,
-      companyId:3,
-      name:"GIA RODERJANN - PORTO BELO",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:26,
-      companyId:3,
-      name:"GIA DOLCE PECATO TIJUCAS",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:27,
-      companyId:3,
-      name:"GIA OLDENBURG - JARAGUÁ",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    },
-    {
-      id:28,
-      companyId:3,
-      name:"GIA FORMIGA LOG - BRUSQUE",
-      dailyRate:0,
-      halfDailyRate:0,
-      location:"",
-      notes:""
-    }
-  ],
-  workTeams:[{"id": 1, "name": "EMMANUEL"}, {"id": 2, "name": "Iago"}, {"id": 3, "name": "Luiz Gustavo"}, {"id": 4, "name": "Neri"}, {"id": 5, "name": "Thiago"}, {"id": 6, "name": "Elias"}, {"id": 7, "name": "GU"}],
-  workScheduleEntries:[
-    {
-      id:1,
-      date:addIsoDays(mondayOf(plusDays(0)),0),
-      teamId:1,
-      type:"Obra",
-      companyId:3,
-      workId:1,
-      dailyType:"Inteira",
-      value:650,
-      status:"Confirmado",
-      billingEntityId:"",
-      client:"",
-      location:"",
-      serviceType:"",
-      observation:"Serviço confirmado para demonstração financeira."
-    },
-    {
-      id:2,
-      date:addIsoDays(mondayOf(plusDays(0)),1),
-      teamId:2,
-      type:"Obra",
-      companyId:3,
-      workId:2,
-      dailyType:"Meia",
-      value:350,
-      status:"Confirmado",
-      billingEntityId:"",
-      client:"",
-      location:"",
-      serviceType:"",
-      observation:""
-    },
-    {
-      id:3,
-      date:addIsoDays(mondayOf(plusDays(0)),1),
-      teamId:1,
-      type:"Obra",
-      companyId:3,
-      workId:3,
-      dailyType:"Inteira",
-      value:650,
-      status:"Planejado",
-      billingEntityId:"",
-      client:"",
-      location:"",
-      serviceType:"",
-      observation:"Aguardando confirmação."
-    },
-    {
-      id:4,
-      date:addIsoDays(mondayOf(plusDays(0)),2),
-      teamId:3,
-      type:"Levantamento",
-      companyId:"",
-      workId:"",
-      dailyType:"",
-      value:0,
-      status:"Confirmado",
-      billingEntityId:"",
-      client:"Cliente de exemplo",
-      location:"Itajaí - SC",
-      serviceType:"Cadastral",
-      observation:""
-    }
-  ],
-  billingEntities:[],
-  invoices:[],
-  projectClients:[],
-  projectScheduleRequests:[],
-  alineWorks:[],
-  alineProcesses:[],
-  employeeAppFiles:[],
-  events:[
-    {id:1,title:"Reunião do RH",date:plusDays(7),category:"Reunião"}
-  ]
-};
+const demoData={"employees": [{"id": 1, "name": "Pessoa Demo Alfa", "registration": "DEMO-001", "code": "DEMO-001", "cpf": "", "email": "pessoa1@example.invalid", "phone": "", "role": "Topógrafo", "sector": "Operações", "status": "Ativo", "admission": "2026-05-11", "currentSalary": 3200, "birth": "1995-01-01", "appLogin": "pessoa.demo1", "appPassword": "DemoPortal123", "notes": "Registro inteiramente fictício"}, {"id": 2, "name": "Pessoa Demo Beta", "registration": "DEMO-002", "code": "DEMO-002", "cpf": "", "email": "pessoa2@example.invalid", "phone": "", "role": "Auxiliar de campo", "sector": "Operações", "status": "Ativo", "admission": "2026-05-11", "currentSalary": 3400, "birth": "1995-01-01", "appLogin": "pessoa.demo2", "appPassword": "DemoPortal123", "notes": "Registro inteiramente fictício"}, {"id": 3, "name": "Pessoa Demo Gama", "registration": "DEMO-003", "code": "DEMO-003", "cpf": "", "email": "pessoa3@example.invalid", "phone": "", "role": "Auxiliar de campo", "sector": "Operações", "status": "Ativo", "admission": "2026-05-11", "currentSalary": 3600, "birth": "1995-01-01", "appLogin": "pessoa.demo3", "appPassword": "DemoPortal123", "notes": "Registro inteiramente fictício"}], "clinics": [{"id": 1, "name": "Clínica Demo", "email": "clinica@example.invalid", "city": "Cidade Demo", "phone": ""}], "exams": [{"id": 1, "employeeId": 1, "clinicId": 1, "type": "Periódico", "date": "2026-11-14", "due": "2026-11-27", "scheduled": "2026-11-14", "aso": "Pendente", "status": "Agendado", "notes": "Exame fictício"}], "vacations": [{"id": 1, "employeeId": 3, "start": "2026-11-27", "end": "2026-12-11", "days": 15, "status": "Programada"}], "leaves": [], "vehicles": [{"id": 1, "plate": "ABC1D23", "brand": "Fiat", "model": "Strada", "year": 2024, "odometer": 50120, "status": "Em uso", "holderEmployeeId": 1, "nextMaintenanceDate": "2026-11-27", "notes": "Veículo fictício"}, {"id": 2, "plate": "DEF4G56", "brand": "Volkswagen", "model": "Saveiro", "year": 2024, "odometer": 73420, "status": "Disponível", "holderEmployeeId": "", "nextMaintenanceDate": "2026-12-17", "notes": "Veículo fictício"}], "maintenances": [], "maintenanceHistory": [], "maintenanceDrafts": [], "fines": [], "companies": [{"id": 1, "name": "Construtora Horizonte Demo", "legalName": "Construtora Horizonte Demo", "tradeName": "Horizonte Demo", "notes": "Empresa fictícia"}], "works": [{"id": 1, "companyId": 1, "name": "Parque Horizonte — Obra Demo", "location": "Local demonstrativo", "dailyRate": 1200, "halfDailyRate": 650, "notes": "Obra fictícia"}], "workTeams": [{"id": 1, "name": "Equipe Alfa", "employeeIds": [1, 2], "active": true}, {"id": 2, "name": "Equipe Beta", "employeeIds": [3], "active": true}], "workScheduleEntries": [{"id": 10, "date": "2026-11-05", "teamId": 1, "type": "Obra", "companyId": 1, "workId": 1, "dailyType": "Inteira", "value": 1200, "status": "Confirmado", "observation": "Agendamento fictício", "billingEntityId": "", "projectClientId": ""}, {"id": 11, "date": "2026-11-06", "teamId": 2, "type": "Obra", "companyId": 1, "workId": 1, "dailyType": "Inteira", "value": 1200, "status": "Confirmado", "observation": "Agendamento fictício", "billingEntityId": "", "projectClientId": ""}, {"id": 12, "date": "2026-11-07", "teamId": 1, "type": "Obra", "companyId": 1, "workId": 1, "dailyType": "Inteira", "value": 1200, "status": "Confirmado", "observation": "Agendamento fictício", "billingEntityId": "", "projectClientId": ""}, {"id": 13, "date": "2026-11-08", "teamId": 2, "type": "Obra", "companyId": 1, "workId": 1, "dailyType": "Inteira", "value": 1200, "status": "Planejado", "observation": "Agendamento fictício", "billingEntityId": "", "projectClientId": ""}, {"id": 14, "date": "2026-11-10", "teamId": 1, "type": "Obra", "companyId": 1, "workId": 1, "dailyType": "Inteira", "value": 1200, "status": "Planejado", "observation": "Agendamento fictício", "billingEntityId": "", "projectClientId": ""}], "billingEntities": [], "invoices": [{"id": 1, "companyId": 1, "workId": 1, "number": "DEMO-001", "invoiceNumber": "DEMO-001", "scheduleEntryIds": [10, 11, 12], "total": 3600, "month": "2026-11", "description": "Serviços demonstrativos", "amount": 3600, "value": 3600, "dueDate": "2026-11-17", "issueDate": "2026-11-05", "status": "Pendente", "notes": "Sem cobrança real"}], "projectClients": [], "projectScheduleRequests": [], "alineWorks": [], "alineProcesses": [], "employeeAppFiles": [], "events": [{"id": 1, "title": "Reunião de planejamento Demo", "date": "2026-11-10", "category": "Reunião"}], "fleetVehicles": [], "fleetGeofences": [], "fleetTrips": [], "fleetStops": [], "fleetDrivingEvents": [], "fleetFuel": [], "fleetExpenses": [], "fleetDocuments": [], "fleetDebts": [], "fleetHiddenVehicles": [], "employeeImportVersion": "portfolio-v1", "settings": {"title": "Dashboard", "subtitle": "Demonstração • todos os dados são fictícios", "primary": "#0b5e8e", "primaryLight": "#3a9ed0", "primaryDark": "#244f7d", "background": "#f5f8fb"}};
 
 // Nunca mantenha ou recrie registros fictícios de frota no estado inicial.
 [
@@ -4137,15 +3382,15 @@ const DEFAULT_BUDGET_CONFIG={
 };
 
 const HISTORICAL_SERVICE_IMPORT_VERSION=2;
-const HISTORICAL_SERVICE_ROWS=[{"name": "PROCAVE SANTINHO", "date": "2026-07-01", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-01", "team": "TATADO", "value": 1300.0}, {"name": "GIA GENERAL BELT", "date": "2026-07-01", "team": "IAGO", "value": 1450.0}, {"name": "GIA RODERJANN - PORTO BELO", "date": "2026-07-01", "team": "EMMANUEL", "value": 1450.0}, {"name": "GIA KOCH JOINVILLE", "date": "2026-07-01", "team": "JUNIOR", "value": 1550.0}, {"name": "EPC FABIANA", "date": "2026-07-01", "team": "NERI", "value": 1330.0}, {"name": "BPM PALHOÇA", "date": "2026-07-01", "team": "THIAGO", "value": 900.0}, {"name": "MS PEREQUE", "date": "2026-07-01", "team": "THIAGO", "value": 950.0}, {"name": "GIA BINOTTO - TIJUCAS", "date": "2026-07-02", "team": "IAGO", "value": 1450.0}, {"name": "SCIRE CONNECT", "date": "2026-07-02", "team": "IAGO", "value": 900.0}, {"name": "MD BETT", "date": "2026-07-02", "team": "DANIEL", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-02", "team": "GUSTAVO", "value": 1322.88}, {"name": "GIA CAT - PORTO BELO", "date": "2026-07-02", "team": "EMMANUEL", "value": 1450.0}, {"name": "MS VIVENDAS", "date": "2026-07-02", "team": "NERI", "value": 1480.0}, {"name": "MS GRAN FELICITAH", "date": "2026-07-02", "team": "JUNIOR", "value": 1480.0}, {"name": "Lev Cezar Campeche", "date": "2026-07-02", "team": "THIAGO", "value": 1300.0}, {"name": "LEV Kenia Açores -", "date": "2026-07-02", "team": "THIAGO", "value": 1300.0}, {"name": "LEV Neuza Jurere", "date": "2026-07-02", "team": "THIAGO", "value": 1300.0}, {"name": "EPC FABIANA", "date": "2026-07-02", "team": "TATADO", "value": 1330.0}, {"name": "MS GRAN FELICITAH", "date": "2026-07-03", "team": "IAGO", "value": 1480.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-03", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-03", "team": "TATADO", "value": 1300.0}, {"name": "GIA BRESSI MEGA MOTORS - BRUSQUE", "date": "2026-07-03", "team": "DANIEL", "value": 1450.0}, {"name": "GIA BYD", "date": "2026-07-03", "team": "EMMANUEL", "value": 1450.0}, {"name": "CASSOL GIASSI IÇARA", "date": "2026-07-03", "team": "NERI", "value": 1450.0}, {"name": "GIA KOMPRAO PIÇARRAS", "date": "2026-07-03", "team": "JUNIOR", "value": 1450.0}, {"name": "SCIRE KILAR", "date": "2026-07-03", "team": "THIAGO", "value": 7990.0}, {"name": "RD 1001", "date": "2026-07-04", "team": "THIAGO", "value": 1280.0}, {"name": "Lev Abraão", "date": "2026-07-04", "team": "THIAGO", "value": 1300.0}, {"name": "MD BETT", "date": "2026-07-06", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-06", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-06", "team": "TATADO", "value": 1300.0}, {"name": "GIA VIEIRA E CUNHA PORTO BELO", "date": "2026-07-06", "team": "EMMANUEL", "value": 1450.0}, {"name": "AMBROSI", "date": "2026-07-06", "team": "NERI", "value": 1000.0}, {"name": "MS GRAN FELICITAH", "date": "2026-07-06", "team": "JUNIOR", "value": 1480.0}, {"name": "KAISERGARDEN", "date": "2026-07-06", "team": "THIAGO", "value": 1380.0}, {"name": "MD BETT", "date": "2026-07-07", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-07", "team": "GUSTAVO", "value": 1322.88}, {"name": "PROCAVE SANTINHO", "date": "2026-07-07", "team": "TATADO", "value": 848.0}, {"name": "GIA REDE TOP - PORTO BELO", "date": "2026-07-07", "team": "EMMANUEL", "value": 1450.0}, {"name": "Lev Juliana Votis Pedra Branca", "date": "2026-07-07", "team": "NERI", "value": 1300.0}, {"name": "GIA PARENTEX", "date": "2026-07-07", "team": "NERI", "value": 1450.0}, {"name": "GIA KOMPRAO PIÇARRAS", "date": "2026-07-07", "team": "JUNIOR", "value": 1450.0}, {"name": "Lev Murilo Imbituba", "date": "2026-07-07", "team": "THIAGO", "value": 2000.0}, {"name": "MD BETT", "date": "2026-07-08", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-08", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-08", "team": "TATADO", "value": 1300.0}, {"name": "GIA SANRY", "date": "2026-07-08", "team": "EMMANUEL", "value": 1450.0}, {"name": "CASSOL GIASSI IÇARA", "date": "2026-07-08", "team": "NERI", "value": 1450.0}, {"name": "GIA PARENTEX", "date": "2026-07-08", "team": "JUNIOR", "value": 1450.0}, {"name": "GIA DOLCE PECATO TIJUCAS", "date": "2026-07-08", "team": "THIAGO", "value": 1450.0}, {"name": "MD BETT", "date": "2026-07-09", "team": "IAGO", "value": 1400.0}, {"name": "MD BETT", "date": "2026-07-09", "team": "DANIEL", "value": 800.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-09", "team": "GUSTAVO", "value": 1322.88}, {"name": "PROCAVE SANTINHO", "date": "2026-07-09", "team": "TATADO", "value": 1322.88}, {"name": "GIA BYD", "date": "2026-07-09", "team": "EMMANUEL", "value": 1000.0}, {"name": "BPM PALHOÇA", "date": "2026-07-09", "team": "EMMANUEL", "value": 400.0}, {"name": "MS JOY", "date": "2026-07-09", "team": "JUNIOR", "value": 1480.0}, {"name": "Lev Joao Paulo", "date": "2026-07-09", "team": "THIAGO", "value": 1400.0}, {"name": "MD BETT", "date": "2026-07-10", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-10", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-10", "team": "TATADO", "value": 1300.0}, {"name": "MS JOY", "date": "2026-07-10", "team": "EMMANUEL", "value": 1480.0}, {"name": "loc Francisco Alice", "date": "2026-07-10", "team": "NERI", "value": 1350.0}, {"name": "GIA KOMPRAO PIÇARRAS", "date": "2026-07-10", "team": "JUNIOR", "value": 1450.0}, {"name": "PARQUE LAJE", "date": "2026-07-10", "team": "THIAGO", "value": 1380.0}, {"name": "RD 1001", "date": "2026-07-11", "team": "THIAGO", "value": 1280.0}, {"name": "MD BETT", "date": "2026-07-13", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-13", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-13", "team": "TATADO", "value": 1300.0}, {"name": "GIA SAVANA CRICIUMA", "date": "2026-07-13", "team": "EMMANUEL", "value": 1450.0}, {"name": "CASSOL GIASSI IÇARA", "date": "2026-07-13", "team": "NERI", "value": 1450.0}, {"name": "GIA KOMPRAO PIÇARRAS", "date": "2026-07-13", "team": "JUNIOR", "value": 1000.0}, {"name": "GIA GREEN VALEY", "date": "2026-07-13", "team": "JUNIOR", "value": 1000.0}, {"name": "GIA PROVESI", "date": "2026-07-13", "team": "JUNIOR", "value": 1000.0}, {"name": "SCIRE CONNECT", "date": "2026-07-13", "team": "THIAGO", "value": 900.0}, {"name": "SCIRE VIEW", "date": "2026-07-13", "team": "THIAGO", "value": 1330.0}, {"name": "MD BETT", "date": "2026-07-14", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-14", "team": "GUSTAVO", "value": 1322.88}, {"name": "GIA GREEN VALEY", "date": "2026-07-14", "team": "TATADO", "value": 1450.0}, {"name": "GIA CMD SUPER NORTE FLORIPA", "date": "2026-07-14", "team": "EMMANUEL", "value": 1450.0}, {"name": "SCIRE BOULEVARD", "date": "2026-07-14", "team": "NERI", "value": 1330.0}, {"name": "GIA FIGUEIRA - CAMBORIU", "date": "2026-07-14", "team": "JUNIOR", "value": 1450.0}, {"name": "GIA REDE TOP - PORTO BELO", "date": "2026-07-14", "team": "JUNIOR", "value": 1450.0}, {"name": "loc ABIMAR Içara", "date": "2026-07-14", "team": "THIAGO", "value": 1450.0}, {"name": "loc Andre Ruma", "date": "2026-07-15", "team": "IAGO", "value": 1450.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-15", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-15", "team": "TATADO", "value": 1300.0}, {"name": "GIA CELENE ITAJAI", "date": "2026-07-15", "team": "EMMANUEL", "value": 1450.0}, {"name": "GIA JOAIA - TIJUCAS", "date": "2026-07-15", "team": "EMMANUEL", "value": 1450.0}, {"name": "CASSOL GIASSI IÇARA", "date": "2026-07-15", "team": "NERI", "value": 1450.0}, {"name": "GIA KOMPRAO PIÇARRAS", "date": "2026-07-15", "team": "JUNIOR", "value": 1450.0}, {"name": "SCIRE BOTANIC", "date": "2026-07-15", "team": "THIAGO", "value": 900.0}, {"name": "MD BETT", "date": "2026-07-16", "team": "IAGO", "value": 1400.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-16", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-16", "team": "TATADO", "value": 1300.0}, {"name": "GIA EMBRALOT 10 E 11", "date": "2026-07-16", "team": "EMMANUEL", "value": 1450.0}, {"name": "loc Lucas Thiago Palhoça", "date": "2026-07-16", "team": "EMMANUEL", "value": 1300.0}, {"name": "lev Saimon Vargem", "date": "2026-07-16", "team": "NERI", "value": 1300.0}, {"name": "GIA CELENE ITAJAI", "date": "2026-07-16", "team": "JUNIOR", "value": 1000.0}, {"name": "GIA WFK NAVEGANTES", "date": "2026-07-16", "team": "JUNIOR", "value": 1000.0}, {"name": "loc Andre Ruma", "date": "2026-07-16", "team": "THIAGO", "value": 1450.0}, {"name": "DRONE MD", "date": "2026-07-17", "team": "ERIC", "value": 8500.0}, {"name": "SCIRE CONNECT", "date": "2026-07-17", "team": "IAGO", "value": 900.0}, {"name": "GIA SALESIO BIGUAÇU", "date": "2026-07-17", "team": "IAGO", "value": 1450.0}, {"name": "PROCAVE SANTINHO", "date": "2026-07-17", "team": "GUSTAVO", "value": 1322.88}, {"name": "IRB MORRO DA CRUZ", "date": "2026-07-17", "team": "TATADO", "value": 1300.0}, {"name": "lev 3 terrenos douglas Pinheira", "date": "2026-07-17", "team": "EMMANUEL", "value": 3300.0}, {"name": "lev Romulo - 1300 + DRONE", "date": "2026-07-17", "team": "EMMANUEL", "value": 4000.0}, {"name": "CASSOL GIASSI IÇARA", "date": "2026-07-17", "team": "NERI", "value": 1450.0}, {"name": "GIA CELENE ITAJAI", "date": "2026-07-17", "team": "JUNIOR", "value": 1000.0}, {"name": "GIA GREEN VALEY", "date": "2026-07-17", "team": "JUNIOR", "value": 1000.0}, {"name": "loc Andre Ruma", "date": "2026-07-17", "team": "THIAGO", "value": 1450.0}, {"name": "GIA REDE TOP - PORTO BELO", "date": "2026-07-18", "team": "EMMANUEL", "value": 1450.0}, {"name": "lev João Corrego", "date": "2026-07-18", "team": "THIAGO", "value": 1300.0}, {"name": "MD BETT", "date": "2026-07-20", "team": "EMMANUEL", "value": 1400.0}];
+const HISTORICAL_SERVICE_ROWS=[];
 const BULK_SCHEDULE_IMPORT_VERSION=1;
-const INITIAL_PROCAVE_SCHEDULE_ROWS=[{"workName": "PROCAVE SANTINHO", "date": "2026-04-16", "teamLabel": "GU", "value": 450.0, "observation": "NA PROXIMA MEIA DIARIA, COBRAR DIARIA CHEIA POR CONTA DESSE VALOR"}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-22", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-23", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-24", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-25", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-26", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-27", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-29", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-30", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-06-30", "teamLabel": "TATADO", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-01", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-02", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-03", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-06", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-07", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-07", "teamLabel": "TATADO", "value": 848.0, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-08", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-09", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-09", "teamLabel": "TATADO", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-10", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-13", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-14", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-15", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-16", "teamLabel": "GU", "value": 1322.88, "observation": ""}, {"workName": "PROCAVE SANTINHO", "date": "2026-07-17", "teamLabel": "GU", "value": 1322.88, "observation": ""}];
+const INITIAL_AURORA_SCHEDULE_ROWS=[];
 const WORK_SCHEDULE_VERSION=1;
-const INITIAL_WORK_TEAMS=["EMMANUEL", "Iago", "Luiz Gustavo", "Neri", "Thiago", "Elias", "GU"];
+const INITIAL_WORK_TEAMS=[];
 const SURVEY_SERVICE_TYPES=["Não relatado", "Usucapião", "Amembramento", "Retificação", "Georreferenciamento", "Aprovação de projeto", "Pré levantamento", "Cadastral", "As built", "Desmembramento", "Locação de obras"];
 const COMPANY_WORKS_BULK_VERSION=2;
-const INITIAL_COMPANY_NAMES=["MD", "RD", "GIACOMOSSI", "PROCAVE", "SCIRE EMPREENDIMENTOS", "KOCH", "MS EMPREENDIMENTOS", "ENG KOERICH", "BPM PRE MOLDADOS", "ENG GUILHERME", "HOGAR", "CASTELO ALEXANDRE", "CASTELO LUCAS", "VALDIR", "EMPREITEIRA BOTANIC", "GIASSI", "PERVILLE", "LEANDRO DALLO", "ISRAEL DALLO", "ALEX", "CASSOL", "UNIBASE", "MILTON GRAVATAL", "MARCIO AMBROSI PORTO BELO", "CBA", "SURFLAND", "MANTURI - DANIEL ENG PALHOÇA", "ENG FABIANA", "ALMEIDA JUNIOR", "MONTEBIANC", "SATIMAR", "JULIANA VOTIS"];
-const INITIAL_GIACOMOSSI_WORKS=["GIA SSGR", "GIA PROVESI", "GIA YING", "GIA CONSTRUFOR", "GIA GENERAL BELT", "GIA GIRO BC", "GIA KOMPRAO PIÇARRAS", "GIA GREEN VALEY", "GIA MARINE TIJUCAS", "GIA SCASS PIÇARRAS", "GIA VIEIRA E CUNHA PORTO BELO", "GIA WFK NAVEGANTES", "GIA BYD", "GIA SAVANA CRICIUMA", "GIA FIGUEIRA - CAMBORIU", "GIA CAT - PORTO BELO", "GIA COLEGIO SÃO LUIS - BRUSQUE", "GIA BRESSI MEGA MOTORS - BRUSQUE", "GIA REDE TOP - PORTO BELO", "GIA SALT LIFE - TIJUCAS", "GIA EMBRALOT 5 E 6", "GIA FABRICA", "GIA ESCRITORIO", "GIA KOCH JOINVILLE", "GIA RODERJANN - PORTO BELO", "GIA DOLCE PECATO TIJUCAS", "GIA OLDENBURG - JARAGUÁ", "GIA FORMIGA LOG - BRUSQUE"];
+const INITIAL_COMPANY_NAMES=[];
+const INITIAL_HORIZONTE_WORKS=[];
 
 function normalizedText(value){
   return String(value||"")
@@ -4161,7 +3406,7 @@ function canonicalTeamLabel(value){
   const letters=normalizedText(raw).replace(/[^A-Z]/g,"");
 
   // Emanuel, Emmanuel e variações causadas por letras repetidas ficam em EMMANUEL.
-  if(/^E+M+A+N+U+E+L+$/.test(letters)) return "EMMANUEL";
+  if(/^E+M+A+N+U+E+L+$/.test(letters)) return "Equipe Alfa";
   if(["GU","GUS","GUSTAVO"].includes(letters)) return "GU";
 
   return raw;
@@ -4171,7 +3416,7 @@ function mergeCanonicalTeamAliases(){
   if(!Array.isArray(data.workTeams)) return false;
   let changed=false;
 
-  ["EMMANUEL","GU"].forEach(canonical=>{
+  ["Equipe Alfa","GU"].forEach(canonical=>{
     const matches=data.workTeams
       .filter(team=>canonicalTeamLabel(team.name)===canonical)
       .sort((a,b)=>Number(a.id)-Number(b.id));
@@ -4552,132 +3797,6 @@ function normalizeData(){
     });
   });
 
-  if(data.bulkScheduleImportVersion!==BULK_SCHEDULE_IMPORT_VERSION){
-    let procave=data.companies.find(company=>
-      normalizedText(company.name||company.tradeName||company.legalName)==="PROCAVE"
-    );
-
-    if(!procave){
-      procave={
-        id:nextId(data.companies),
-        name:"PROCAVE",
-        tradeName:"PROCAVE",
-        legalName:"PROCAVE",
-        notes:""
-      };
-      data.companies.push(procave);
-    }
-
-    const workResult=resolveOrCreateWork(procave.id,"PROCAVE SANTINHO");
-    const procaveWork=workResult.work;
-
-    INITIAL_PROCAVE_SCHEDULE_ROWS.forEach(row=>{
-      const teamResult=resolveOrCreateTeam(row.teamLabel);
-      const team=teamResult.team;
-
-      if(!bulkScheduleDuplicate(
-        procave.id,
-        procaveWork.id,
-        row.date,
-        team.id,
-        row.value
-      )){
-        data.workScheduleEntries.push({
-          id:nextId(data.workScheduleEntries),
-          date:row.date,
-          teamId:team.id,
-          type:"Obra",
-          companyId:procave.id,
-          workId:procaveWork.id,
-          dailyType:"Inteira",
-          value:Number(row.value||0),
-          status:row.date<=plusDays(0)?"Confirmado":"Planejado",
-          billingEntityId:procaveWork.billingEntityId||"",
-          client:"",
-          location:"",
-          serviceType:"",
-          observation:row.observation||""
-        });
-      }
-
-      if(isNextHalfDayFullChargeNote(row.observation)){
-        procaveWork.nextHalfDayFullCharge=true;
-        procaveWork.billingAlertNote=row.observation;
-        procaveWork.billingRuleCreatedAt=row.date;
-      }
-    });
-
-    data.bulkScheduleImportVersion=BULK_SCHEDULE_IMPORT_VERSION;
-    changed=true;
-  }
-
-  if(data.companyWorksBulkVersion!==COMPANY_WORKS_BULK_VERSION){
-    // Remove apenas a antiga empresa de demonstração, se ainda existir.
-    const obsoleteIds=new Set(
-      data.companies
-        .filter(company=>
-          ["GESTAO_OPERACIONAL TOPOGRAFIA","GESTAO_OPERACIONAL TOPOGRAFIA LTDA"]
-            .includes(normalizedText(company.name||company.tradeName||company.legalName))
-        )
-        .map(company=>company.id)
-    );
-    if(obsoleteIds.size){
-      data.companies=data.companies.filter(company=>!obsoleteIds.has(company.id));
-      data.works=data.works.filter(work=>!obsoleteIds.has(work.companyId));
-    }
-
-    const companyMap=new Map(
-      data.companies.map(company=>[
-        normalizedText(company.name||company.tradeName||company.legalName),
-        company
-      ])
-    );
-
-    INITIAL_COMPANY_NAMES.forEach(name=>{
-      const key=normalizedText(name);
-      if(!companyMap.has(key)){
-        const company={
-          id:nextId(data.companies),
-          name,
-          tradeName:name,
-          legalName:name,
-          notes:""
-        };
-        data.companies.push(company);
-        companyMap.set(key,company);
-      }
-    });
-
-    const giacomossi=companyMap.get(normalizedText("GIACOMOSSI"));
-    if(giacomossi){
-      const existingWorks=new Set(
-        data.works
-          .filter(work=>work.companyId===giacomossi.id)
-          .map(work=>normalizedText(work.name))
-      );
-
-      INITIAL_GIACOMOSSI_WORKS.forEach(name=>{
-        const key=normalizedText(name);
-        if(!existingWorks.has(key)){
-          data.works.push({
-            id:nextId(data.works),
-            companyId:giacomossi.id,
-            name,
-            dailyRate:0,
-            halfDailyRate:0,
-            location:"",
-            notes:""
-          });
-          existingWorks.add(key);
-        }
-      });
-    }
-
-    data.companyWorksBulkVersion=COMPANY_WORKS_BULK_VERSION;
-    changed=true;
-  }
-
-
   data.billingEntities.forEach(entity=>{
     const defaults={
       companyId:"",
@@ -4914,7 +4033,7 @@ let editMode=false;
 let selectedEmployee=data.employees[0]?.id||null;
 let selectedVehicle=data.vehicles[0]?.id||null;
 let selectedWorksTab="companies";
-let selectedWorksCompanyId=data.companies.find(c=>normalizedText(c.name)==="GIACOMOSSI")?.id||data.companies[0]?.id||null;
+let selectedWorksCompanyId=data.companies.find(c=>normalizedText(c.name)==="HORIZONTE")?.id||data.companies[0]?.id||null;
 let scheduleWeekStart=mondayOf(plusDays(0));
 const SCHEDULE_ZOOM_KEY="portfolio_schedule_zoom";
 let scheduleZoom=Math.max(55,Math.min(140,Number(localStorage.getItem(SCHEDULE_ZOOM_KEY))||70));
@@ -5350,8 +4469,8 @@ function findCompanyByNormalizedName(name){
 function inferredCompanyForImportedWork(name){
   const normalized=normalizedText(name);
   const mappings=[
-    ["PROCAVE ","PROCAVE"],
-    ["GIA ","GIACOMOSSI"],
+    ["AURORA ","AURORA"],
+    ["GIA ","HORIZONTE"],
     ["MD ","MD"],
     ["RD ","RD"],
     ["SCIRE ","SCIRE EMPREENDIMENTOS"],
@@ -6008,14 +5127,14 @@ function updateAreaNavigation(){
       avatarClass:"finance"
     },
     projectist:{
-      name:"Helena — Projetista",
+      name:"Projetista — Projetista",
       shortName:"Projetista — Helena",
       caption:"Clientes, orçamentos e acompanhamento",
       avatar:"HE",
       avatarClass:"projectist"
     },
     aline:{
-      name:"Aline — Projetista",
+      name:"Projetos — Projetista",
       shortName:"Projetista — Aline",
       caption:"Obras e acompanhamento de processos",
       avatar:"AL",
@@ -6079,7 +5198,7 @@ function updateAreaNavigation(){
   const projectLabel=document.getElementById("projectDashboardLabel");
   const projectBadge=document.getElementById("projectDashboardBadge");
 
-  if(directorLabel) directorLabel.textContent="Solicitações da Helena";
+  if(directorLabel) directorLabel.textContent="Solicitações de projetos";
   if(projectLabel) projectLabel.textContent="Visão da Helena";
 
   if(directorBadge){
@@ -6157,7 +5276,7 @@ function render(){
     configuracoes,
     projectistDashboard,
     projectistClients,
-    projectistGiacomossi,
+    projectistHorizonte,
     projectistCalendar,
     projectistTrello,
     internalDemands,
@@ -7326,17 +6445,8 @@ function exames(){
 
 let pendingExamPdfImport=null;
 
-const EXAM_BULK_ASO_SOURCE=`Alexandre;06/01/2027
-Danys;25/02/2027
-Elias Marcos;22/06/2027
-Guilherme;22/06/2027
-Gustavo Alexandre;16/06/2027
-Iago;18/06/2027
-Luiz Gustavo;01/07/2026;NÃO REALIZADO
-Marcos;18/06/2027
-Neri;17/06/2027
-Othon;23/09/2026
-Thiago;13/08/2026`;
+const EXAM_BULK_ASO_SOURCE=`Pessoa Demo Alfa;01/12/2027
+Pessoa Demo Beta;01/12/2027`;
 let pendingExamBulkRows=[];
 
 function parseBrazilDate(value){
@@ -8400,7 +7510,7 @@ function fleetDateRange(days=7){
 function fleetIdentifier(vehicle){return vehicle.identifier||vehicle.plate||String(vehicle.id)}
 function fleetVehicleDisplay(vehicle){return vehicle.display_name||vehicle.description||`${vehicle.brand||""} ${vehicle.model||""}`.trim()||fleetIdentifier(vehicle)}
 function fleetStatusInfo(vehicle){
-  const raw=String(vehicle.reliable_status||vehicle.reliableStatus||vehicle.status||"").toUpperCase();
+  const raw=String(vehicle.reliable_status||vehicle.reliableStatus||vehicle.effective_status||vehicle.status||"").toUpperCase();
   if(raw.includes("MOVIMENTO")) return{label:"Em movimento",css:"ok",card:"moving"};
   if(raw.includes("SEM COMUNICAÇÃO")||raw.includes("OFFLINE")||raw.includes("INATIVO")) return{label:"Sem comunicação",css:"bad",card:"offline"};
   return{label:"Parado",css:"warn",card:"stopped"};
@@ -8456,7 +7566,7 @@ function fleetConnectionStatus(){
       <div class="fleet-connection-copy">
         <span class="fleet-live-dot ${mode}"></span>
         <div>
-          <strong>${fleetState.connected?"Backend Selsyn conectado":"Backend indisponível — sem dados simulados"}</strong>
+          <strong>${fleetState.connected?(fleetState.demo?"Demonstração local — posições simuladas":"Backend Selsyn conectado"):"Backend indisponível"}</strong>
           <div class="muted" style="font-size:.7rem;margin-top:2px">
             ${fleetState.connected
               ?`Atualização automática a cada ${Number(data.fleetSettings.refreshSeconds||10)} segundos.`
@@ -8486,7 +7596,7 @@ function fleetTabs(){
 
 function veiculos(){
   ensureFleetData();
-  setHeader("Frota Selsyn","Rastreamento, histórico operacional, obras, condução, custos, manutenção e relatórios.");
+  setHeader("Gestão de Frota","Rastreamento, histórico operacional, obras, condução, custos, manutenção e relatórios.");
   document.getElementById("content").innerHTML=`
     <div class="fleet-shell">
       ${fleetTabs()}
@@ -8519,8 +7629,8 @@ async function fleetLoadConnection(){
   if(!data.fleetSettings.useBackend){fleetState.connected=false;fleetState.demo=false;return}
   try{
     fleetState.health=await fleetApi("/api/health");
-    fleetState.connected=!Boolean(fleetState.health.demo_mode);
-    fleetState.demo=false;
+    fleetState.connected=true;
+    fleetState.demo=Boolean(fleetState.health.demo_mode);
   }catch(error){
     fleetState.connected=false;
     fleetState.demo=false;
@@ -9735,7 +8845,7 @@ function companyForm(id){
         <input
           name="name"
           value="${esc(company?companyName(company.id):"")}"
-          placeholder="Ex.: GIACOMOSSI"
+          placeholder="Ex.: HORIZONTE"
           required
           autofocus
         >
@@ -9801,7 +8911,7 @@ function bulkCompanyForm(){
         <textarea
           name="names"
           style="min-height:360px;"
-          placeholder="MD&#10;RD&#10;GIACOMOSSI&#10;PROCAVE"
+          placeholder="MD&#10;RD&#10;HORIZONTE&#10;AURORA"
           required
         ></textarea>
         <small class="muted">
@@ -10096,7 +9206,7 @@ function bulkWorkForm(preferredCompanyId){
         <textarea
           name="names"
           style="min-height:360px;"
-          placeholder="GIA SSGR&#10;GIA PROVESI&#10;GIA YING"
+          placeholder="Obra Demo Norte&#10;Obra Demo Sul&#10;Obra Demo Leste"
           required
         ></textarea>
         <small class="muted">
@@ -14339,9 +13449,9 @@ function deleteInvoice(id){
 function projectBranchHeader(){
   return`
     <div class="project-branch">
-      <button type="button" class="active">Helena — atendimento e orçamentos</button>
+      <button type="button" class="active">Projetista — atendimento e orçamentos</button>
       <button type="button" onclick="currentArea='aline';page='alineWorks';render()">
-        Ir para Aline — obras e processos
+        Ir para Projetos — obras e processos
       </button>
     </div>
   `;
@@ -15729,7 +14839,7 @@ function projectistTrello(){
 
 function directorRequests(){
   setHeader(
-    "Solicitações da Helena",
+    "Solicitações de projetos",
     "Função do diretor vinculada ao Administrativo: definir equipe, data e horário."
   );
 

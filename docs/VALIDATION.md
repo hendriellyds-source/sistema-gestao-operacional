@@ -1,19 +1,26 @@
-# Validação da versão de portfólio
+# Validação — 7 de novembro de 2026
 
-Executada em 6 de novembro de 2026, Windows, Python 3.12.0 e Node.js 24.22.1.
+## Falha identificada
 
-| Verificação | Resultado |
+Na execução do GitHub Actions vinculada ao commit `aa6d740`, os testes tentavam substituir `settings.integrations_enabled`, mas essa opção não estava declarada no modelo `Settings`. Isso causava `AttributeError` na preparação de vários testes.
+
+Referência: https://github.com/hendriellyds-source/sistema-gestao-operacional/actions/runs/42318022343/job/128235395605
+
+## Correção e verificações
+
+O modelo agora declara a opção e aplica o isolamento de credenciais. O workflow instala também as dependências de desenvolvimento. Os testes operacionais usam configurações explícitas e os bancos são isolados em diretórios temporários.
+
+Executado em um ambiente virtual novo, Python 3.12.0, Windows:
+
+| Checagem | Resultado |
 | --- | --- |
-| `python -m pytest -q` | 115 testes e 8 subtestes passaram |
-| `node --test tests/*.test.js` | 5 suítes passaram |
-| `python -m compileall -q app` | sem erros |
-| `python -m pip check` | sem conflitos de dependências |
-| Startup Uvicorn em loopback | concluído |
-| Navegação Chromium | apresentação, login, dashboard, pessoas, frota e agenda sem erros JavaScript |
-| Portal das equipes | login fictício retornou HTTP 200 |
+| Instalação de requirements-lock.txt e requirements-dev.txt | concluída |
+| pytest | 120 testes e 8 subtestes passaram |
+| Testes JavaScript | 5 suítes passaram |
+| compileall | sem erros |
+| pip check | sem conflitos |
+| Chromium: login, agenda, financeiro e frota | sem erros JavaScript |
 
-Os testes demo verificam login inválido e válido, cookie HttpOnly, autorização, logout, dados relacionados, seed idempotente, persistência e bloqueio das rotas externas. Tentativas de conexão de rede fora do loopback fazem o teste falhar. Os demais testes cobrem permissões, agenda, migrações, arquivos, histórico, webhooks, WhatsApp e regras operacionais com adaptadores simulados.
+Há um aviso de depreciação do TestClient/Starlette sobre httpx; os testes passaram. As imagens são capturas da aplicação com dados sintéticos, não mockups.
 
-Há um aviso de depreciação emitido pelo TestClient da versão instalada de Starlette sobre seu transporte httpx. Não houve falha associada. O ambiente exato de runtime está registrado em `requirements-lock.txt`.
-
-As capturas em `docs/screenshots/` foram geradas da aplicação executando com dados fictícios. Não são mockups. Integrações com serviços reais e a execução de migrações em PostgreSQL não foram exercitadas. O workflow de CI foi incluído, mas não foi executado no GitHub nesta preparação.
+O workflow está preparado para Ubuntu/Python 3.12/Node 22. Não foi publicado nem executado novamente no GitHub nesta preparação. O status verde só pode ser confirmado em uma nova execução após o envio dos arquivos. Não foi usado um runner Linux local.

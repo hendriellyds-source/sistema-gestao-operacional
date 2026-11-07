@@ -12,7 +12,7 @@ def build_demo_state():
     data = {key: [] for key in (
         "employees clinics exams vacations leaves vehicles maintenances maintenanceHistory "
         "maintenanceDrafts fines companies works workTeams workScheduleEntries billingEntities "
-        "invoices projectClients projectScheduleRequests projectsWorks projectsProcesses "
+        "invoices projectClients projectScheduleRequests alineWorks alineProcesses "
         "employeeAppFiles events fleetVehicles fleetGeofences fleetTrips fleetStops "
         "fleetDrivingEvents fleetFuel fleetExpenses fleetDocuments fleetDebts fleetHiddenVehicles"
     ).split()}

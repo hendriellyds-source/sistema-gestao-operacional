@@ -504,6 +504,8 @@ def normalize_live_position(item: dict[str, Any]) -> dict[str, Any]:
 
 def normalize_and_assess(item: dict[str, Any]) -> dict[str, Any]:
     live = assess_live_position(normalize_live_position(item))
+    if settings.demo_mode:
+        live["effective_status"] = "EM MOVIMENTO SIMULADO" if float(live.get("speed") or 0) > 0 else "PARADO SIMULADO"
     profile = get_vehicle_profile(live["identifier"])
     live["profile"] = profile
     live["display_name"] = profile.get("description") or live.get("description") or live["identifier"]
@@ -641,7 +643,8 @@ async def lifespan(_: FastAPI):
     init_tracker_health_db()
     init_employee_portal_db()
     init_document_storage()
-    purge_demo_vehicle_documents()
+    if not settings.demo_mode:
+        purge_demo_vehicle_documents()
     init_aline_projects()
     init_aline_email()
     init_system_state()
@@ -653,6 +656,8 @@ async def lifespan(_: FastAPI):
         seed_demo_history()
         seed_demo_operations()
         upsert_alerts(demo_alerts())
+        from .demo_seed import seed_demo_state
+        seed_demo_state()
     sync_task = asyncio.create_task(auto_sync_loop())
     tracker_task = asyncio.create_task(tracker_health_loop())
     background_tasks = [sync_task, tracker_task]

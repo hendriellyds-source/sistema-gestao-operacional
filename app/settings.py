@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class Settings(BaseSettings):
@@ -11,11 +11,12 @@ class Settings(BaseSettings):
 
     poll_interval_seconds: int = 10
     demo_mode: bool = True
+    integrations_enabled: bool = False
 
     # Credenciais locais usadas somente quando DEMO_MODE=true.
     demo_email: str = "demo@portfolio.local"
-    demo_password: str = "demo1234"
-    demo_display_name: str = "Recrutador Demo"
+    demo_password: str = "Demo@12345"
+    demo_display_name: str = "Administrador Demo"
     # Supabase
     supabase_url: str = ""
     supabase_publishable_key: str = ""
@@ -162,6 +163,27 @@ class Settings(BaseSettings):
                 "https://api.whatsapp.com/."
             )
         return normalized
+
+    @model_validator(mode="after")
+    def isolate_demo(self):
+        # A demo cannot use production credentials even if present in the host.
+        if self.demo_mode or not self.integrations_enabled:
+            for key in ("selsyn_api_key", "supabase_url", "supabase_publishable_key",
+                        "supabase_secret_key", "openai_api_key", "cora_client_id",
+                        "cora_webhook_token", "whatsapp_access_token", "whatsapp_app_secret",
+                        "whatsapp_verify_token", "nfse_ipm_username", "nfse_ipm_password"):
+                setattr(self, key, "")
+            for key in ("cora_enabled", "nfse_ipm_enabled", "whatsapp_enabled",
+                        "history_auto_sync", "reverse_geocoding_enabled"):
+                setattr(self, key, False)
+        if self.demo_mode:
+            # Keep synthetic data apart from an existing operational installation.
+            for key in type(self).model_fields:
+                if key.endswith(("_db_path", "_root_path", "_key_path")):
+                    value = getattr(self, key)
+                    if value.startswith("data/") and not value.startswith("data/demo/"):
+                        setattr(self, key, "data/demo/" + value[5:])
+        return self
 
     model_config = SettingsConfigDict(
         env_file=".env",
