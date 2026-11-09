@@ -15,6 +15,8 @@ services:
         value: "false"
       - key: AUTH_COOKIE_SECURE
         value: "true"
+      - key: PUBLIC_DEMO_READ_ONLY
+        value: "true"
       - key: APP_TIMEZONE
         value: America/Sao_Paulo
       - key: DEMO_EMAIL
