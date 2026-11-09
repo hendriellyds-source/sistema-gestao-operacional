@@ -13,7 +13,7 @@
 
 1. Rodar testes e fazer smoke test em instância privada; garantir que `DEMO_MODE=true`, `INTEGRATIONS_ENABLED=false` e `AUTH_COOKIE_SECURE=true`.
 2. Confirmar que as rotas e dados são totalmente fictícios, e que webhooks, e-mail, WhatsApp, rastreamento, NFS-e e integrações externas não fazem chamadas de produção.
-3. A conta de demonstração é compartilhada. Definir um dos modelos: **somente leitura**, **ambiente isolado por visitante** ou **reset periódico** com limites de uso. Sem isso, visitantes podem modificar dados exibidos aos outros.
+3. A conta de demonstração é compartilhada. Este Blueprint ativa **somente leitura** (`PUBLIC_DEMO_READ_ONLY=true`): somente login/logout aceitam alterações de estado por HTTP; outras operações de escrita retornam 403. Fluxos de criação e edição não ficam disponíveis na demo pública. Para permitir interações de escrita futuramente, implementar **isolamento por visitante** antes de desativar esse bloqueio.
 4. Proteger uploads e endpoints administrativos, revisar autorização de rotas e limitar tráfego. O modo demo e a sanitização existentes são uma base, não substituem teste de segurança.
 5. Definir `DEMO_PASSWORD` no provedor (não versionar a senha); a tela de login atual pode exibir credenciais de demo e deverá ser revisada conforme a experiência escolhida.
 6. Validar custo do plano e disco persistente do provedor, backup/reinicialização e política de retenção antes de ativar o serviço.
