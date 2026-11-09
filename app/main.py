@@ -693,6 +693,15 @@ app.include_router(tablet_agenda_router)
 @app.middleware("http")
 async def require_system_login(request: Request, call_next):
     path = request.url.path
+    # Public portfolio visitors can explore synthetic data without changing
+    # the shared demo database. Keep authentication available.
+    if settings.demo_mode and settings.public_demo_read_only:
+        if request.method.upper() not in {"GET", "HEAD", "OPTIONS"}:
+            if path not in {"/api/auth/login", "/api/auth/logout"}:
+                return JSONResponse(
+                    status_code=403,
+                    content={"detail": "Demonstração pública em modo somente leitura."},
+                )
     public_exact = {
         "/",
         "/login",
