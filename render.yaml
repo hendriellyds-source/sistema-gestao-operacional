@@ -5,7 +5,7 @@ services:
   - type: web
     name: gestao-operacional-demo
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /healthz
     envVars:
@@ -23,7 +23,3 @@ services:
         value: demo@portfolio.local
       - key: DEMO_PASSWORD
         sync: false
-    disk:
-      name: demo-data
-      mountPath: /app/data
-      sizeGB: 1
