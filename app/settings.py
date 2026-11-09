@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     poll_interval_seconds: int = 10
     demo_mode: bool = True
     integrations_enabled: bool = False
+    public_demo_read_only: bool = False
 
     # Credenciais locais usadas somente quando DEMO_MODE=true.
     demo_email: str = "demo@portfolio.local"
