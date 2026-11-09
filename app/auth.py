@@ -399,7 +399,7 @@ def login(
         value=token,
         max_age=session_hours * 3600,
         httponly=True,
-        secure=settings.auth_cookie_secure,
+        secure=(settings.auth_cookie_secure and (not settings.demo_mode or settings.public_demo_read_only)),
         samesite="lax",
         path="/",
     )
@@ -422,7 +422,7 @@ def logout(
         key=COOKIE_NAME,
         path="/",
         httponly=True,
-        secure=settings.auth_cookie_secure,
+        secure=(settings.auth_cookie_secure and (not settings.demo_mode or settings.public_demo_read_only)),
         samesite="lax",
     )
 
