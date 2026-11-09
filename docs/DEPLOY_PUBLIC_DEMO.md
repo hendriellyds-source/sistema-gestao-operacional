@@ -3,7 +3,7 @@
 ## Arquitetura recomendada
 
 - **Render (Docker Web Service)** executa o FastAPI e renderiza a interface Jinja2.
-- **Disco persistente** em `/app/data` armazena os bancos SQLite da demonstração.
+- **Plano gratuito sem disco persistente:** arquivos SQLite em `/app/data` são efêmeros e podem ser recriados a cada reinício. Isso é compatível com a demo pública somente leitura; dados não devem ser usados para produção.
 - **Netlify** continua hospedando apenas a landing page Drillyx ONE, que terá um link para a URL pública do Render.
 - O Dockerfile já inicia o servidor em `0.0.0.0:8000` e fornece `/healthz`.
 
@@ -22,7 +22,7 @@
 
 1. Conectar o repositório privado no painel do Render.
 2. Criar um Blueprint usando `render.yaml`.
-3. Revisar o plano de serviço (o exemplo usa plano **Starter**, sujeito a cobrança) e configurar as variáveis solicitadas.
+3. Revisar o plano de serviço (o exemplo usa plano **Free**, sujeito a limites e suspensão por inatividade), configurar as variáveis solicitadas e confirmar que a conta é elegível.
 4. Publicar a aplicação, confirmar `/healthz` e efetuar login com a conta demo.
 5. Testar RH, agenda, frota, financeiro e logout, inclusive em celular; verificar a ausência de dados reais.
 6. Copiar a **URL verdadeira** do deploy para o card de Gestão Operacional na landing page hospedada pela Netlify.
