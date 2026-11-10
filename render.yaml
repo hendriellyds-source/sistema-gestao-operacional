@@ -1,0 +1,25 @@
+# Blueprint for a standalone portfolio demo on Render.
+# The frontend is served by FastAPI/Jinja2: Netlify alone cannot run it.
+# Review docs/DEPLOY_PUBLIC_DEMO.md before creating a public web service.
+services:
+  - type: web
+    name: gestao-operacional-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    envVars:
+      - key: DEMO_MODE
+        value: "true"
+      - key: INTEGRATIONS_ENABLED
+        value: "false"
+      - key: AUTH_COOKIE_SECURE
+        value: "true"
+      - key: PUBLIC_DEMO_READ_ONLY
+        value: "true"
+      - key: APP_TIMEZONE
+        value: America/Sao_Paulo
+      - key: DEMO_EMAIL
+        value: demo@portfolio.local
+      - key: DEMO_PASSWORD
+        sync: false

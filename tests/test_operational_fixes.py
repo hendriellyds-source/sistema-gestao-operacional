@@ -408,14 +408,16 @@ class OperationalUiAndMigrationTests(unittest.TestCase):
         self.assertNotIn("truncate ", sql)
 
         html = Path("app/templates/index.html").read_text(encoding="utf-8")
-        self.assertIn("/assets/app-mark.svg", html)
+        self.assertIn("/assets/drillyx-one-mark.png", html)
+        self.assertIn("/assets/drillyx-one-favicon.png", html)
         self.assertIn('id="fleetHistoryDate"', html)
         self.assertNotIn('id="fleetDateFrom"', html)
         self.assertIn("selectFleetTripRoute", html)
         self.assertIn('"funcionarios","exames","ferias","clinicas","veiculos"', html)
         self.assertIn('rhName.textContent="RH"', html)
         self.assertIn('financeName.textContent="Financeiro"', html)
-        self.assertTrue(Path("assets/app-mark.svg").is_file())
+        self.assertTrue(Path("assets/drillyx-one-mark.png").is_file())
+        self.assertTrue(Path("assets/drillyx-one-favicon.png").is_file())
 
 
 if __name__ == "__main__":

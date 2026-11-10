@@ -2,6 +2,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field, field_validator, model_validator
 
 
+PUBLIC_DEMO_EMAIL = "demo@portfolio.local"
+PUBLIC_DEMO_PASSWORD = "Demo@12345"
+
+
 class Settings(BaseSettings):
     openai_api_key: str = ""
     historical_vision_model: str = "gpt-4.1"
@@ -12,10 +16,11 @@ class Settings(BaseSettings):
     poll_interval_seconds: int = 10
     demo_mode: bool = True
     integrations_enabled: bool = False
+    public_demo_read_only: bool = False
 
     # Credenciais locais usadas somente quando DEMO_MODE=true.
-    demo_email: str = "demo@portfolio.local"
-    demo_password: str = "Demo@12345"
+    demo_email: str = PUBLIC_DEMO_EMAIL
+    demo_password: str = PUBLIC_DEMO_PASSWORD
     demo_display_name: str = "Administrador Demo"
     # Supabase
     supabase_url: str = ""

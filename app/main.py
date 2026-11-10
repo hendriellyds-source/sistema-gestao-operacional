@@ -119,7 +119,7 @@ from .employee_portal import (
     sync_portal_state,
 )
 from .selsyn_client import SelsynClient, SelsynError
-from .settings import settings
+from .settings import PUBLIC_DEMO_EMAIL, PUBLIC_DEMO_PASSWORD, settings
 from .profile_photos import router as profile_photos_router
 from .aline_projects import (
     aline_health,
@@ -693,6 +693,15 @@ app.include_router(tablet_agenda_router)
 @app.middleware("http")
 async def require_system_login(request: Request, call_next):
     path = request.url.path
+    # Public portfolio visitors can explore synthetic data without changing
+    # the shared demo database. Keep authentication available.
+    if settings.demo_mode and settings.public_demo_read_only:
+        if request.method.upper() not in {"GET", "HEAD", "OPTIONS"}:
+            if path not in {"/api/auth/login", "/api/auth/logout"}:
+                return JSONResponse(
+                    status_code=403,
+                    content={"detail": "Demonstração pública em modo somente leitura."},
+                )
     public_exact = {
         "/",
         "/login",
@@ -740,10 +749,20 @@ async def login_page(request: Request):
     if user_from_session(request.cookies.get(COOKIE_NAME)):
         destination = "/agenda-tablet" if request.query_params.get("next") == "/agenda-tablet" else "/workspace"
         return RedirectResponse(destination, status_code=303)
+    demo_credentials = None
+    if (
+        settings.demo_mode
+        and settings.demo_email == PUBLIC_DEMO_EMAIL
+        and settings.demo_password == PUBLIC_DEMO_PASSWORD
+    ):
+        demo_credentials = {"email": PUBLIC_DEMO_EMAIL, "password": PUBLIC_DEMO_PASSWORD}
     return templates.TemplateResponse(
         request=request,
         name="login.html",
-        context={"tablet_login": request.query_params.get("next") == "/agenda-tablet"},
+        context={
+            "tablet_login": request.query_params.get("next") == "/agenda-tablet",
+            "demo_credentials": demo_credentials,
+        },
     )
 
 
