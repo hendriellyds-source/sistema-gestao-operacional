@@ -1,152 +1,124 @@
-# Sistema de Gestão Operacional — Demo
+<div align="center">
 
-> Case técnico de uma aplicação web criada para centralizar processos operacionais que antes dependiam de controles dispersos. Esta versão pública usa **dados 100% fictícios** e mantém integrações externas desabilitadas por padrão.
+<img src="assets/drillyx-one-mark.png" alt="Símbolo Drillyx ONE" width="100">
 
-## Executar com Docker
+# Sistema de Gestão Operacional
 
-Com Docker Engine/Docker Desktop e Docker Compose v2 instalados, execute na raiz:
+**Uma aplicação web para centralizar operações, pessoas, agenda, frota e financeiro.**
+
+Case de engenharia de software desenvolvido por **Hendrielly de Souza**, apresentado pela **Drillyx ONE** com dados fictícios e integrações externas desativadas no ambiente demonstrativo.
+
+[**🚀 Explorar demo online**](https://gestao-operacional-demo-ypoh.onrender.com/login) · [**📐 Arquitetura**](docs/ARCHITECTURE.md) · [**🧪 Testes e CI**](.github/workflows/ci.yml)
+
+![GitHub Actions](https://github.com/hendriellyds-source/sistema-gestao-operacional/actions/workflows/ci.yml/badge.svg)
+
+</div>
+
+![Dashboard administrativo do Sistema de Gestão Operacional com dados demonstrativos](docs/screenshots/dashboard.png)
+
+> **Ambiente de portfólio:** a versão pública usa dados sintéticos e está configurada em **somente leitura**. É possível navegar pelos módulos, mas operações que gravam dados no servidor são bloqueadas. A hospedagem gratuita pode demorar para iniciar após períodos de inatividade.
+
+## Acesse a demonstração
+
+**URL:** https://gestao-operacional-demo-ypoh.onrender.com/login
+
+| Campo | Acesso demonstrativo |
+| --- | --- |
+| E-mail | `demo@portfolio.local` |
+| Senha | `Demo@12345` |
+| Modalidade | Demonstração pública, somente leitura |
+
+O login demonstrativo não depende de Supabase. As credenciais acima são **exclusivas do ambiente fictício** e não são contas de produção.
+
+## O problema que o projeto resolve
+
+Em operações com equipes de campo, as informações podem acabar dispersas entre planilhas, agendas, mensagens e controles manuais. A proposta deste sistema é organizar essas rotinas em uma aplicação única, criando vínculos entre serviços, responsáveis, veículos, colaboradores e indicadores.
+
+O projeto foi construído a partir de requisitos operacionais reais e posteriormente adaptado para portfólio. A versão pública mantém a estrutura e as regras de negócio sem disponibilizar dados internos da operação original.
+
+## Funcionalidades demonstradas
+
+| Área | Exemplo de funcionalidade |
+| --- | --- |
+| **Operações e agenda** | Planejamento de serviços, equipes, obras e agendamentos |
+| **RH** | Colaboradores, exames, férias e documentos |
+| **Frota** | Veículos, manutenção, despesas e acompanhamento operacional simulado |
+| **Financeiro** | Compromissos, serviços e indicadores de cobrança |
+| **Acessos** | Autenticação, permissões e separação por perfil (RBAC) |
+| **Integrações** | Adaptadores para serviços externos, desligados na demo |
+
+## Telas do sistema
+
+| Agenda operacional | Gestão de frota |
+| --- | --- |
+| ![Agenda e alocação de equipes](docs/screenshots/agenda.png) | ![Gestão de frota no cenário fictício](docs/screenshots/frota.png) |
+
+| RH e pessoas | Financeiro |
+| --- | --- |
+| ![Gestão de pessoas](docs/screenshots/pessoas.png) | ![Indicadores e acompanhamento financeiro](docs/screenshots/financeiro.png) |
+
+Todas as capturas correspondem à aplicação em cenário demonstrativo, sem dados reais de colaboradores ou empresas.
+
+## Stack e arquitetura
+
+**Backend:** Python, FastAPI, Pydantic e Jinja2  
+**Frontend:** HTML, CSS e JavaScript  
+**Dados:** SQLite no modo demo; suporte a Supabase no modo integrado  
+**Entrega e qualidade:** Docker, GitHub Actions, Pytest e testes JavaScript
+
+```text
+Navegador
+   │
+   ▼
+FastAPI + Jinja2
+   ├── Autenticação e permissões
+   ├── Operações e agenda
+   ├── Pessoas, documentos e RH
+   ├── Frota e indicadores
+   ├── Financeiro
+   └── Adaptadores externos (desativados na demo)
+   │
+   ▼
+SQLite + dados sintéticos no modo demonstrativo
+```
+
+Consulte [arquitetura detalhada](docs/ARCHITECTURE.md), [notas do portfólio](PORTFOLIO_NOTES.md) e [decisões de segurança](SECURITY.md).
+
+## Executar localmente
+
+### Opção 1 — Docker (recomendada)
+
+Com Docker Engine/Desktop e Docker Compose v2:
 
 ```bash
 docker compose up --build
 ```
 
-Abra [a demonstração local](http://127.0.0.1:8000). Login: `demo@portfolio.local` / `Demo@12345`.
+Acesse **http://127.0.0.1:8000** e utilize as credenciais de demonstração acima. Para interromper, use `Ctrl+C` e `docker compose down`.
 
-Para parar, use `Ctrl+C` e `docker compose down`. O volume `demo-data` preserva as alterações entre execuções. A porta fica acessível somente pelo próprio computador; o Compose não carrega seu `.env` nem credenciais reais. O contêiner executa sem root e usa uma verificação de saúde HTTP. O CI valida o build e o fluxo de login do contêiner.
+O Compose usa isolamento local, não carrega credenciais externas de produção e preserva os dados sintéticos em um volume dedicado.
 
-## Visão geral
-
-O sistema integra, em uma única aplicação, rotinas de **operações, agenda, RH, frota, financeiro, documentos, permissões e indicadores**. O objetivo do case é demonstrar modelagem de regras de negócio, backend em Python, interface web, persistência local, integrações e preocupação com segurança.
-
-### O que este projeto demonstra
-
-- Backend com **FastAPI** e rotas organizadas por domínio
-- Interface web responsiva em **HTML, CSS e JavaScript**
-- Controle de acesso por perfil (RBAC)
-- Gestão de equipes, agenda e atividades operacionais
-- RH: colaboradores, exames, férias e documentos
-- Frota: veículos, manutenção, custos, alertas e histórico
-- Financeiro e calendário de compromissos
-- Persistência local com SQLite e suporte a Supabase no modo integrado
-- Integrações desacopladas (WhatsApp, rastreamento, cobrança e NFS-e)
-- Testes automatizados de fluxos críticos
-- **Modo demo isolado**, sem dependência de serviços externos
-
-## Telas da demonstração
-
-### Agenda operacional
-
-Alocação de equipes e serviços em uma visão de calendário.
-
-![Agenda operacional com dados fictícios](docs/screenshots/agenda.png)
-
-### Gestão de frota
-
-Veículos, posições simuladas e acompanhamento operacional.
-
-![Frota no modo demonstração](docs/screenshots/frota.png)
-
-### Financeiro
-
-Indicadores e serviços vinculados à operação.
-
-![Painel financeiro com dados fictícios](docs/screenshots/financeiro.png)
-
-## Stack
-
-`Python` · `FastAPI` · `Pydantic` · `Jinja2` · `JavaScript` · `HTML/CSS` · `SQLite` · `Supabase` · `Pytest`
-
-## Executar localmente
-
-### 1. Criar ambiente virtual
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
-
-Linux/macOS:
+### Opção 2 — Python 3.12
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate
 ```
 
-### 2. Instalar dependências
+Ative o ambiente:
+
+- Windows (PowerShell): `.venv\Scripts\Activate.ps1`
+- Linux/macOS: `source .venv/bin/activate`
+
+Instale as dependências e inicie a aplicação:
 
 ```bash
-python -m pip install -r requirements.txt
-```
-
-### 3. Criar configuração local
-
-```powershell
-Copy-Item .env.example .env
-```
-
-Linux/macOS:
-
-```bash
-cp .env.example .env
-```
-
-O arquivo de exemplo já vem configurado com `DEMO_MODE=true`.
-
-### 4. Iniciar
-
-```bash
+python -m pip install -r requirements-lock.txt
 python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-Abra **http://127.0.0.1:8000**.
+O modo demonstrativo é padrão. Para configurar variáveis locais, use `.env.example` como referência e crie um arquivo `.env` **não versionado**. Nunca reutilize credenciais empresariais reais no ambiente de portfólio.
 
-## Credenciais de demonstração
-
-| Campo | Valor |
-|---|---|
-| E-mail | `demo@portfolio.local` |
-| Senha | `Demo@12345` |
-
-O login demo é processado localmente. **Supabase não é necessário** neste modo.
-
-## Arquitetura
-
-```text
-Browser
-  │
-  ▼
-FastAPI / Jinja2
-  ├── Autenticação e acesso
-  ├── Operações e agenda
-  ├── RH e documentos
-  ├── Frota e telemetria
-  ├── Financeiro
-  └── Integrações opcionais
-          │
-          ├── Supabase
-          ├── WhatsApp Cloud API
-          ├── Rastreamento
-          ├── Cobrança
-          └── NFS-e
-
-Modo Demo → SQLite + dados fictícios locais
-```
-
-Mais detalhes em [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
-
-## Segurança e sanitização
-
-A versão de portfólio foi preparada especificamente para exposição técnica:
-
-- dados reais de colaboradores foram substituídos por registros fictícios;
-- credenciais e arquivos `.env` não são versionados;
-- artefatos de banco e arquivos temporários são ignorados;
-- integrações externas ficam `false` por padrão;
-- contatos e endpoints empresariais foram removidos da configuração de exemplo.
-
-Veja [`SECURITY.md`](SECURITY.md).
-
-## Testes
+## Testes e integração contínua
 
 ```bash
 python -m pip install -r requirements-dev.txt
@@ -155,23 +127,33 @@ python -m compileall -q app
 node --test tests/*.test.js
 ```
 
-Node.js 20+ é necessário para os testes JavaScript. A validação em ambiente virtual novo passou em 120 testes Python, 8 subtestes e 5 suítes JavaScript. Veja [o registro de validação](docs/VALIDATION.md) e [as instruções de atualização](docs/UPDATE.md).
+O workflow em [`.github/workflows/ci.yml`](.github/workflows/ci.yml) valida testes Python e JavaScript, compilação e um fluxo de inicialização e login em Docker. O status do badge no topo representa a execução mais recente da branch principal.
 
-## Decisões técnicas
+## Segurança e escopo da demo
 
-Este projeto nasceu de uma necessidade operacional real e evoluiu de forma incremental. Para a versão de portfólio, a prioridade foi **preservar a riqueza das regras de negócio sem expor informações privadas da operação original**. Por isso, integrações permanecem representadas na arquitetura, mas o caminho padrão é um ambiente demo autocontido.
+- Dados de pessoas, empresas, operações e valores são fictícios.
+- Integrações externas são desabilitadas no modo público.
+- A demo pública bloqueia gravações de dados no servidor.
+- Bancos locais, arquivos temporários e segredos não devem ser versionados.
+- O plano gratuito de hospedagem não garante persistência nem disponibilidade contínua.
+
+Para detalhes de configuração, veja [o guia de deploy](docs/DEPLOY_PUBLIC_DEMO.md) e o [documento de segurança](SECURITY.md).
 
 ## Próximas evoluções
 
-- Modularização progressiva de rotas ainda concentradas no `main.py`
-- Cobertura de testes ampliada por domínio
-- Containers Docker para onboarding em um comando
-- Dashboard de observabilidade e métricas
+- Modularizar progressivamente os trechos mais extensos do backend.
+- Expandir testes por domínio e cenários de autorização.
+- Evoluir observabilidade e experiência demonstrativa.
+- Implementar isolamento individual caso sejam habilitadas operações de escrita para visitantes.
 
-## Autoria
+---
 
-Desenvolvido por **Hendrielly de Souza** como solução aplicada a processos empresariais e adaptado para apresentação técnica em portfólio.
+<div align="center">
 
-## Integração contínua
+**Desenvolvido por Hendrielly de Souza · Drillyx ONE**
 
-O workflow `.github/workflows/ci.yml` executa compilação, pytest, validação das dependências e testes JavaScript. O runtime usa versões fixadas em `requirements-lock.txt`. O relatório JUnit é preservado mesmo em caso de falha. A execução não requer segredos de serviços externos.
+[Portfólio e projetos](https://github.com/hendriellyds-source) · [Instagram Drillyx ONE](https://www.instagram.com/drillyxone/)
+
+*Infinitas soluções para o seu negócio.*
+
+</div>
